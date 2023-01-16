@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        font-family: 'Italiana';
+        font-family: 'Poppins';
         background-color: #C5B7A2;
     }
 
