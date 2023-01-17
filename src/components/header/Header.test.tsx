@@ -7,19 +7,21 @@ import { BrowserRouter } from "react-router-dom"
 import { OrderedItemsProvider } from "../../context/ShopContext"
 
 describe("render Header component", () => {
+
     it('checks if badhe shows the correct number of items in cart', () => {
+        const numberOfItemsInCart = 234
         render(
             <>
                 <GlobalStyle />
                 <OrderedItemsProvider>
                     <BrowserRouter>
-                        <Header orderQuantity={3} />
+                        <Header orderQuantity={numberOfItemsInCart} />
                     </BrowserRouter>
                 </OrderedItemsProvider>
             </>
         )
         const badge = screen.getByTestId('badge');
-        expect(badge.textContent).toBe("3");
+        expect(badge.textContent).toBe(`${numberOfItemsInCart}`);
     })
 
     it('checks if all navigation links are rendered', () => {
@@ -34,8 +36,6 @@ describe("render Header component", () => {
             </>
         )
         const navLinks = screen.getAllByRole('listitem');
-         screen.debug()
         expect(navLinks.length).toBe(3);
-       
     })
 })
