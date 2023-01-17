@@ -6,18 +6,36 @@ import GlobalStyle from "../../GlobalStyle"
 import { BrowserRouter } from "react-router-dom"
 import { OrderedItemsProvider } from "../../context/ShopContext"
 
-test("render component", () => {
-    render(
-        <>
-            {/* <GlobalStyle /> */}
-            <OrderedItemsProvider>
-                <BrowserRouter>
-                    <Header orderQuantity={3} />
-                </BrowserRouter>
-            </OrderedItemsProvider>
-        </>
-    )
-    const badge = screen.getByTestId('badge');
-    expect(badge.textContent).toBe("3")
-    expect(screen.getByText("Bar Pyra")).toBeInTheDocument()
+describe("render Header component", () => {
+    it('checks if badhe shows the correct number of items in cart', () => {
+        render(
+            <>
+                <GlobalStyle />
+                <OrderedItemsProvider>
+                    <BrowserRouter>
+                        <Header orderQuantity={3} />
+                    </BrowserRouter>
+                </OrderedItemsProvider>
+            </>
+        )
+        const badge = screen.getByTestId('badge');
+        expect(badge.textContent).toBe("3");
+    })
+
+    it('checks if all navigation links are rendered', () => {
+        render(
+            <>
+                <GlobalStyle />
+                <OrderedItemsProvider>
+                    <BrowserRouter>
+                        <Header orderQuantity={3} />
+                    </BrowserRouter>
+                </OrderedItemsProvider>
+            </>
+        )
+        const navLinks = screen.getAllByRole('listitem');
+         screen.debug()
+        expect(navLinks.length).toBe(3);
+       
+    })
 })

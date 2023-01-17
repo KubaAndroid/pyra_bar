@@ -64,7 +64,7 @@ interface IHeaderProps {
   orderQuantity: number
 } 
 
-export const Header = ({orderQuantity }: IHeaderProps) => {
+export const Header = ({ orderQuantity }: IHeaderProps) => {
   // const { orderQuantity } = useOrderContext()
 
     return (

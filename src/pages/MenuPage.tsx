@@ -65,7 +65,7 @@ export const CategoryIcon = styled.img`
   width: 25px;
 `
 
-export const MenuCategory = {
+const MenuCategory = {
     all: 'all',
     vege: 'vege',
     spicy: 'spicy',
@@ -76,7 +76,6 @@ export const MenuCategory = {
 const MenuPage = () => {
   const {
     getAllMenuItems,
-    allMenuItems,
     filteredMenuItems,
     setFilteredMenuItems,
     sortMenuItemsByPrice,
@@ -152,17 +151,16 @@ const MenuPage = () => {
               </div>
           </CategoryButtons>
 
-              <CategoryButtons>
-
-              <div>
-                Search: <SearchInput
-                  type="text"
-                  placeholder="search for a dish"
-                  onChange={(e) => {
-                    searchMenuItems(e.target.value)
-                  }} />
-                </div>
-                </CategoryButtons>
+          <CategoryButtons>
+            <div>
+              Search: <SearchInput
+                type="text"
+                placeholder="search for a dish"
+                onChange={(e) => {
+                  searchMenuItems(e.target.value)
+                }} />
+              </div>
+            </CategoryButtons>
 
             <H1>Menu</H1>
             <MenuList
