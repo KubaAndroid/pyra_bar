@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react'
-import { MenuItemModel } from '../models/MenuItemModel'
-import { OrderModel } from "../models/OrderModel";
-import { ClientModel } from "../models/ClientModel";
-import { OrderItemModel } from '../models/OrderItemModel';
+import MenuItemModel from '../models/MenuItemModel'
+import OrderModel from "../models/OrderModel";
+import ClientModel from "../models/ClientModel";
+import OrderItemModel from '../models/OrderItemModel';
 
 
 type OrderedItemsContext = {
@@ -11,29 +11,23 @@ type OrderedItemsContext = {
     reduceOrderItemQuantity: (id: number) => void
     removeOrderItem: (id: number) => void
     orderQuantity: number
-
     orderedItems: OrderItemModel[]
     setOrdersList: React.Dispatch<React.SetStateAction<OrderModel[]>>
     orderedMenuItems: MenuItemModel[]
-
     getAllMenuItems: () => Promise<MenuItemModel[]>
     clearOrder: () => void
     getMenuItemById: (id: number) => MenuItemModel | undefined
-    getClientById: (id: number) => ClientModel | undefined
+    getClientById: (id: number) => ClientModel
     allMenuItems: MenuItemModel[]
     filteredMenuItems: MenuItemModel[]
     setFilteredMenuItems: React.Dispatch<React.SetStateAction<MenuItemModel[]>>
     sortMenuItemsByPrice: (ascending: boolean) => void
-
     clientsList: ClientModel[]
     setClientsList: React.Dispatch<React.SetStateAction<ClientModel[]>>
-
     filterMenuItems: (filterBy: string) => void
     searchMenuItems: (searchQuery: string) => void
-
     ordersList: OrderModel[]
     getAllOrders: () => Promise<OrderModel[]>
-
     currentFilter: string
     currentSorting: string
 }
@@ -76,7 +70,6 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
             setClientsList(fetchedClients)
             
         }
-        // getMenuItems()
         // getAllMenuItems()
         getOrders()
         getClients()
@@ -150,7 +143,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     }
 
     const getClientById = (id: number) => {
-        return clientsList.find(user => user.id === id)
+        return clientsList.find(user => user.id === id)!
     }
 
     function getOrderById(id: number) {

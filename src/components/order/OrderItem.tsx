@@ -1,5 +1,4 @@
-import React from 'react'
-import { OrderItemModel } from '../../models/OrderItemModel';
+import OrderItemModel from '../../models/OrderItemModel';
 import { useOrderContext } from '../../context/ShopContext';
 import trash from '../../assets/img/trash-can.png'
 import styled from 'styled-components';
@@ -53,6 +52,7 @@ type OrderType = {
 }
 
 function OrderItem({ item }: OrderType) {
+  
   const {
     increaseOrderItemQuantity,
     reduceOrderItemQuantity,

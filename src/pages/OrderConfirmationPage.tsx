@@ -1,8 +1,9 @@
 import React from 'react'
+import OrderForm from '../components/order/OrderForm'
 
 function OrderConfirmationPage() {
   return (
-    <div>OrderConfirmationPage</div>
+    <div><OrderForm /></div>
   )
 }
 

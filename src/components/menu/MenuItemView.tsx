@@ -1,4 +1,4 @@
-import { MenuItemModel } from '../../models/MenuItemModel'
+import MenuItemModel from '../../models/MenuItemModel'
 import { useOrderContext } from '../../context/ShopContext';
 import fireIcon from '../../assets/img/fire.png';
 import vegeIcon from '../../assets/img/plant.png';
@@ -106,8 +106,8 @@ function MenuItemLayout({ menuItem, index, setIsModalOpen, setCurrentItem }: Men
                     <h3>{menuItem.name} <CategoryIcon src={myIcon} alt="food category" /></h3>
                     <InfoButton
                         onClick={() => {
-                            setIsModalOpen(true)
-                            setCurrentItem(menuItem)
+                          setCurrentItem(menuItem)            
+                          setIsModalOpen(true)
                         }}>Info</InfoButton>
                     {index < 4 ? <MarginalizedDiv>{menuItem.description}</MarginalizedDiv> : null}
                     <MarginalizedDiv>Price: { menuItem.price.toFixed(2)}</MarginalizedDiv>

@@ -5,7 +5,7 @@ import vegeIcon from '../assets/img/plant.png';
 import noLactoseIcon from '../assets/img/vegan.png';
 import allCategoriesIcon from '../assets/img/food.png';
 import { useEffect, useState } from "react";
-import { MenuItemModel } from "../models/MenuItemModel";
+import MenuItemModel from "../models/MenuItemModel";
 import MenuModal from "../components/menu/MenuModal";
 import MenuList from "../components/menu/MenuList";
 
@@ -110,7 +110,7 @@ const MenuPage = () => {
     return (
       <>
         {isModalOpen ? (<MenuModal menuItem={currentlySelectedMenuItem} openedModal={setIsModalOpen} />) : (
-            <PageBackground>
+          <PageBackground>
             <CategoryButtons>
               <div>
                 Sort by price:
@@ -149,16 +149,16 @@ const MenuPage = () => {
                   <CategoryIcon src={noLactoseIcon} alt="" /> Lactose free
                 </CategoryButton>
               </div>
-          </CategoryButtons>
+            </CategoryButtons>
 
-          <CategoryButtons>
-            <div>
-              Search: <SearchInput
-                type="text"
-                placeholder="search for a dish"
-                onChange={(e) => {
-                  searchMenuItems(e.target.value)
-                }} />
+            <CategoryButtons>
+              <div>
+                Search: <SearchInput
+                  type="text"
+                  placeholder="search for a dish"
+                  onChange={(e) => {
+                    searchMenuItems(e.target.value)
+                  }} />
               </div>
             </CategoryButtons>
 
@@ -168,7 +168,7 @@ const MenuPage = () => {
               setIsModalOpen={setIsModalOpen}
               setCurrentItem={setCurrentlySelectedMenuItem}
             />
-            </PageBackground>
+          </PageBackground>
         )}
       </>
     )

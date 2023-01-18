@@ -1,18 +1,19 @@
 import React from "react"
 import { render, screen } from '@testing-library/react'
 
-import Header from './Header'
-import GlobalStyle from "../../GlobalStyle"
+import Header from '../components/header/Header'
+import GlobalStyle from "../GlobalStyle"
 import { BrowserRouter } from "react-router-dom"
-import { OrderedItemsProvider } from "../../context/ShopContext"
+import { OrderedItemsProvider } from "../context/ShopContext"
+
+
 
 describe("render Header component", () => {
 
-    it('checks if badhe shows the correct number of items in cart', () => {
+    it('checks if badge shows the correct number of items in cart', () => {
         const numberOfItemsInCart = 234
         render(
             <>
-                <GlobalStyle />
                 <OrderedItemsProvider>
                     <BrowserRouter>
                         <Header orderQuantity={numberOfItemsInCart} />
@@ -27,7 +28,6 @@ describe("render Header component", () => {
     it('checks if all navigation links are rendered', () => {
         render(
             <>
-                <GlobalStyle />
                 <OrderedItemsProvider>
                     <BrowserRouter>
                         <Header orderQuantity={3} />

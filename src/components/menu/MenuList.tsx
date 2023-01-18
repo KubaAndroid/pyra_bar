@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { MenuItemModel } from '../../models/MenuItemModel'
+import MenuItemModel from '../../models/MenuItemModel'
 import MenuItemLayout from './MenuItemView'
 
 const StyledMenuList = styled.div`
