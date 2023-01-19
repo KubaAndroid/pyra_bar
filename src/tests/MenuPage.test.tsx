@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { OrderedItemsProvider, useOrderContext } from '../context/ShopContext';
 import MenuItemModel from '../models/MenuItemModel';
 import MenuPage from '../pages/MenuPage';
+import TestWrapper from './TestWrapper';
 
 
 const mockMenuItem: MenuItemModel = {
@@ -15,23 +16,22 @@ const mockMenuItem: MenuItemModel = {
     category: 'vege'
 }
 
-const MenuPageWrapper = () => {
-    
-    return (
-        <>
-            <OrderedItemsProvider>
-                <BrowserRouter>
-                    <MenuPage />
-                </BrowserRouter>
-            </OrderedItemsProvider>
-        </>
-    )
-}
+// const MenuPageWrapper = () => {
+//     return (
+//         <>
+//             <OrderedItemsProvider>
+//                 <BrowserRouter>
+//                     <MenuPage />
+//                 </BrowserRouter>
+//             </OrderedItemsProvider>
+//         </>
+//     )
+// }
 
 
 describe('render MenuPage', () => {
     it('checks if Loading screen is displayed when menu items list is empty', async () => {
-        render(<MenuPageWrapper />)
+        render(<TestWrapper children={ <MenuPage /> } />)
         // setTimeout(() => {
             const loadingTxt = screen.getByText(/Loading/)
             expect(loadingTxt.textContent).toBe("Loading...");
@@ -40,6 +40,14 @@ describe('render MenuPage', () => {
         
     })
 
-
+    it('checks if menu items are rendered', () => {
+        render(<TestWrapper children={ <MenuPage /> } />)
+        setTimeout(() => {
+            const loadingTxt = screen.getByText(/Loading/)
+            expect(loadingTxt.textContent).toBe("Loading...");
+            screen.debug()
+        }, 1500);
+        
+    })
 
 })
