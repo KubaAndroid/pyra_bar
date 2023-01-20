@@ -52,7 +52,7 @@ describe('render MenuPage', () => {
 
         const searchInput = screen.getByPlaceholderText('search for a dish');
 
-        await act(() => fireEvent.change(searchInput, { target: { value: 'cur' } }));
+        await act(() => fireEvent.change(searchInput, { target: { value: 'curr' } }));
 
         setTimeout(() => {
             const menuItemNames = screen.getAllByRole('heading', { level: 3 });
@@ -65,13 +65,22 @@ describe('render MenuPage', () => {
         // screen.debug()
     })
 
-    // it('after changing the category, all rendered items have that category', async () => {
-    //     render(<TestWrapper children={<MenuPage />} />);
-    //     await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
+    it('after changing the category, all rendered items have that category', async () => {
+        render(<TestWrapper children={<MenuPage />} />);
+        await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
 
-    //     const vegeCategoryButton = screen.getByText('Vege');
-    //     fireEvent.click(vegeCategoryButton)
-    //     screen.debug()
-    // })
+        const vegeCategoryButton = screen.getByText('Vege');
+        await act(() => fireEvent.click(vegeCategoryButton));
+
+        setTimeout(() => {
+            const categoryImgs = screen.getAllByAltText('food category') as HTMLImageElement[];
+            categoryImgs.forEach((image) => {
+                expect(image.src!).toMatch(/plant/)
+
+            });
+        }, 3000);
+        
+        screen.debug()
+    })
 
 })
