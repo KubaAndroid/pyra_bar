@@ -1,5 +1,8 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react'
+import userEvent from '@testing-library/user-event';
+import { wait } from '@testing-library/user-event/dist/utils';
 import { useEffect, useState } from 'react';
+import { act } from 'react-dom/test-utils';
 import { BrowserRouter } from 'react-router-dom';
 import { OrderedItemsProvider, useOrderContext } from '../context/ShopContext';
 import MenuItemModel from '../models/MenuItemModel';
@@ -16,38 +19,59 @@ const mockMenuItem: MenuItemModel = {
     category: 'vege'
 }
 
-// const MenuPageWrapper = () => {
-//     return (
-//         <>
-//             <OrderedItemsProvider>
-//                 <BrowserRouter>
-//                     <MenuPage />
-//                 </BrowserRouter>
-//             </OrderedItemsProvider>
-//         </>
-//     )
-// }
-
-
 describe('render MenuPage', () => {
+
     it('checks if Loading screen is displayed when menu items list is empty', async () => {
         render(<TestWrapper children={ <MenuPage /> } />)
-        // setTimeout(() => {
-            const loadingTxt = screen.getByText(/Loading/)
-            expect(loadingTxt.textContent).toBe("Loading...");
+        const loadingTxt = screen.getByText(/Loading/)
+        expect(loadingTxt.textContent).toBe("Loading...");
+    })
 
-        // }, 6000);
+    it('checks if menu items are fetched and rendered after LOADING disappears', async () => {
+        render(<TestWrapper children={<MenuPage />} />);
+        expect(screen.queryByText('Buy!')).not.toBeInTheDocument()
+        await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
+        let buyBtns = screen.getAllByText('Buy!')[0]
+        expect(buyBtns).toBeInTheDocument()
+    })
+
+    it('checks if [Buy!] button changes after click', async () => {
+        render(<TestWrapper children={<MenuPage />} />);
+        await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
+        const firstBuyBtn = screen.getAllByText('Buy!')[0];
+        await act(() => userEvent.click(firstBuyBtn));
+        expect(firstBuyBtn.textContent).toBe('-')
+
+        // TODO: check if button changed to + 1 -
         
     })
 
-    it('checks if menu items are rendered', () => {
-        render(<TestWrapper children={ <MenuPage /> } />)
+    it('when entered x in SEARCH, all elements have x in title', async () => {
+        render(<TestWrapper children={<MenuPage />} />);
+        await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
+
+        const searchInput = screen.getByPlaceholderText('search for a dish');
+
+        await act(() => fireEvent.change(searchInput, { target: { value: 'cur' } }));
+
         setTimeout(() => {
-            const loadingTxt = screen.getByText(/Loading/)
-            expect(loadingTxt.textContent).toBe("Loading...");
-            screen.debug()
-        }, 1500);
+            const menuItemNames = screen.getAllByRole('heading', { level: 3 });
+            menuItemNames.forEach((e) => {
+                expect(e.textContent!).toMatch(/Curr/)
+            });
+        }, 3000);
         
+
+        // screen.debug()
     })
+
+    // it('after changing the category, all rendered items have that category', async () => {
+    //     render(<TestWrapper children={<MenuPage />} />);
+    //     await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
+
+    //     const vegeCategoryButton = screen.getByText('Vege');
+    //     fireEvent.click(vegeCategoryButton)
+    //     screen.debug()
+    // })
 
 })

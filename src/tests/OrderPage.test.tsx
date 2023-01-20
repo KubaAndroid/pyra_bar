@@ -14,6 +14,8 @@ describe("render OrderPage component", () => {
     it('checks if OrderPage with items in cart renders correctly', () => {
         render(<Wrapper children={<OrderPage />} />)
         
+        // TODO: add items to cart
+        
         // screen.debug()
         const emptyCartText = screen.getByText(/Cart/)?.textContent
         expect(emptyCartText).toBe('Cart is empty')

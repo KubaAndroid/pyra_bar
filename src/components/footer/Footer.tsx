@@ -25,6 +25,9 @@ const TopLinks = styled.div`
   justify-content: space-around;
   width: 80%;
   margin: 5px;
+  a {
+    text-decoration: none;
+  }
 `
 const FooterIcons = styled.div`
   display: flex;
@@ -33,12 +36,16 @@ const FooterIcons = styled.div`
   width: 50%;
   margin: 25px;
 `
-
+const StyledHR = styled.hr`
+  width: 80%; 
+  color: white;
+  margin: 22px;
+`
 
 const Footer = () => {
   return (
     <FooterDiv>
-      <hr style={{width: "80%", color: 'white', margin: '22px'}}></hr>
+      <StyledHR />
       <TopLinks>
         <p><Link to='/contact'>Contact</Link></p>
         <p><Link to='/contact'>About us</Link></p>

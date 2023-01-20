@@ -22,6 +22,7 @@ const FormFieldsDiv = styled.div`
   flex-direction: column;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  min-width: 350px;
 `
 
 const FormFieldInput = styled.input`
@@ -83,9 +84,9 @@ function ContactForm() {
         <H1>Contact us</H1>
         <FormFieldsDiv>
           <label htmlFor='email'>Your email address:</label>
-          <FormFieldInput type='text' required id='email' placeholder='email@address' ref={emailInputRef} />
+          <FormFieldInput type='text' required id='email' placeholder='email address' ref={emailInputRef} />
           <label htmlFor="message">Message</label>
-          <FormFieldTextArea id="message" required ref={messageInputRef} />
+          <FormFieldTextArea id="message" required ref={messageInputRef} placeholder='message' />
         </FormFieldsDiv>
         <div>
             <FormButton>Send message</FormButton>
