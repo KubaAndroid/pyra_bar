@@ -11,7 +11,11 @@ type OrderedItemsContext = {
     reduceOrderItemQuantity: (id: number) => void
     removeOrderItem: (id: number) => void
     orderQuantity: number
+
     orderedItems: OrderItemModel[]
+    setOrderItems: React.Dispatch<React.SetStateAction<OrderItemModel[]>>
+
+
     setOrdersList: React.Dispatch<React.SetStateAction<OrderModel[]>>
     orderedMenuItems: MenuItemModel[]
     getAllMenuItems: () => Promise<MenuItemModel[]>
@@ -225,6 +229,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 reduceOrderItemQuantity,
                 removeOrderItem,
                 orderedItems,
+                setOrderItems,
                 setOrdersList,
                 orderQuantity,
                 orderedMenuItems,

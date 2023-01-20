@@ -1,23 +1,9 @@
 import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
-import { wait } from '@testing-library/user-event/dist/utils';
-import { useEffect, useState } from 'react';
 import { act } from 'react-dom/test-utils';
-import { BrowserRouter } from 'react-router-dom';
-import { OrderedItemsProvider, useOrderContext } from '../context/ShopContext';
-import MenuItemModel from '../models/MenuItemModel';
 import MenuPage from '../pages/MenuPage';
 import TestWrapper from './TestWrapper';
 
-
-const mockMenuItem: MenuItemModel = {
-    id: 0,
-    name: "Carrot Steak",
-    price: 49.44,
-    description: "Carrot Steak Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    imgUrl: "/img/steak_2.jpg",
-    category: 'vege'
-}
 
 describe('render MenuPage', () => {
 
@@ -40,29 +26,21 @@ describe('render MenuPage', () => {
         await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
         const firstBuyBtn = screen.getAllByText('Buy!')[0];
         await act(() => userEvent.click(firstBuyBtn));
-        expect(firstBuyBtn.textContent).toBe('-')
-
-        // TODO: check if button changed to + 1 -
-        
+        expect(firstBuyBtn.textContent).toBe('-');
     })
 
     it('when entered x in SEARCH, all elements have x in title', async () => {
         render(<TestWrapper children={<MenuPage />} />);
         await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
-
         const searchInput = screen.getByPlaceholderText('search for a dish');
-
         await act(() => fireEvent.change(searchInput, { target: { value: 'curr' } }));
-
         setTimeout(() => {
             const menuItemNames = screen.getAllByRole('heading', { level: 3 });
             menuItemNames.forEach((e) => {
                 expect(e.textContent!).toMatch(/Curr/)
             });
-        }, 3000);
-        
+        }, 2000);
 
-        // screen.debug()
     })
 
     it('after changing the category, all rendered items have that category', async () => {
@@ -76,11 +54,52 @@ describe('render MenuPage', () => {
             const categoryImgs = screen.getAllByAltText('food category') as HTMLImageElement[];
             categoryImgs.forEach((image) => {
                 expect(image.src!).toMatch(/plant/)
-
             });
-        }, 3000);
-        
-        screen.debug()
+        }, 2000);
+    })
+
+    it('checks if menu items are sorted by price ASCENDING', async () => {
+        render(<TestWrapper children={<MenuPage />} />);
+        await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
+
+        const sortAscButton = screen.getByText('Asc');
+        await act(() => fireEvent.click(sortAscButton));
+
+        setTimeout(() => {
+            const menuPrices = screen.getAllByText(/Price/)
+            expect(isPriceArraySorted(menuPrices, true)).toBe(true);
+        }, 2000);
+    })
+
+    it('checks if menu items are sorted by price DESCENDING', async () => {
+        render(<TestWrapper children={<MenuPage />} />);
+        await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
+
+        const sortDescButton = screen.getByText('Desc');
+        await act(() => fireEvent.click(sortDescButton));
+
+        setTimeout(() => {
+            const menuPrices = screen.getAllByText(/Price/)
+            expect(isPriceArraySorted(menuPrices, false)).toBe(true);
+        }, 2000);
     })
 
 })
+
+function isPriceArraySorted(arr: HTMLElement[], ascending: boolean) {  
+    let flag = true
+    if (ascending) {
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i - 1] > arr[i]) {
+                flag = false
+            }
+        }
+    } else {
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i - 1] < arr[i]) {
+                flag = false
+            }
+        }
+    }
+    return flag
+} 
