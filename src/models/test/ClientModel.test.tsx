@@ -1,7 +1,4 @@
-import { fireEvent, render, screen, act } from '@testing-library/react';
-import ContactForm from '../components/contact/ContactForm';
-import ClientModel from '../models/ClientModel';
-import TestWrapper from './TestWrapper';
+import ClientModel from '../ClientModel';
 
 describe('test Client model', () => {
     it('new model created', () => {
@@ -11,8 +8,12 @@ describe('test Client model', () => {
             lastName: 'Doe',
         }
         expect(typeof mockModel.id).toBe('number')
-        expect(mockModel.firstName).toBe('John')
+        expect(mockModel.id).toBe(0)
+
         expect(typeof mockModel.firstName).toBe('string')
-        
+        expect(mockModel.firstName).toBe('John')
+
+        expect(typeof mockModel.lastName).toBe('string')
+        expect(mockModel.lastName).toBe('Doe')
     })
 })

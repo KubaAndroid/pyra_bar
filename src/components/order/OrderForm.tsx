@@ -80,10 +80,11 @@ function OrderForm() {
         orderedMenuItems,
         clearOrder,
         clientsList,
-        setClientsList,
-        ordersList,
-        setOrdersList
-    } = useOrderContext()
+        setClientsList
+  } = useOrderContext()
+  
+  console.log(orderedMenuItems)
+  
     const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
     const { handleSubmit, register, formState: { errors } } = useForm<Inputs>();
     const navigate = useNavigate();

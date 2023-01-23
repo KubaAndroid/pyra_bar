@@ -5,6 +5,9 @@ import { CreateMockContext, MockOrderedItemsProvider } from "./ShopContextMock"
 import MenuItemModel from "../models/MenuItemModel"
 import db from '../../db.json'
 import OrderItemModel from "../models/OrderItemModel"
+import OrderModel from "../models/OrderModel"
+import ClientModel from "../models/ClientModel"
+import UserOrdersModel from "../models/UserOrdersModel"
 
 
 type WrapperProps = PropsWithChildren<{}>
@@ -22,10 +25,30 @@ const Wrapper: FC<WrapperProps> = ({ children }) => {
 
 type MockOrderedItemsContext = {
     getOrderItemQuantity: (id: number) => number
+    increaseOrderItemQuantity: (id: number) => void
+    reduceOrderItemQuantity: (id: number) => void
+    removeOrderItem: (id: number) => void
+    orderQuantity: number
+    orderedItems: OrderItemModel[]
+    setOrderItems: (item: OrderItemModel[]) => OrderItemModel[]
+    setOrdersList: (items: OrderModel[]) => void
+    orderedMenuItems: MenuItemModel[]
+    getAllMenuItems: () => MenuItemModel[]
+    clearOrder: () => void
+    getMenuItemById: (id: number) => MenuItemModel | undefined
+    getClientById: (id: number) => ClientModel
     allMenuItems: MenuItemModel[]
     filteredMenuItems: MenuItemModel[]
-    getMenuItemById: (id: number) => MenuItemModel
-    orderedItems: OrderItemModel[]
+    setFilteredMenuItems: (items: MenuItemModel[]) => void
+    sortMenuItemsByPrice: (ascending: boolean) => void
+    clientsList: ClientModel[]
+    setClientsList: (items: ClientModel[]) => void
+    filterMenuItems: (filterBy: string) => void
+    searchMenuItems: (searchQuery: string) => void
+    ordersList: OrderModel[]
+    getAllOrders: () => UserOrdersModel[]
+    currentFilter: string
+    currentSorting: string
 
 }
 type MockContextProviderProps = {
@@ -37,17 +60,39 @@ export const CreateMockContextTest = createContext({} as MockOrderedItemsContext
 export const MockWrapper: FC<MockContextProviderProps> = ({ children }) => {
     let allMenuItems: MenuItemModel[] = db['menuItems']
     let filteredMenuItems: MenuItemModel[] = allMenuItems
+
+    const getOrderItemQuantity = jest.fn()
+    const increaseOrderItemQuantity = jest.fn()
+    const reduceOrderItemQuantity = jest.fn()
+    const removeOrderItem = jest.fn()
+
+    let orderQuantity = 0
     let orderedItems: OrderItemModel[] = []
     
-    // const getOrderItemQuantity = (id: number) => {
-    //     return orderedItems.find(item => item.id === id)?.quantity || 0
-    // }
-    // const getMenuItemById = (id: number) => {
-    //     return allMenuItems.find(item => item.id === id)!
-    // }
+    const setOrderItems = (items: OrderItemModel[]) => orderedItems = items
+    const setOrdersList = jest.fn()
     
-    const getOrderItemQuantity = jest.fn() 
-    const getMenuItemById = jest.fn() 
+    let orderedMenuItems: MenuItemModel[] = [allMenuItems[0]]
+    
+    const getAllMenuItems = () => allMenuItems
+    const clearOrder = () => orderedItems = []
+    const getMenuItemById = (id: number) => allMenuItems.find(item => item.id === id)
+    let clientsList = db['users']
+    const getClientById = (id: number) => clientsList.find(user => user.id === id)!
+    
+    const setFilteredMenuItems = (items: MenuItemModel[]) => filteredMenuItems = items
+    const sortMenuItemsByPrice = (ascending: boolean) => jest.fn()
+    
+    const setClientsList = (items: ClientModel[]) => clientsList = []
+    const filterMenuItems = (filterBy: string) => jest.fn()
+    const searchMenuItems = (searchQuery: string) => jest.fn()
+    let ordersList: OrderModel[] = []
+    const getAllOrders = () => db['orders']
+    let currentFilter = ""
+    let currentSorting = ""
+    
+
+
     return (
         <CreateMockContextTest.Provider
             value={{
@@ -55,7 +100,27 @@ export const MockWrapper: FC<MockContextProviderProps> = ({ children }) => {
                 allMenuItems,
                 filteredMenuItems,
                 getMenuItemById,
-                orderedItems
+                orderedItems,
+                increaseOrderItemQuantity,
+                reduceOrderItemQuantity,
+                removeOrderItem,
+                orderQuantity,
+                setOrderItems,
+                setOrdersList,
+                orderedMenuItems,
+                getAllMenuItems,
+                clearOrder,
+                clientsList,
+                getClientById,
+                setFilteredMenuItems,
+                sortMenuItemsByPrice,
+                setClientsList,
+                filterMenuItems,
+                searchMenuItems,
+                ordersList,
+                getAllOrders,
+                currentFilter,
+                currentSorting
             }}
         >
           <BrowserRouter>

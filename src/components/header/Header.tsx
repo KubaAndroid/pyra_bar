@@ -72,17 +72,12 @@ const BadgeSpan = styled.span`
   padding: 0 1rem;
   margin-left: 0.2rem;
 `
-const Column = styled.div`
-  flex-direction: column;
-`
 
 interface IHeaderProps {
   orderQuantity: number
 } 
 
 export const Header = ({ orderQuantity }: IHeaderProps) => {
-  // const { orderQuantity } = useOrderContext()
-
     return (
         <HeaderDiv>
         <LogoStyle>

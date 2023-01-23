@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import Wrapper from "./TestWrapper"
+import Wrapper, { MockWrapper } from "./TestWrapper"
 import OrderForm from "../components/order/OrderForm"
 import userEvent from "@testing-library/user-event"
 
@@ -8,7 +8,7 @@ import userEvent from "@testing-library/user-event"
 describe("render OrderForm component", () => {
 
     it('checks if errors appear when inputs are not filled', async () => {
-        render(<Wrapper children={<OrderForm /> }/>)
+        render(<MockWrapper children={<OrderForm /> }/>)
         const orderBtn = screen.getByRole('button')
         await act(async () => {
             userEvent.click(orderBtn)
@@ -19,7 +19,7 @@ describe("render OrderForm component", () => {
 
     
     it('checks if errors dont appear when inputs are filled', async () => {
-        render(<Wrapper children={<OrderForm /> }/>)
+        render(<MockWrapper children={<OrderForm /> }/>)
 
         const fNameInput = screen.getByPlaceholderText('First name');
         await act(() => fireEvent.change(fNameInput, {target: { value: 'John' }}))
@@ -48,7 +48,6 @@ describe("render OrderForm component", () => {
         const alerts = screen.queryAllByRole('alert')
         expect(alerts.length).toBe(0)
         
-        // screen.debug()
     })
 
     
