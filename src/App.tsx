@@ -11,7 +11,7 @@ import Footer from "./components/footer/Footer";
 import { useOrderContext } from "./context/ShopContext";
 
 function App() {
-  const { orderQuantity } = useOrderContext()
+  const { orderQuantity, orderedItems } = useOrderContext()
   
   return (
     <>
@@ -20,7 +20,7 @@ function App() {
         <Header orderQuantity={ orderQuantity } />
         <Routes>
           <Route path='/' element={<MenuPage />} />
-          <Route path='/order' element={<OrderPage />} />
+          <Route path='/order' element={<OrderPage orderedItems={orderedItems} />} />
           <Route path='/orderslist' element={<OrdersListPage />} />
           <Route path='/contact' element={<ContactPage />} />
           <Route path='/orderConfirm' element={<OrderConfirmationPage />} />

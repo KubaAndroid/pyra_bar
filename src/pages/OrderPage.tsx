@@ -3,6 +3,7 @@ import OrderItem from "../components/order/OrderItem";
 import { useOrderContext } from '../context/ShopContext';
 import styled from "styled-components";
 import { BuyButton } from "../components/menu/MenuItemView";
+import OrderItemModel from "../models/OrderItemModel";
 
 
 const Container = styled.div`
@@ -39,12 +40,17 @@ const ConfirmOrderDiv = styled.div`
   font-size: 20px;
 `
 
+type OrderPageProps = {
+  orderedItems: OrderItemModel[]
+}
 
-const OrderPage = () => {
-  const { orderedItems } = useOrderContext()
+const OrderPage = ({orderedItems}: OrderPageProps) => {
+  // const { orderedItems } = useOrderContext()
   let sumTotal = orderedItems?.reduce((sum, item) => {
     return sum + item.price;
   }, 0)
+
+  
 
   return (
     <>

@@ -19,31 +19,44 @@ const LogoStyle = styled.div`
   cursor: pointer;
   display: flex;
   justify-content: flex-start;
-  width: 35%;
+  width: 38%;
+  @media screen and (max-width: 1000px) {
+    height: 100px;
+    width: 40%;
+  }
 `
 const PyraDiv = styled.div`
-  width: 30%;
-  font-size: 60px;
+  width: 24%;
+  font-size: 52px;
   display: flex;
   justify-content: center;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
 `
 const NavigationDiv = styled.div`
-  width: 35%;
+  width: 38%;
   display: flex;
   justify-content: flex-end;
   margin-bottom: 15px;
-
+  flex-wrap: nowrap;
+  @media screen and (max-width: 1000px) {
+    width: 60%;
+    font-size: 14px;
+  }
   ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
+    @media screen and (max-width: 1000px) {
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
   }
-
   li {
-    margin-left: 2rem;
+    margin-left: 1.6rem;
   }
-
   a {
     text-decoration: none;
   }
@@ -57,7 +70,10 @@ const BadgeSpan = styled.span`
   color: white;
   border-radius: 8px;
   padding: 0 1rem;
-  margin-left: 0.5rem;
+  margin-left: 0.2rem;
+`
+const Column = styled.div`
+  flex-direction: column;
 `
 
 interface IHeaderProps {
@@ -79,9 +95,9 @@ export const Header = ({ orderQuantity }: IHeaderProps) => {
           <nav>
               <ul>
                 <li><Link to='/'>Menu</Link></li>
-                    <li>
-                        <Link to='/order'>Order<BadgeSpan data-testid="badge">{orderQuantity}</BadgeSpan></Link>
-                    </li>
+                <li>
+                    <Link to='/order'>Order<BadgeSpan data-testid="badge">{orderQuantity}</BadgeSpan></Link>
+                </li>
                 <li><Link to='/orderslist'>Orders List</Link></li>
               </ul>
           </nav>

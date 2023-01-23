@@ -53,7 +53,7 @@ class UserMessage {
 }
 
 
-function ContactForm() {
+const ContactForm = () => {
   const emailInputRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
   const messageInputRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ function ContactForm() {
         <H1>Contact us</H1>
         <FormFieldsDiv>
           <label htmlFor='email'>Your email address:</label>
-          <FormFieldInput type='text' required id='email' placeholder='email address' ref={emailInputRef} />
+          <FormFieldInput type='email' id='email' required ref={emailInputRef} placeholder='email address' />
           <label htmlFor="message">Message</label>
           <FormFieldTextArea id="message" required ref={messageInputRef} placeholder='message' />
         </FormFieldsDiv>

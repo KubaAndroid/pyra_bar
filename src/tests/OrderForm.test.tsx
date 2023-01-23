@@ -2,9 +2,6 @@ import React, { FC } from "react"
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import Wrapper from "./TestWrapper"
 import OrderForm from "../components/order/OrderForm"
-import OrderPage from "../pages/OrderPage"
-import { OrderedItemsProvider } from "../context/ShopContext"
-import { BrowserRouter } from "react-router-dom"
 import userEvent from "@testing-library/user-event"
 
 
@@ -20,24 +17,16 @@ describe("render OrderForm component", () => {
         expect(alerts[0]).toBeInTheDocument()
     })
 
-    /**
+    
     it('checks if errors dont appear when inputs are filled', async () => {
         render(<Wrapper children={<OrderForm /> }/>)
 
         const fNameInput = screen.getByPlaceholderText('First name');
-        const lNameInput = screen.getByPlaceholderText('Last name');
-        await act(() => {
-            fireEvent.change(fNameInput, {
-                target: { value: 'John' }
-            })
-            
-            fireEvent.change(lNameInput, { target: { value: 'Doe' } }
-            
-            );
-        })
+        await act(() => fireEvent.change(fNameInput, {target: { value: 'John' }}))
 
-        // const lNameInput = screen.getByPlaceholderText('Last name');
-        // await act(() => fireEvent.change(lNameInput, { target: { value: 'Doe' } }));
+        const lNameInput = screen.getByPlaceholderText('Last name');
+        await act(() => fireEvent.change(lNameInput, { target: { value: 'Doe' } }));
+
         const emailInput = screen.getByPlaceholderText('Email');
         await act(() => fireEvent.change(emailInput, { target: { value: 'john@doe.com' } }));
         const phoneInput = screen.getByPlaceholderText('Mobile number');
@@ -59,9 +48,8 @@ describe("render OrderForm component", () => {
         const alerts = screen.queryAllByRole('alert')
         expect(alerts.length).toBe(0)
         
-        screen.debug()
+        // screen.debug()
     })
 
- */
     
 })

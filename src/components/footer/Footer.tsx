@@ -10,14 +10,14 @@ const FooterDiv = styled.footer`
   margin-top: 0;
   margin-bottom: 10px;
   width: 80%;
-  height: 14rem;
+  /* height: 14rem; */
   display: flex;
   text-align: center;
   align-items: center;
   justify-content: center;
   background-color: #dbd5cc;
   border-radius: 0 0 15px 15px;
-  padding: 0;
+  padding-bottom: 10px;
 `
 const TopLinks = styled.div`
   display: flex;
@@ -27,6 +27,13 @@ const TopLinks = styled.div`
   margin: 5px;
   a {
     text-decoration: none;
+  }
+  a:hover, a:active {
+    color: #E8E3D6;
+    transition: all 0.2s ease 0s;
+  }
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
   }
 `
 const FooterIcons = styled.div`

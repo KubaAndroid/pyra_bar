@@ -23,11 +23,13 @@ const MenuItemCard = styled.li`
   border-radius: 36px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   margin: 1rem 1rem 1.5rem;
+  @media screen and (max-width: 1000px) {
+    width: 90%;
+  }
 `
 
 const MenuItemCardImgDiv = styled.div`
   width: 100%;
-  /* height: 22rem; */
   overflow: hidden;
   border-radius: 26px 26px 0 0;
 `
@@ -38,7 +40,6 @@ const MenuItemCardImg = styled.img`
 `
 const MenuItemCardContent = styled.div`
   text-align: center;
-  /* padding: 1rem; */
 `
 
 const InfoButton = styled.button`

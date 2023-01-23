@@ -31,6 +31,12 @@ const CategoryButtons = styled.div`
   border-radius: 15px;
   display: flex;
   justify-content: space-between;
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+    font-size: 14px;
+    flex-direction: column;
+    padding: 0px;
+  }
 `
 
 const CategoryButton = styled.button<IButtonProps>`
@@ -126,6 +132,7 @@ const MenuPage = () => {
                   sortMenuItemsByPrice(false)
                 }}>Desc</CategoryButton>
               </div>
+
               <div>
                 <CategoryButton
                   isActive={currentFilter === ""}

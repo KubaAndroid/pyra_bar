@@ -1,7 +1,7 @@
 import { createContext, FC, PropsWithChildren, ReactNode } from "react"
 import { BrowserRouter } from "react-router-dom"
 import { OrderedItemsProvider } from "../context/ShopContext"
-import { CreateMockContext, MockOrderedItemsProvider } from "../context/ShopContextMock"
+import { CreateMockContext, MockOrderedItemsProvider } from "./ShopContextMock"
 import MenuItemModel from "../models/MenuItemModel"
 import db from '../../db.json'
 import OrderItemModel from "../models/OrderItemModel"
@@ -39,14 +39,15 @@ export const MockWrapper: FC<MockContextProviderProps> = ({ children }) => {
     let filteredMenuItems: MenuItemModel[] = allMenuItems
     let orderedItems: OrderItemModel[] = []
     
-    const getOrderItemQuantity = (id: number) => {
-        return orderedItems.find(item => item.id === id)?.quantity || 0
-    }
-    const getMenuItemById = (id: number) => {
-        return allMenuItems.find(item => item.id === id)!
-    }
+    // const getOrderItemQuantity = (id: number) => {
+    //     return orderedItems.find(item => item.id === id)?.quantity || 0
+    // }
+    // const getMenuItemById = (id: number) => {
+    //     return allMenuItems.find(item => item.id === id)!
+    // }
     
-
+    const getOrderItemQuantity = jest.fn() 
+    const getMenuItemById = jest.fn() 
     return (
         <CreateMockContextTest.Provider
             value={{
