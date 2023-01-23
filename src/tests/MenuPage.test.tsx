@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-l
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import MenuPage from '../pages/MenuPage';
-import TestWrapper from './TestWrapper';
+import TestWrapper, { MockWrapper } from './TestWrapper';
 
 
 describe('render MenuPage', () => {

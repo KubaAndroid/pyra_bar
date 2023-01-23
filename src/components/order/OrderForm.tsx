@@ -180,13 +180,13 @@ async function saveUser(user: ClientModel) {
         <FormRow>
             <FormColumn>
           <label>Street:</label>
-            <input type="text" placeholder="street" {...register("street", { required: true, maxLength: 80 })} />
+            <input type="text" placeholder="Street" {...register("street", { required: true, maxLength: 80 })} />
               {errors.street?.type === 'required' && <p role="alert" style={{ color: 'red' }}>street name is required</p>}
               </FormColumn>
             <FormColumn>
 
           <label>Street number:</label>
-            <input type="text" placeholder="street number" {...register("streetNumber", { required: true, maxLength: 80 })} />
+            <input type="text" placeholder="Street number" {...register("streetNumber", { required: true, maxLength: 80 })} />
             {errors.streetNumber?.type === 'required' && <p role="alert" style={{color: 'red'}}>street number is required</p>}
         </FormColumn>
           </FormRow>
@@ -194,21 +194,18 @@ async function saveUser(user: ClientModel) {
         <FormRow>
             <FormColumn>
           <label>City:</label>
-            <input type="text" placeholder="city" {...register("city", { required: true, maxLength: 80 })} />
+            <input type="text" placeholder="City" {...register("city", { required: true, maxLength: 80 })} />
             {errors.city?.type === 'required' && <p role="alert" style={{color: 'red'}}>city is required</p>}
        </FormColumn>
             <FormColumn>
           <label>Zip code:</label>
-            <input type="text" placeholder="zip code" {...register("zip", { required: true, maxLength: 80 })} />
+            <input type="text" placeholder="Zip code" {...register("zip", { required: true, maxLength: 80 })} />
             {errors.zip?.type === 'required' && <p role="alert" style={{color: 'red'}}>zip code is required</p>}
          </FormColumn>
           </FormRow>
         <FormButton>Place order</FormButton>
         </StyledForm>
-          {/* </form> */}
-         {/* <button onClick={() => showSnack()}>click</button> */}
         {isSnackbarVisible && <OrderSnackbar />}
-      {/* </div> */}
       </FormContainer>
     </>
   )
