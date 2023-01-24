@@ -65,24 +65,20 @@ export const MockWrapper: FC<MockContextProviderProps> = ({ children }) => {
     const increaseOrderItemQuantity = jest.fn()
     const reduceOrderItemQuantity = jest.fn()
     const removeOrderItem = jest.fn()
-
     let orderQuantity = 0
     let orderedItems: OrderItemModel[] = []
-    
     const setOrderItems = (items: OrderItemModel[]) => orderedItems = items
     const setOrdersList = jest.fn()
-    
-    let orderedMenuItems: MenuItemModel[] = [allMenuItems[0]]
+
+    let orderedMenuItems: MenuItemModel[] = [allMenuItems[3]]
     
     const getAllMenuItems = () => allMenuItems
     const clearOrder = () => orderedItems = []
     const getMenuItemById = (id: number) => allMenuItems.find(item => item.id === id)
     let clientsList = db['users']
     const getClientById = (id: number) => clientsList.find(user => user.id === id)!
-    
     const setFilteredMenuItems = (items: MenuItemModel[]) => filteredMenuItems = items
     const sortMenuItemsByPrice = (ascending: boolean) => jest.fn()
-    
     const setClientsList = (items: ClientModel[]) => clientsList = []
     const filterMenuItems = (filterBy: string) => jest.fn()
     const searchMenuItems = (searchQuery: string) => jest.fn()
@@ -90,8 +86,6 @@ export const MockWrapper: FC<MockContextProviderProps> = ({ children }) => {
     const getAllOrders = () => db['orders']
     let currentFilter = ""
     let currentSorting = ""
-    
-
 
     return (
         <CreateMockContextTest.Provider

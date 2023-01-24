@@ -44,8 +44,6 @@ function OrdersListItem({ order }: OrderType) {
 
     const clientId: number = order.userId!
     const client: ClientModel = getClientById(clientId)
-    // console.log(order)
-    // console.log(client)
     let sumTotal: number = 0
     const boughtItems: MenuItemModel[] = []
     const itemsArray: SingleListItem[] = []

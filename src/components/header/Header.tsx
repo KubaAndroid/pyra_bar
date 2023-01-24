@@ -22,7 +22,7 @@ const LogoStyle = styled.div`
   width: 38%;
   @media screen and (max-width: 1000px) {
     height: 100px;
-    width: 40%;
+    width: 30%;
   }
 `
 const PyraDiv = styled.div`
@@ -41,7 +41,7 @@ const NavigationDiv = styled.div`
   margin-bottom: 15px;
   flex-wrap: nowrap;
   @media screen and (max-width: 1000px) {
-    width: 60%;
+    width: 70%;
     font-size: 14px;
   }
   ul {

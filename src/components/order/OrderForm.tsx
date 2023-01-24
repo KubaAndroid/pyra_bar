@@ -83,8 +83,6 @@ function OrderForm() {
         setClientsList
   } = useOrderContext()
   
-  console.log(orderedMenuItems)
-  
     const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
     const { handleSubmit, register, formState: { errors } } = useForm<Inputs>();
     const navigate = useNavigate();
@@ -132,7 +130,6 @@ async function saveUser(user: ClientModel) {
           "Content-Type": "application/json"
       }
     }).then(() => {
-    //   setOrdersList([...ordersList, order])
       showSnack()
     })
   }

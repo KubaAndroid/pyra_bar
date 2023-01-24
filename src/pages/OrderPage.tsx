@@ -45,28 +45,25 @@ type OrderPageProps = {
 }
 
 const OrderPage = ({orderedItems}: OrderPageProps) => {
-  // const { orderedItems } = useOrderContext()
   let sumTotal = orderedItems?.reduce((sum, item) => {
     return sum + item.price;
   }, 0)
-
-  
 
   return (
     <>
       <Container>
         {orderedItems?.length < 1 && <CartEmpty>Cart is empty</CartEmpty>}
-         {orderedItems?.map((item) => {
-           return (
-             <OrderItem key={item.id} item={item} />
-           )
-         })}
+        {orderedItems?.map((item) => {
+          return (
+            <OrderItem key={item.id} item={item} />
+          )
+        })}
         {orderedItems?.length > 0 &&
           <>
           <SumTotalDiv>Sum total: {sumTotal.toFixed(2)}</SumTotalDiv>
           <ConfirmOrderDiv>
             <Link to='/orderConfirm'><BuyButton>Confirm</BuyButton></Link>
-            </ConfirmOrderDiv>
+          </ConfirmOrderDiv>
         </>}
       </Container>
 
