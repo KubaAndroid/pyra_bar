@@ -1,33 +1,77 @@
 import { render, screen } from '@testing-library/react'
-import { FC, useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import OrderItem from '../components/order/OrderItem'
-import { OrderedItemsProvider, useOrderContext } from '../context/ShopContext'
-import { CreateMockContext } from './ShopContextMock'
+import { CreateOrderedItemsContext } from '../context/ShopContext'
 import OrderItemModel from '../models/OrderItemModel'
 import OrderPage from '../pages/OrderPage'
-import Wrapper, { MockWrapper } from './TestWrapper'
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
+import { createMockStore } from './TestWrapper'
+
+interface IOrderItemModel {
+    orderedItem: OrderItemModel
+}
+
+const renderOrderItem = ({orderedItem}: IOrderItemModel) => {
+    const store = createMockStore()
+    render(
+        <CreateOrderedItemsContext.Provider
+            value={{
+                ...store
+            }}>
+            <BrowserRouter>
+                <OrderItem item={orderedItem} />
+            </BrowserRouter>
+        </CreateOrderedItemsContext.Provider> 
+    )
+}
+
+const renderOrderPage = () => {
+    const store = createMockStore()
+    render(
+        <CreateOrderedItemsContext.Provider
+            value={{
+                ...store
+            }}>
+            <BrowserRouter>
+                <OrderPage orderedItems={[mockOrderItem]} />
+            </BrowserRouter>
+        </CreateOrderedItemsContext.Provider> 
+    )
+}
+
+const mockOrderItem: OrderItemModel = {
+    id: 0,
+    quantity: 1,
+    price: 48
+}
 
 describe("render OrderPage", () => {
 
-    // const {orderedItems, setOrderItems} = useContext(CreateMockContext)
-
     it('checks if OrderPage with empty cart renders correctly', () => {
+        // render(<MockWrapper children={<OrderPage orderedItems={[]} />} />)
 
-        render(<MockWrapper children={<OrderPage orderedItems={[]}/>} />)
+        const store = createMockStore()
+        render(
+            <CreateOrderedItemsContext.Provider
+                value={{
+                    ...store
+                }}>
+                <BrowserRouter>
+                    <OrderPage orderedItems={[]} />
+                </BrowserRouter>
+            </CreateOrderedItemsContext.Provider> 
+        )
+
         const emptyCartText = screen.getByText(/Cart/)?.textContent
         expect(emptyCartText).toBe('Cart is empty')
     })
 
     it('checks if OrderPage shows price of ordered item correctly', () => {
-        const mockOrderItem: OrderItemModel = {
-            id: 0,
-            quantity: 1,
-            price: 48
-        }
+        // render(<MockWrapper children={<OrderPage orderedItems={[mockOrderItem]} />} />)
+        
+        renderOrderItem({ orderedItem: mockOrderItem })
+        
+        renderOrderPage()
 
-        render(<MockWrapper children={<OrderPage orderedItems={[mockOrderItem]}/>} />)
         const sumTotalText = screen.getByText(/Sum total/)?.textContent
         expect(sumTotalText).toBe('Sum total: 48.00')
     })
@@ -39,7 +83,10 @@ describe("render OrderPage", () => {
             price: 455
         }
 
-        render(<MockWrapper children={<OrderPage orderedItems={[mockOrderItem]}/>} />)
+        // renderOrderItem({orderedItem: mockOrderItem})
+        renderOrderPage()
+
+        // render(<MockWrapper children={<OrderPage orderedItems={[mockOrderItem]}/>} />)
         const confirmButton = screen.getByText('Confirm')
         expect(confirmButton).toBeInTheDocument()
     })

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import OrderItem from "../components/order/OrderItem";
 import { useOrderContext } from '../context/ShopContext';
 import styled from "styled-components";
-import { BuyButton } from "../components/menu/MenuItemView";
+import { BuyButton } from "../components/menu/MenuItemLayout";
 import OrderItemModel from "../models/OrderItemModel";
 
 

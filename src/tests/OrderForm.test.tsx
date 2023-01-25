@@ -1,19 +1,34 @@
 import React, { FC, useState } from "react"
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { createMockStore, MockWrapper } from "./TestWrapper"
+import { createMockStore } from "./TestWrapper"
 import OrderForm from "../components/order/OrderForm"
 import userEvent from "@testing-library/user-event"
-import TestWrapper from "./TestWrapper"
 import ClientModel from "../models/ClientModel"
 import { CreateOrderedItemsContext } from "../context/ShopContext"
 import { BrowserRouter } from "react-router-dom"
 import MenuItemModel from "../models/MenuItemModel"
 
-
+const renderOrderForm = () => {
+    const store = createMockStore()
+    render(
+        <CreateOrderedItemsContext.Provider
+            value={{
+                ...store
+            }}>
+            <BrowserRouter>
+                <OrderForm />
+            </BrowserRouter>
+        </CreateOrderedItemsContext.Provider> 
+    )
+}
+    
 describe("render OrderForm component", () => {
 
     it('checks if errors appear when inputs are not filled', async () => {
-        render(<TestWrapper children={<OrderForm /> }/>)
+        // render(<TestWrapper children={<OrderForm />} />)
+        
+        renderOrderForm()
+        
         const orderBtn = screen.getByRole('button')
         await act(async () => {
             userEvent.click(orderBtn)
@@ -24,7 +39,9 @@ describe("render OrderForm component", () => {
 
     
     it('checks if errors dont appear when inputs are filled', async () => {
-        render(<TestWrapper children={<OrderForm /> }/>)
+        // render(<TestWrapper children={<OrderForm />} />)
+        
+        renderOrderForm()
 
         const fNameInput = screen.getByPlaceholderText('First name');
         await act(() => fireEvent.change(fNameInput, {target: { value: 'John' }}))
@@ -54,16 +71,15 @@ describe("render OrderForm component", () => {
 
     it('checks if a new client is added after all inputs are filled', async () => {
         const store = createMockStore()
-        // const [clientsList, setClientsList] = useState<ClientModel[]>([])
-        // const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
         const mockModel: MenuItemModel = {
             id: 0,
-            name: 'Spaghetti',
+            name: 'Spaghet',
             price: 12.23,
             description: 'Delish Spaghet',
             imgUrl: '/img/1.jpg',
             category: 'Spicy'
         }
+
         const clientsList: ClientModel[] = []
         let isSnackbarVisible = false
         const orderedMenuItems: MenuItemModel[] = [mockModel]
@@ -81,6 +97,7 @@ describe("render OrderForm component", () => {
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider> 
         )
+        expect(isSnackbarVisible).toBe(false)
 
         const fNameInput = screen.getByPlaceholderText('First name');
         await act(() => fireEvent.change(fNameInput, {target: { value: 'John' }}))

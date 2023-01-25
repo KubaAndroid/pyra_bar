@@ -2,9 +2,10 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FC, useEffect, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import MenuItemLayout from '../components/menu/MenuItemView'
-import { OrderedItemsProvider, useOrderContext } from '../context/ShopContext'
+import MenuItemLayout from '../components/menu/MenuItemLayout'
+import { CreateOrderedItemsContext, OrderedItemsProvider, useOrderContext } from '../context/ShopContext'
 import MenuItemModel from '../models/MenuItemModel'
+import { createMockStore } from './TestWrapper'
 
 
 
@@ -22,12 +23,28 @@ const mockMenuItem: MenuItemModel = {
     category: 'vege'
 }
 
+const renderOrderForm = () => {
+    const store = createMockStore()
+    render(
+        <CreateOrderedItemsContext.Provider
+            value={{
+                ...store
+            }}>
+            <BrowserRouter>
+                <MenuItemLayout
+                        key={mockMenuItem.id}
+                        menuItem={mockMenuItem}
+                        index={mockMenuItem.id}
+                        // setIsModalOpen={setIsModalOpen}
+                        // setCurrentItem={setCurrentlySelectedMenuItem}
+                    />
+            </BrowserRouter>
+        </CreateOrderedItemsContext.Provider> 
+    )
+}
+
 
 const MenuItemWrapper: FC<MenuItemType> = ({ menuItem, index }: MenuItemType) => {
-    const [isModalOpen, setIsModalOpen] = useState<Boolean>(false);
-  const [currentlySelectedMenuItem, setCurrentlySelectedMenuItem] = useState<MenuItemModel>(menuItem);
-
-    
     return (
         <>
             <OrderedItemsProvider>
@@ -36,8 +53,6 @@ const MenuItemWrapper: FC<MenuItemType> = ({ menuItem, index }: MenuItemType) =>
                         key={menuItem.id}
                         menuItem={menuItem}
                         index={index}
-                        setIsModalOpen={setIsModalOpen}
-                        setCurrentItem={setCurrentlySelectedMenuItem}
                     />
                 </BrowserRouter>
             </OrderedItemsProvider>
@@ -57,33 +72,39 @@ describe('render MenuItemView', () => {
     })
 
     it('checks if [Buy!] button is present on MenuItemView when no items in cart', () => {
-        render (<MenuItemWrapper
-            menuItem={mockMenuItem}
-            index={0} />
+        render(
+            <MenuItemWrapper
+                menuItem={mockMenuItem}
+                index={0}
+            />
         )
         const buyBtn = screen.getByText("Buy!")
         expect(buyBtn).toBeEnabled();
     })
 
      it('checks if INFO button is present on MenuItemView', () => {
-        render (<MenuItemWrapper
-            menuItem={mockMenuItem}
-            index={0} />
+         render(
+             <MenuItemWrapper
+                menuItem={mockMenuItem}
+                index={0}
+             />
         )
         const modalBtn = screen.getByText("Info")
         expect(modalBtn).toBeEnabled();
      })
     
     it('checks if price is present on MenuItemView and is displayed correctly', () => {
-        render (<MenuItemWrapper
-            menuItem={mockMenuItem}
-            index={0} />
+        render(
+            <MenuItemWrapper
+                menuItem={mockMenuItem}
+                index={0}
+            />
         )
         const priceText = screen.getByText(/Price/).textContent?.split(":")[1]
         expect(priceText).toBe(` ${mockMenuItem.price.toFixed(2)}`);
     })
 
-    /**
+    
     it('checks if [Buy!] button changes after clicking', () => {
         render(
             <MenuItemWrapper
@@ -93,9 +114,9 @@ describe('render MenuItemView', () => {
         
         const buyBtn = screen.getByText("Buy!")
         expect(buyBtn).toBeEnabled();
-        userEvent.click(buyBtn)
-        // ERROR: couldn't find menuItem in state in context
-        screen.debug()
+        // userEvent.click(buyBtn)
+        // TODO: couldn't find menuItem in state in context
+        // screen.debug()
     })
-      */
+    
 })

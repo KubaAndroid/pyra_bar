@@ -4,6 +4,7 @@ import OrderModel from "../models/OrderModel";
 import ClientModel from "../models/ClientModel";
 import OrderItemModel from '../models/OrderItemModel';
 import UserOrdersModel from '../models/UserOrdersModel';
+import { UserMessage } from '../components/contact/ContactForm';
 
 
 export interface OrderedItemsContext {
@@ -36,6 +37,9 @@ export interface OrderedItemsContext {
     isSnackbarVisible: Boolean
     saveUser(user: ClientModel): Promise<void>
     postOrder(order: UserOrdersModel): Promise<void>
+    
+    setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>
+    setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
 }
 
 export const CreateOrderedItemsContext = createContext({} as OrderedItemsContext)
@@ -59,6 +63,9 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     const [ordersList, setOrdersList] = useState<OrderModel[]>([])
     const [clientsList, setClientsList] = useState<ClientModel[]>([])
     const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
+
+    const [isModalOpen, setIsModalOpen] = useState<Boolean>(false)
+    const [currentItem, setCurrentItem] = useState<MenuItemModel>(allMenuItems[0])
 
     const [, updateState] = useState<object>({});
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -108,7 +115,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     const getAllOrders = async ():Promise<OrderModel[]> => {
         const fetchedOrders = await fetchOrders()
         setOrdersList(fetchedOrders.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
-        console.log(fetchedOrders)
+        // console.log(fetchedOrders)
         return fetchedOrders as OrderModel[]
     }
 
@@ -121,7 +128,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         } else {
             const sortedByPriceDesc = filteredMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.price < b.price ? 1 : -1)
             setFilteredMenuItems(sortedByPriceDesc)
-             setCurrentSorting("desc")
+            setCurrentSorting("desc")
             forceUpdate()
         }
     }
@@ -148,6 +155,8 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
             setIsSnackbarVisible(true)
         })
     }
+
+    
 
     const orderQuantity = orderedItems?.reduce((quantity, item) => item.quantity + quantity, 0)
 
@@ -269,7 +278,9 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 isSnackbarVisible,
                 setIsSnackbarVisible,
                 saveUser,
-                postOrder
+                postOrder,
+                setIsModalOpen,
+                setCurrentItem
         }}>
             {children}
         </CreateOrderedItemsContext.Provider>

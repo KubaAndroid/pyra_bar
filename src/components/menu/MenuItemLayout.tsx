@@ -11,8 +11,8 @@ import { CategoryIcon } from '../../pages/MenuPage';
 interface MenuItemType {
     menuItem: MenuItemModel,
     index: number,
-    setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>,
-    setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
+    // setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>,
+    // setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
 }
 
 const MenuItemCard = styled.li`
@@ -77,12 +77,16 @@ const MarginalizedDiv = styled.div`
     margin: 6px;
 `
 
-function MenuItemLayout({ menuItem, index, setIsModalOpen, setCurrentItem }: MenuItemType) {
+function MenuItemLayout({ menuItem, index }: MenuItemType) {
+
     const {
         getOrderItemQuantity,
         increaseOrderItemQuantity,
         reduceOrderItemQuantity,
-    } = useOrderContext()
+        setIsModalOpen,
+        setCurrentItem
+  } = useOrderContext()
+  
     const quantity = getOrderItemQuantity(menuItem.id)
     const selectedIcon = (dishType: String) => {
         if (dishType === 'vege') {
@@ -101,30 +105,30 @@ function MenuItemLayout({ menuItem, index, setIsModalOpen, setCurrentItem }: Men
         <>
             <MenuItemCard>
                 <MenuItemCardImgDiv>
-                    <MenuItemCardImg src={menuItem.imgUrl} alt="good food!" />
+                  <MenuItemCardImg src={menuItem.imgUrl} alt="good food!" />
                 </MenuItemCardImgDiv>
                 <MenuItemCardContent>
-                    <h3>{menuItem.name} <CategoryIcon src={myIcon} alt="food category" /></h3>
-                    <InfoButton
-                        onClick={() => {
-                          setCurrentItem(menuItem)            
-                          setIsModalOpen(true)
-                        }}>Info</InfoButton>
-                    {index < 4 ? <MarginalizedDiv>{menuItem.description}</MarginalizedDiv> : null}
-                    <MarginalizedDiv>Price: { menuItem.price.toFixed(2)}</MarginalizedDiv>
+                  <h3>{menuItem.name} <CategoryIcon src={myIcon} alt="food category" /></h3>
+                  <InfoButton
+                      onClick={() => {
+                        setCurrentItem(menuItem)            
+                        setIsModalOpen(true)
+                      }}>Info</InfoButton>
+                  {index < 4 ? <MarginalizedDiv>{menuItem.description}</MarginalizedDiv> : null}
+                  <MarginalizedDiv>Price: { menuItem.price.toFixed(2)}</MarginalizedDiv>
                 </MenuItemCardContent>
                 <MenuItemCardBottom>
-                    {quantity === 0 ? (
-                        <div>
-                            <BuyButton onClick={() => increaseOrderItemQuantity(menuItem.id)}>Buy!</BuyButton>
-                        </div>
-                    ) : (
-                            <div>
-                                <BuyButton onClick={() => reduceOrderItemQuantity(menuItem.id)}>-</BuyButton>
-                                <BuyButton>{quantity}</BuyButton>
-                                <BuyButton onClick={() => increaseOrderItemQuantity(menuItem.id)}>+</BuyButton>
-                            </div>
-                    )}
+                  {quantity === 0 ? (
+                    <div>
+                      <BuyButton onClick={() => increaseOrderItemQuantity(menuItem.id)}>Buy!</BuyButton>
+                    </div>
+                  ) : (
+                    <div>
+                      <BuyButton onClick={() => reduceOrderItemQuantity(menuItem.id)}>-</BuyButton>
+                      <BuyButton>{quantity}</BuyButton>
+                      <BuyButton onClick={() => increaseOrderItemQuantity(menuItem.id)}>+</BuyButton>
+                    </div>
+                  )}
                 </MenuItemCardBottom>
             </MenuItemCard>
     </>

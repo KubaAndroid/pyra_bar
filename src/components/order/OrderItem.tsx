@@ -2,7 +2,7 @@ import OrderItemModel from '../../models/OrderItemModel';
 import { useOrderContext } from '../../context/ShopContext';
 import trash from '../../assets/img/trash-can.png'
 import styled from 'styled-components';
-import { BuyButton } from '../menu/MenuItemView';
+import { BuyButton } from '../menu/MenuItemLayout';
 
 const OrderItemContainer = styled.div`
   width: 100%;

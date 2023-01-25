@@ -1,26 +1,28 @@
-import { render, screen } from '@testing-library/react'
-import ContactForm from '../components/contact/ContactForm'
-import OrderPage from "../pages/OrderPage"
-import Wrapper from "./TestWrapper"
+import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
+import { CreateOrderedItemsContext } from '../context/ShopContext'
+import ContactPage from '../pages/ContactPage'
 
-describe("check GlobalStyles", () => {
+import { createMockStore } from "./TestWrapper"
 
-    it('checks if GlobalStyles font is correct', () => {
-        render(<Wrapper children={<ContactForm />} />)
+const renderMenuPage = () => {
+    const store = createMockStore()
+    render(
+        <CreateOrderedItemsContext.Provider
+            value={{
+                ...store
+            }}>
+            <BrowserRouter>
+                <ContactPage />
+            </BrowserRouter>
+        </CreateOrderedItemsContext.Provider> 
+    )
+}
 
-        // const element = screen.getByText(/Contact/);
-        // const styles = getComputedStyle(element);
-        // console.log(styles)
-        // expect(styles.fontFamily).toBe('Poppins');
-
-        // const formClass = ContactForm().type.styledComponentId
-        // const MyHeaderRoots = document.getElementsByClassName(formClass)
-
-        // const style = window.getComputedStyle(MyHeaderRoots[0])
-        // expect(style.fontFamily).toBe('Poppins')
-
-        
+describe('check if page renders', () => {
+    it('check styles', () => {
+        renderMenuPage();
+        const contactText = screen.getByLabelText('Your email address:');
+        expect(contactText).toBeInTheDocument();
     })
 })
-
-    

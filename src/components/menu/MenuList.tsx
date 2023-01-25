@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import MenuItemModel from '../../models/MenuItemModel'
-import MenuItemLayout from './MenuItemView'
+import MenuItemLayout from './MenuItemLayout'
 
 const StyledMenuList = styled.div`
   list-style: none;

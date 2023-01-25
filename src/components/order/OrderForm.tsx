@@ -87,7 +87,7 @@ function OrderForm() {
         postOrder
   } = useOrderContext()
 
-  console.log(orderedMenuItems)
+  // console.log(orderedMenuItems)
   
   // const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
   const { handleSubmit, register, formState: { errors } } = useForm<Inputs>();

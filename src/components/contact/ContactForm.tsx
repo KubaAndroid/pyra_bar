@@ -47,7 +47,7 @@ const FormFieldTextArea = styled.textarea`
 `
 
 
-class UserMessage {
+export class UserMessage {
   email?: string;
   message?: string;
 }
@@ -71,12 +71,14 @@ const ContactForm = () => {
       method: "POST",
       body: JSON.stringify(msg),
       headers: {
-        "Content-Type": "application/json"
+          "Content-Type": "application/json"
       }
     }).then(() => {
-      navigate('/', {replace: true})
+        navigate('/', {replace: true})
     })
   }
+
+  
 
   return (
     <ContactFormContainer>
