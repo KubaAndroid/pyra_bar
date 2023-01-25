@@ -1,10 +1,13 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { MockWrapper } from "./TestWrapper"
+import { createMockStore, MockWrapper } from "./TestWrapper"
 import OrderForm from "../components/order/OrderForm"
 import userEvent from "@testing-library/user-event"
 import TestWrapper from "./TestWrapper"
 import ClientModel from "../models/ClientModel"
+import { CreateOrderedItemsContext } from "../context/ShopContext"
+import { BrowserRouter } from "react-router-dom"
+import MenuItemModel from "../models/MenuItemModel"
 
 
 describe("render OrderForm component", () => {
@@ -48,9 +51,36 @@ describe("render OrderForm component", () => {
         expect(alerts.length).toBe(0)
         
     })
-/**
+
     it('checks if a new client is added after all inputs are filled', async () => {
-        render(<TestWrapper children={<OrderForm /> }/>)
+        const store = createMockStore()
+        // const [clientsList, setClientsList] = useState<ClientModel[]>([])
+        // const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
+        const mockModel: MenuItemModel = {
+            id: 0,
+            name: 'Spaghetti',
+            price: 12.23,
+            description: 'Delish Spaghet',
+            imgUrl: '/img/1.jpg',
+            category: 'Spicy'
+        }
+        const clientsList: ClientModel[] = []
+        let isSnackbarVisible = false
+        const orderedMenuItems: MenuItemModel[] = [mockModel]
+        
+        render(
+            <CreateOrderedItemsContext.Provider
+                value={{
+                    ...store,
+                    clientsList: clientsList,
+                    isSnackbarVisible: isSnackbarVisible,
+                    orderedMenuItems: orderedMenuItems
+                }}>
+                <BrowserRouter>
+                    <OrderForm />
+                </BrowserRouter>
+            </CreateOrderedItemsContext.Provider> 
+        )
 
         const fNameInput = screen.getByPlaceholderText('First name');
         await act(() => fireEvent.change(fNameInput, {target: { value: 'John' }}))
@@ -87,17 +117,19 @@ describe("render OrderForm component", () => {
         }
         
         setTimeout(() => {
-            expect(clientsList[clientsList.length - 1].firstName).toBe(newClient.firstName)
-            expect(clientsList[clientsList.length - 1].lastName).toBe(newClient.lastName)
-            expect(clientsList[clientsList.length - 1].emailAddress).toBe(newClient.emailAddress)
-            expect(clientsList[clientsList.length - 1].phoneNumber).toBe(newClient.phoneNumber)
-            expect(clientsList[clientsList.length - 1].addressStreet).toBe(newClient.addressStreet)
-            expect(clientsList[clientsList.length - 1].addressCity).toBe(newClient.addressCity)
+            expect(clientsList[0].firstName).toBe(newClient.firstName)
+            expect(clientsList[0].lastName).toBe(newClient.lastName)
+            expect(clientsList[0].emailAddress).toBe(newClient.emailAddress)
+            expect(clientsList[0].phoneNumber).toBe(newClient.phoneNumber)
+            expect(clientsList[0].addressStreet).toBe(newClient.addressStreet)
+            expect(clientsList[0].addressCity).toBe(newClient.addressCity)
+
+            expect(isSnackbarVisible).toBe(true)
         }, 1000)
 
         
         
     })
- */
+ 
     
 })

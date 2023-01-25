@@ -3,19 +3,17 @@ import MenuItemModel from '../models/MenuItemModel'
 import OrderModel from "../models/OrderModel";
 import ClientModel from "../models/ClientModel";
 import OrderItemModel from '../models/OrderItemModel';
+import UserOrdersModel from '../models/UserOrdersModel';
 
 
-type OrderedItemsContext = {
+export interface OrderedItemsContext {
     getOrderItemQuantity: (id: number) => number
     increaseOrderItemQuantity: (id: number) => void
     reduceOrderItemQuantity: (id: number) => void
     removeOrderItem: (id: number) => void
     orderQuantity: number
-
     orderedItems: OrderItemModel[]
     setOrderItems: React.Dispatch<React.SetStateAction<OrderItemModel[]>>
-
-
     setOrdersList: React.Dispatch<React.SetStateAction<OrderModel[]>>
     orderedMenuItems: MenuItemModel[]
     getAllMenuItems: () => Promise<MenuItemModel[]>
@@ -34,9 +32,13 @@ type OrderedItemsContext = {
     getAllOrders: () => Promise<OrderModel[]>
     currentFilter: string
     currentSorting: string
+    setIsSnackbarVisible: React.Dispatch<React.SetStateAction<Boolean>>
+    isSnackbarVisible: Boolean
+    saveUser(user: ClientModel): Promise<void>
+    postOrder(order: UserOrdersModel): Promise<void>
 }
 
-const CreateOrderedItemsContext = createContext({} as OrderedItemsContext)
+export const CreateOrderedItemsContext = createContext({} as OrderedItemsContext)
 
 export function useOrderContext() {
     return useContext(CreateOrderedItemsContext)
@@ -48,18 +50,15 @@ type ContextProviderProps = {
 
 export function OrderedItemsProvider({ children }: ContextProviderProps) {
     const [orderedItems, setOrderItems] = useState<OrderItemModel[]>([])
-
     const [orderedMenuItems, setOrderedMenuItems] = useState<MenuItemModel[]>([])
     const [allMenuItems, setMenuItems] = useState<MenuItemModel[]>([]);
     const [filteredMenuItems, setFilteredMenuItems] = useState<MenuItemModel[]>([]);
-
     const [currentFilter, setCurrentFilter] = useState<string>("")
     const [searchQuery, setSearchQuery] = useState<string>("")
     const [currentSorting, setCurrentSorting] = useState<string>("")
-
     const [ordersList, setOrdersList] = useState<OrderModel[]>([])
-
     const [clientsList, setClientsList] = useState<ClientModel[]>([])
+    const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
 
     const [, updateState] = useState<object>({});
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -74,7 +73,6 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
             setClientsList(fetchedClients)
             
         }
-        // getAllMenuItems()
         getOrders()
         getClients()
     }, [])
@@ -108,13 +106,10 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     }
 
     const getAllOrders = async ():Promise<OrderModel[]> => {
-        if (ordersList.length < 1) {
-            const fetchedOrders = await fetchOrders()
-            setOrdersList(fetchedOrders)
-            console.log(fetchedOrders)
-            return fetchedOrders as OrderModel[]
-        }
-        return ordersList as OrderModel[]
+        const fetchedOrders = await fetchOrders()
+        setOrdersList(fetchedOrders.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
+        console.log(fetchedOrders)
+        return fetchedOrders as OrderModel[]
     }
 
     function sortMenuItemsByPrice(ascending: Boolean): void {
@@ -129,6 +124,29 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
              setCurrentSorting("desc")
             forceUpdate()
         }
+    }
+
+    async function saveUser(user: ClientModel) {
+        await fetch('http://localhost:5000/users', {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: {
+            "Content-Type": "application/json"
+        }
+        }).then(() => setClientsList([...clientsList, user]))
+    }
+
+    async function postOrder(order: UserOrdersModel) {
+        await fetch('http://localhost:5000/orders', {
+            method: "POST",
+            body: JSON.stringify(order),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(() => {
+            // showSnack()
+            setIsSnackbarVisible(true)
+        })
     }
 
     const orderQuantity = orderedItems?.reduce((quantity, item) => item.quantity + quantity, 0)
@@ -172,9 +190,8 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
          setTimeout(() => {
             let queriedItems = allMenuItems.filter(item => item.name.toLowerCase().includes(query.toLowerCase())
             && item.category.includes(currentFilter))
-
-        setFilteredMenuItems(queriedItems)
-         }, 1000);
+            setFilteredMenuItems(queriedItems)
+        }, 1000);
     }
 
     function increaseOrderItemQuantity(id: number) {
@@ -248,7 +265,11 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 ordersList,
                 getAllOrders,
                 currentFilter,
-                currentSorting
+                currentSorting,
+                isSnackbarVisible,
+                setIsSnackbarVisible,
+                saveUser,
+                postOrder
         }}>
             {children}
         </CreateOrderedItemsContext.Provider>

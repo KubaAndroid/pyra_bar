@@ -44,7 +44,8 @@
     "test:watch": "npm test -- --watch",
     "test:coverage": "npm test -- --coverage",
     "eject": "react-scripts eject",
-    "server": "json-server --watch db.json --port 5000"
+    "server": "json-server --watch db.json --port 5000",
+    "coverage": "react-scripts test --env=jsdom --watchAll=true --coverage"
   },
   "eslintConfig": {
     "extends": [

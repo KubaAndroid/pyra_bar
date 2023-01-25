@@ -23,10 +23,10 @@ function OrdersList() {
     
     useEffect(() => {
         const getOrders = async () => {
-        const fetchedOrders = await getAllOrders()
-        await getAllMenuItems()
-        console.log(fetchedOrders)
-        setIsLoading(false)
+          const fetchedOrders = await getAllOrders()
+          await getAllMenuItems()
+          console.log(fetchedOrders)
+          setIsLoading(false)
         }
         getOrders()
     }, [])

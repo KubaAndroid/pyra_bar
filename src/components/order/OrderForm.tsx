@@ -30,7 +30,6 @@ export const StyledForm = styled.form`
 `
 const FormRow = styled.div`
   width: 100%;
-  /* margin-bottom: 0.5rem; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -80,14 +79,21 @@ function OrderForm() {
         orderedMenuItems,
         clearOrder,
         clientsList,
-        setClientsList
-  } = useOrderContext()
-  
-    const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
-    const { handleSubmit, register, formState: { errors } } = useForm<Inputs>();
-    const navigate = useNavigate();
+        setClientsList,
 
-    const onSubmit: SubmitHandler<Inputs> = data => {
+        setIsSnackbarVisible, 
+        isSnackbarVisible,
+        saveUser,
+        postOrder
+  } = useOrderContext()
+
+  console.log(orderedMenuItems)
+  
+  // const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
+  const { handleSubmit, register, formState: { errors } } = useForm<Inputs>();
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<Inputs> = data => {
     const _user: ClientModel = {
       id: Math.floor(Math.random() * (10000000)) + 1,
       firstName: data.fname,
@@ -102,7 +108,6 @@ function OrderForm() {
     saveUser(_user)
     
     const orderedItemsIds = orderedMenuItems.map(({ id }) => id);
-
     const todayDate = new Date().toUTCString().slice(0, -4);
     const _userOrder: UserOrdersModel = {
         userId: _user.id,
@@ -110,40 +115,18 @@ function OrderForm() {
         menuItems: orderedItemsIds
     }
     postOrder(_userOrder);
-    }
-    
-async function saveUser(user: ClientModel) {
-    await fetch('http://localhost:5000/users', {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-          "Content-Type": "application/json"
-      }
-    }).then(() => setClientsList([...clientsList, user]))
+    showSnack()
   }
-
-  async function postOrder(order: UserOrdersModel) {
-    await fetch('http://localhost:5000/orders', {
-      method: "POST",
-      body: JSON.stringify(order),
-      headers: {
-          "Content-Type": "application/json"
-      }
-    }).then(() => {
-      showSnack()
-    })
-  }
-
+  
+  
   const showSnack = () => {
     setIsSnackbarVisible(true)
     setTimeout(() => {
       setIsSnackbarVisible(false);
       clearOrder();
       navigate('/', { replace: true });
-      }, 6000);
-    }
-    
-
+    }, 6000);
+  }
     
   return (
     <>
@@ -190,11 +173,11 @@ async function saveUser(user: ClientModel) {
           </FormRow>
 
         <FormRow>
-            <FormColumn>
-          <label>City:</label>
+          <FormColumn>
+            <label>City:</label>
             <input type="text" placeholder="City" {...register("city", { required: true, maxLength: 80 })} />
             {errors.city?.type === 'required' && <p role="alert" style={{color: 'red'}}>city is required</p>}
-       </FormColumn>
+          </FormColumn>
             <FormColumn>
           <label>Zip code:</label>
             <input type="text" placeholder="Zip code" {...register("zip", { required: true, maxLength: 80 })} />

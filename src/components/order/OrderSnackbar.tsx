@@ -9,6 +9,14 @@ const Message = styled.div`
 
 const OkButton = styled.button`
   margin: 15px;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #c0dbcc;
+  border-radius: 6px;
+  padding: 6px;
+  &:hover {
+    background-color: #f0ebe5;
+  }
 `
 
 const fadeIn = keyframes`
@@ -18,7 +26,7 @@ const fadeIn = keyframes`
   }
   25% {
     /* bottom: 0.5; */
-    opacity: 0.5;
+    opacity: 0.6;
   }
   50% {
     /* bottom: 1; */

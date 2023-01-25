@@ -55,7 +55,6 @@ function OrdersListItem({ order }: OrderType) {
           if (menuItem != null || menuItem !== undefined) {
             boughtItems.push(menuItem)
             let currentItem = displayItem.get(itemId)
-    
             if (currentItem === null || currentItem === undefined) {
               displayItem.set(itemId, { name: menuItem?.name ?? "", priceTotal: menuItem?.price ?? 0, quantity: 1, price: menuItem.price })
             } else {
@@ -99,14 +98,14 @@ function OrdersListItem({ order }: OrderType) {
                 <OrderListRow key={index}>
                   <div> {item.name}  x{item.quantity}</div>
                   {/* ${item.price} */}
-                  <div>${item.priceTotal.toFixed(2)} </div>
+                  <div>{item.priceTotal.toFixed(2)} </div>
                 </OrderListRow>
               )
             })}
           </div><br />
             <OrderListRow>
               <div>Sum total:</div>
-              <div> <b>${sumTotal.toFixed(2)} </b></div>
+              <div> <b>{sumTotal.toFixed(2)} </b></div>
           </OrderListRow>
         </div>}
       </OrderListItemContainer>
