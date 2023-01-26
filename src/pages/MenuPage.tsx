@@ -88,12 +88,15 @@ const MenuPage = () => {
     filterMenuItems,
     searchMenuItems,
     currentFilter,
-    currentSorting
+    currentSorting,
+    setIsModalOpen,
+    isModalOpen,
+    currentlySelectedMenuItem,
   } = useOrderContext()
 
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
-  const [isModalOpen, setIsModalOpen] = useState<Boolean>(false);
-  const [currentlySelectedMenuItem, setCurrentlySelectedMenuItem] = useState<MenuItemModel>(filteredMenuItems[0]);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
+  // const [isModalOpen, setIsModalOpen] = useState<Boolean>(false);
+  
 
   useEffect(() => {
     const getMenuItems = async () => {
@@ -137,23 +140,23 @@ const MenuPage = () => {
                 <CategoryButton
                   isActive={currentFilter === ""}
                   onClick={() => filterMenuItems(MenuCategory.all)}>
-                  <CategoryIcon src={allCategoriesIcon} alt="" /> All
+                  <CategoryIcon src={allCategoriesIcon} alt="all" /> All
                 </CategoryButton>
 
                 <CategoryButton
                   isActive={currentFilter === MenuCategory.spicy}
                   onClick={() => filterMenuItems(MenuCategory.spicy)}>
-                  <CategoryIcon src={fireIcon} alt="" /> Spicy
+                  <CategoryIcon src={fireIcon} alt="spicy" /> Spicy
                 </CategoryButton>
                 <CategoryButton
                   isActive={currentFilter === MenuCategory.vege}
                   onClick={() => filterMenuItems(MenuCategory.vege)}>
-                  <CategoryIcon src={vegeIcon} alt="" /> Vege
+                  <CategoryIcon src={vegeIcon} alt="vege" /> Vege
                 </CategoryButton>
                 <CategoryButton
                   isActive={currentFilter === MenuCategory.lactoseFree}
                   onClick={() => filterMenuItems(MenuCategory.lactoseFree)}>
-                  <CategoryIcon src={noLactoseIcon} alt="" /> Lactose free
+                  <CategoryIcon src={noLactoseIcon} alt="lactoseFree" /> Lactose free
                 </CategoryButton>
               </div>
             </CategoryButtons>
@@ -172,8 +175,6 @@ const MenuPage = () => {
             <H1>Menu</H1>
             <MenuList
               items={filteredMenuItems}
-              setIsModalOpen={setIsModalOpen}
-              setCurrentItem={setCurrentlySelectedMenuItem}
             />
           </PageBackground>
         )}

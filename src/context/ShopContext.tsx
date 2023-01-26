@@ -39,7 +39,12 @@ export interface OrderedItemsContext {
     postOrder(order: UserOrdersModel): Promise<void>
     
     setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>
+    isModalOpen: Boolean
     setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
+    
+    currentlySelectedMenuItem: MenuItemModel
+    setCurrentlySelectedMenuItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
+
 }
 
 export const CreateOrderedItemsContext = createContext({} as OrderedItemsContext)
@@ -66,6 +71,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
 
     const [isModalOpen, setIsModalOpen] = useState<Boolean>(false)
     const [currentItem, setCurrentItem] = useState<MenuItemModel>(allMenuItems[0])
+    const [currentlySelectedMenuItem, setCurrentlySelectedMenuItem] = useState<MenuItemModel>(filteredMenuItems[0]);
 
     const [, updateState] = useState<object>({});
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -280,8 +286,11 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 saveUser,
                 postOrder,
                 setIsModalOpen,
-                setCurrentItem
-        }}>
+                setCurrentItem,
+                isModalOpen,
+                currentlySelectedMenuItem,
+                setCurrentlySelectedMenuItem
+            }}>
             {children}
         </CreateOrderedItemsContext.Provider>
     )

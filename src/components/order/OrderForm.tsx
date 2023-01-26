@@ -78,9 +78,6 @@ function OrderForm() {
     const {
         orderedMenuItems,
         clearOrder,
-        clientsList,
-        setClientsList,
-
         setIsSnackbarVisible, 
         isSnackbarVisible,
         saveUser,
@@ -88,8 +85,8 @@ function OrderForm() {
   } = useOrderContext()
 
   // console.log(orderedMenuItems)
-  
   // const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
+
   const { handleSubmit, register, formState: { errors } } = useForm<Inputs>();
   const navigate = useNavigate();
 
@@ -120,10 +117,10 @@ function OrderForm() {
   
   
   const showSnack = () => {
-    setIsSnackbarVisible(true)
+    setIsSnackbarVisible(true);
+    clearOrder();
     setTimeout(() => {
       setIsSnackbarVisible(false);
-      clearOrder();
       navigate('/', { replace: true });
     }, 6000);
   }
@@ -147,16 +144,16 @@ function OrderForm() {
           
         <FormRow>
           <FormColumn>
-          <label>Email:</label>
-            <input type="text" placeholder="Email" {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
-            {errors.email?.type === 'required' && <p role="alert" style={{ color: 'red' }}>email address is required</p>}
-            </FormColumn>
-            <FormColumn>
-          <label>Mobile number:</label>
-            <input type="tel" placeholder="Mobile number" {...register("phone", { required: true, minLength: 7, maxLength: 12 })} />
-            {errors.phone?.type === 'required' && <p role="alert" style={{color: 'red'}}>phone number is required</p>}
-        </FormColumn>
-          </FormRow>
+            <label>Email:</label>
+              <input type="text" placeholder="Email" {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
+              {errors.email?.type === 'required' && <p role="alert" style={{ color: 'red' }}>email address is required</p>}
+              </FormColumn>
+              <FormColumn>
+            <label>Mobile number:</label>
+              <input type="tel" placeholder="Mobile number" {...register("phone", { required: true, minLength: 7, maxLength: 12 })} />
+              {errors.phone?.type === 'required' && <p role="alert" style={{color: 'red'}}>phone number is required</p>}
+          </FormColumn>
+        </FormRow>
 
         <FormRow>
             <FormColumn>

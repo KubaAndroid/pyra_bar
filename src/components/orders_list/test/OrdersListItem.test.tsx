@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import { FC, useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import OrdersListItem from '../components/orders_list/OrdersListItem';
-import { CreateOrderedItemsContext, OrderedItemsProvider, useOrderContext } from '../context/ShopContext';
-import UserOrdersModel from '../models/UserOrdersModel';
-import { createMockStore } from './TestWrapper';
+import OrdersListItem from '../OrdersListItem';
+import { CreateOrderedItemsContext, OrderedItemsProvider, useOrderContext } from '../../../context/ShopContext';
+import UserOrdersModel from '../../../models/UserOrdersModel';
+import { createMockStore } from '../../../tests/TestWrapper';
 
 
 

@@ -15,11 +15,11 @@ const StyledMenuList = styled.div`
 
 interface MenuType {
   items: MenuItemModel[],
-  setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>
-  setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
+  // setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>
+  // setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
 }
 
-function MenuList({ items, setIsModalOpen, setCurrentItem }: MenuType) {
+function MenuList({ items }: MenuType) {
 
 
   return (
@@ -29,8 +29,6 @@ function MenuList({ items, setIsModalOpen, setCurrentItem }: MenuType) {
           key={item.id}
           menuItem={item}
           index={index}
-          // setIsModalOpen={setIsModalOpen}
-          // setCurrentItem={setCurrentItem}
       />)}
     </StyledMenuList>
   )

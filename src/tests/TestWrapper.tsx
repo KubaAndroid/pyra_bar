@@ -7,21 +7,15 @@ import OrderModel from "../models/OrderModel"
 export function createMockStore(): OrderedItemsContext {
     let allMenuItems: MenuItemModel[] = db['menuItems']
     let filteredMenuItems: MenuItemModel[] = allMenuItems
-    // const getOrderItemQuantity = jest.fn()
-    const getOrderItemQuantity = () => orderQuantity
+    const getOrderItemQuantity = jest.fn()
     const increaseOrderItemQuantity = jest.fn()
-    // const increaseOrderItemQuantity = () => {
-    //     orderQuantity += 1
-    //     console.log(`quantitu: ${orderQuantity}`)
-    // }
-    // const reduceOrderItemQuantity = jest.fn()
-    const reduceOrderItemQuantity = () => orderQuantity -= 1
+    const reduceOrderItemQuantity = jest.fn()
     const removeOrderItem = jest.fn()
     let orderQuantity = 0
     let orderedItems: OrderItemModel[] = []
     const setOrderItems = jest.fn()
     const setOrdersList = jest.fn()
-    let orderedMenuItems: MenuItemModel[] = [allMenuItems[3]]
+    let orderedMenuItems: MenuItemModel[] = []
     const getAllMenuItems = async () => await allMenuItems
     const clearOrder = () => orderedItems = []
     const getMenuItemById = (id: number) => allMenuItems.find(item => item.id === id)
@@ -42,7 +36,10 @@ export function createMockStore(): OrderedItemsContext {
     const postOrder = jest.fn()
 
     const setIsModalOpen = jest.fn()
+    let isModalOpen = false
     const setCurrentItem = jest.fn()
+    let currentlySelectedMenuItem = allMenuItems[0]
+    const setCurrentlySelectedMenuItem = jest.fn()
 
     return {
         getOrderItemQuantity,
@@ -75,6 +72,9 @@ export function createMockStore(): OrderedItemsContext {
         saveUser,
         postOrder,
         setIsModalOpen,
-        setCurrentItem
+        setCurrentItem,
+        isModalOpen,
+        currentlySelectedMenuItem,
+        setCurrentlySelectedMenuItem
     }
 }

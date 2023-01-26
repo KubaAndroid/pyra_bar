@@ -78,8 +78,6 @@ const ContactForm = () => {
     })
   }
 
-  
-
   return (
     <ContactFormContainer>
       <form onSubmit={submitHandler}>

@@ -1,16 +1,15 @@
-import React, { FC, useState } from "react"
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { createMockStore } from "./TestWrapper"
-import OrderForm from "../components/order/OrderForm"
+import { createMockStore } from "../../../tests/TestWrapper"
+import OrderForm from "../OrderForm"
 import userEvent from "@testing-library/user-event"
-import ClientModel from "../models/ClientModel"
-import { CreateOrderedItemsContext } from "../context/ShopContext"
+import ClientModel from "../../../models/ClientModel"
+import { CreateOrderedItemsContext } from "../../../context/ShopContext"
 import { BrowserRouter } from "react-router-dom"
-import MenuItemModel from "../models/MenuItemModel"
+import MenuItemModel from "../../../models/MenuItemModel"
 
-const renderOrderForm = () => {
+const renderOrderForm = async () => {
     const store = createMockStore()
-    render(
+    await act(() => render(
         <CreateOrderedItemsContext.Provider
             value={{
                 ...store
@@ -18,17 +17,14 @@ const renderOrderForm = () => {
             <BrowserRouter>
                 <OrderForm />
             </BrowserRouter>
-        </CreateOrderedItemsContext.Provider> 
-    )
+        </CreateOrderedItemsContext.Provider>
+    ));
 }
     
 describe("render OrderForm component", () => {
 
     it('checks if errors appear when inputs are not filled', async () => {
-        // render(<TestWrapper children={<OrderForm />} />)
-        
         renderOrderForm()
-        
         const orderBtn = screen.getByRole('button')
         await act(async () => {
             userEvent.click(orderBtn)
@@ -39,8 +35,6 @@ describe("render OrderForm component", () => {
 
     
     it('checks if errors dont appear when inputs are filled', async () => {
-        // render(<TestWrapper children={<OrderForm />} />)
-        
         renderOrderForm()
 
         const fNameInput = screen.getByPlaceholderText('First name');
@@ -95,12 +89,12 @@ describe("render OrderForm component", () => {
                 <BrowserRouter>
                     <OrderForm />
                 </BrowserRouter>
-            </CreateOrderedItemsContext.Provider> 
+            </CreateOrderedItemsContext.Provider>
         )
         expect(isSnackbarVisible).toBe(false)
 
         const fNameInput = screen.getByPlaceholderText('First name');
-        await act(() => fireEvent.change(fNameInput, {target: { value: 'John' }}))
+        await act(() => fireEvent.change(fNameInput, { target: { value: 'John' } }))
         const lNameInput = screen.getByPlaceholderText('Last name');
         await act(() => fireEvent.change(lNameInput, { target: { value: 'Doe' } }));
         const emailInput = screen.getByPlaceholderText('Email');
@@ -115,6 +109,7 @@ describe("render OrderForm component", () => {
         await act(() => fireEvent.change(cityInput, { target: { value: 'Washington DC' } }));
         const zipInput = screen.getByPlaceholderText('Zip code');
         await act(() => fireEvent.change(zipInput, { target: { value: '20023' } }));
+
         const orderBtn = screen.getByRole('button')
         await act(async () => {
             userEvent.click(orderBtn)
@@ -142,11 +137,61 @@ describe("render OrderForm component", () => {
             expect(clientsList[0].addressCity).toBe(newClient.addressCity)
 
             expect(isSnackbarVisible).toBe(true)
-        }, 1000)
+        }, 1000);
+    });
 
+
+    it('check if snackbar is being showed', async () => {
+        const store = createMockStore()
+        const mockModel: MenuItemModel = {
+            id: 0,
+            name: 'Spaghet',
+            price: 12.23,
+            description: 'Delish Spaghet',
+            imgUrl: '/img/1.jpg',
+            category: 'Spicy'
+        }
+        const setIsSnackbarVisible = jest.fn()
+        const clearOrder = jest.fn()
         
-        
+        act(() => render(
+            <CreateOrderedItemsContext.Provider
+                value={{
+                    ...store,
+                    setIsSnackbarVisible: setIsSnackbarVisible,
+                    clearOrder: clearOrder
+                }}>
+                <BrowserRouter>
+                    <OrderForm />
+                </BrowserRouter>
+            </CreateOrderedItemsContext.Provider>
+        ));
+
+        const fNameInput = screen.getByPlaceholderText('First name');
+        await act(() => fireEvent.change(fNameInput, { target: { value: 'John' } }))
+        const lNameInput = screen.getByPlaceholderText('Last name');
+        await act(() => fireEvent.change(lNameInput, { target: { value: 'Doe' } }));
+        const emailInput = screen.getByPlaceholderText('Email');
+        await act(() => fireEvent.change(emailInput, { target: { value: 'john@doe.com' } }));
+        const phoneInput = screen.getByPlaceholderText('Mobile number');
+        await act(() => fireEvent.change(phoneInput, { target: { value: '123456789' } }));
+        const streetInput = screen.getByPlaceholderText('Street');
+        await act(() => fireEvent.change(streetInput, { target: { value: 'Long street' } }));
+        const streetNumInput = screen.getByPlaceholderText('Street number');
+        await act(() => fireEvent.change(streetNumInput, { target: { value: '126e/12' } }));
+        const cityInput = screen.getByPlaceholderText('City');
+        await act(() => fireEvent.change(cityInput, { target: { value: 'Washington DC' } }));
+        const zipInput = screen.getByPlaceholderText('Zip code');
+        await act(() => fireEvent.change(zipInput, { target: { value: '20023' } }));
+
+        const orderBtn = screen.getByRole('button')
+        await act(async () => {
+            userEvent.click(orderBtn)
+        });
+
+        expect(setIsSnackbarVisible).toBeCalled()
+        expect(clearOrder).toBeCalled()
+
     })
- 
     
 })

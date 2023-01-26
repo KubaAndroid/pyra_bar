@@ -1,9 +1,9 @@
 import React from "react"
 import { render, screen } from '@testing-library/react'
-import Header from '../components/header/Header'
+import Header from '../Header'
 import { BrowserRouter } from "react-router-dom"
-import { CreateOrderedItemsContext } from "../context/ShopContext"
-import { createMockStore } from "./TestWrapper"
+import { CreateOrderedItemsContext } from "../../../context/ShopContext"
+import { createMockStore } from "../../../tests/TestWrapper"
 
 
 

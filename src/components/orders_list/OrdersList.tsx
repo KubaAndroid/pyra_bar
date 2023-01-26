@@ -19,25 +19,16 @@ const OrdersContainer = styled.div`
 
 function OrdersList() {
     const { getAllOrders, ordersList, getAllMenuItems } = useOrderContext()
-    // const [isLoading, setIsLoading] = useState<Boolean>(true)
     
     useEffect(() => {
         const getOrders = async () => {
-          // const fetchedOrders = await getAllOrders()
           await getAllOrders()
           await getAllMenuItems()
-          // console.log(fetchedOrders)
-          // setIsLoading(false)
         }
         getOrders()
     }, [])
 
   return (
-    // isLoading ? (
-    //   <OrdersContainer>
-    //     Loading...
-    //   </OrdersContainer>
-    // ) : (
       <OrdersContainer>
           {ordersList.map((order, index) => {
             return <OrdersListItem key={index} order={order} />

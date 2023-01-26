@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import OrderItem from '../components/order/OrderItem'
-import { CreateOrderedItemsContext } from '../context/ShopContext'
-import OrderItemModel from '../models/OrderItemModel'
-import OrderPage from '../pages/OrderPage'
-import { createMockStore } from './TestWrapper'
+import OrderItem from '../../components/order/OrderItem'
+import { CreateOrderedItemsContext } from '../../context/ShopContext'
+import OrderItemModel from '../../models/OrderItemModel'
+import { createMockStore } from '../../tests/TestWrapper'
+import OrderPage from '../OrderPage'
 
 interface IOrderItemModel {
     orderedItem: OrderItemModel

@@ -1,8 +1,8 @@
 import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { CreateOrderedItemsContext } from '../context/ShopContext';
-import ContactPage from '../pages/ContactPage';
-import { createMockStore } from './TestWrapper';
+import { CreateOrderedItemsContext } from '../../context/ShopContext';
+import ContactPage from '../ContactPage';
+import { createMockStore } from '../../tests/TestWrapper';
 
 describe('render ContactPage', () => {
 

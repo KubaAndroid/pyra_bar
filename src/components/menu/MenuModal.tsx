@@ -89,14 +89,15 @@ const BottomDiv = styled.div`
 
 
 
-function MenuModal({ openedModal, menuItem }: ModalType) {
+function MenuModal({ openedModal }: ModalType) {
   const {
         getOrderItemQuantity,
         increaseOrderItemQuantity,
-        reduceOrderItemQuantity,
+    reduceOrderItemQuantity,
+        currentlySelectedMenuItem
   } = useOrderContext()
   
-  const quantity = getOrderItemQuantity(menuItem!.id)!
+  const quantity = getOrderItemQuantity(currentlySelectedMenuItem!.id)!
 
   return (
       <ModalBackground>
@@ -105,21 +106,21 @@ function MenuModal({ openedModal, menuItem }: ModalType) {
           <CloseButton onClick={() => openedModal(false)}> X </CloseButton>
         </CloseDiv>
         <TitleDiv>
-          <h1>{menuItem!.name}</h1>
+          <h1>{currentlySelectedMenuItem!.name}</h1>
         </TitleDiv>
         <DescriptionDiv>
-          {menuItem.description}
+          {currentlySelectedMenuItem.description}
         </DescriptionDiv>
         <BottomDiv>
           {quantity === 0 ? (
             <div >
-                <BuyButton onClick={() => increaseOrderItemQuantity(menuItem!.id)}>Buy</BuyButton>
+                <BuyButton onClick={() => increaseOrderItemQuantity(currentlySelectedMenuItem!.id)}>Buy</BuyButton>
             </div>
           ) : (
               <div >
-                  <BuyButton onClick={() => reduceOrderItemQuantity(menuItem!.id)}>-</BuyButton>
+                  <BuyButton onClick={() => reduceOrderItemQuantity(currentlySelectedMenuItem!.id)}>-</BuyButton>
                   <BuyButton>{quantity}</BuyButton>
-                  <BuyButton onClick={() => increaseOrderItemQuantity(menuItem!.id)}>+</BuyButton>
+                  <BuyButton onClick={() => increaseOrderItemQuantity(currentlySelectedMenuItem!.id)}>+</BuyButton>
               </div>
           )}
         </BottomDiv>

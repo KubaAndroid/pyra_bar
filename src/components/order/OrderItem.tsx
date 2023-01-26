@@ -78,7 +78,7 @@ function OrderItem({ item }: OrderType) {
               <OrderAmount>{item.quantity}</OrderAmount>
               <BuyButton onClick={() => increaseOrderItemQuantity(item.id!)} >+</BuyButton>
             </RightPartRow>
-            <StylishTrash src={trash} alt="" onClick={() => removeOrderItem(item.id!)} />
+            <StylishTrash src={trash} alt="trash" onClick={() => removeOrderItem(item.id!)} />
           </RightPart>
         </ContainerTop>
       </OrderItemContainer>

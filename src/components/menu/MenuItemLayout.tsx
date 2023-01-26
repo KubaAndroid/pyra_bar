@@ -84,7 +84,8 @@ function MenuItemLayout({ menuItem, index }: MenuItemType) {
         increaseOrderItemQuantity,
         reduceOrderItemQuantity,
         setIsModalOpen,
-        setCurrentItem
+      setCurrentItem,
+        setCurrentlySelectedMenuItem
   } = useOrderContext()
   
     const quantity = getOrderItemQuantity(menuItem.id)
@@ -111,7 +112,7 @@ function MenuItemLayout({ menuItem, index }: MenuItemType) {
                   <h3>{menuItem.name} <CategoryIcon src={myIcon} alt="food category" /></h3>
                   <InfoButton
                       onClick={() => {
-                        setCurrentItem(menuItem)            
+                        setCurrentlySelectedMenuItem(menuItem)            
                         setIsModalOpen(true)
                       }}>Info</InfoButton>
                   {index < 4 ? <MarginalizedDiv>{menuItem.description}</MarginalizedDiv> : null}

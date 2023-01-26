@@ -1,13 +1,12 @@
 import { fireEvent, render, screen, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import ContactForm from '../components/contact/ContactForm';
-import { CreateOrderedItemsContext } from '../context/ShopContext';
-import ClientModel from '../models/ClientModel';
-import { createMockStore } from './TestWrapper';
+import ContactForm from '../ContactForm';
+import { CreateOrderedItemsContext } from '../../../context/ShopContext';
+import ClientModel from '../../../models/ClientModel';
+import { createMockStore } from '../../../tests/TestWrapper';
 
 describe('render ContactForm', () => {
     
-
     it('checks if Contact Form is displayed', () => {
         const store = createMockStore()
         render(
@@ -58,8 +57,6 @@ describe('render ContactForm', () => {
         setTimeout(() => {
             const loadingText = screen.getByText(/Menu/)
             expect(loadingText.textContent).toBe('Menu')
-            // screen.debug()
-            
         }, 1000);
     })
     
