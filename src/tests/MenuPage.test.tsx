@@ -1,8 +1,8 @@
-import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react'
+import { fireEvent, render, screen, waitForElementToBeRemoved, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import { BrowserRouter } from 'react-router-dom';
-import { CreateOrderedItemsContext } from '../context/ShopContext';
+import { CreateOrderedItemsContext, OrderedItemsProvider } from '../context/ShopContext';
 import MenuPage from '../pages/MenuPage';
 import { createMockStore } from './TestWrapper';
 
@@ -42,44 +42,48 @@ describe('render MenuPage', () => {
     })
 
     it('checks if [Buy!] button changes after click', async () => {
-        const store = createMockStore()
+        // const store = createMockStore()
+        // let orderQuantity = 0
+        // const getOrderItemQuantity = () => orderQuantity 
+        // const increaseOrderItemQuantity = () => {
+        //     orderQuantity += 1
+        //     console.log(`quantitu: ${orderQuantity}`)
+        // }
 
-        let orderQuantity = 0
-        const getOrderItemQuantity = () => orderQuantity 
-        const increaseOrderItemQuantity = () => {
-            orderQuantity += 1
-            console.log(`quantitu: ${orderQuantity}`)
-        }
+        // await act(() => render(
+        //     <CreateOrderedItemsContext.Provider
+        //         value={{
+        //             ...store,
+        //             orderQuantity: orderQuantity,
+        //             getOrderItemQuantity: getOrderItemQuantity,
+        //             increaseOrderItemQuantity: increaseOrderItemQuantity
+        //         }}>
+        //         <BrowserRouter>
+        //             <MenuPage />
+        //         </BrowserRouter>
+        //     </CreateOrderedItemsContext.Provider>
+        // ));
 
         await act(() => render(
-            <CreateOrderedItemsContext.Provider
-                value={{
-                    ...store,
-                    orderQuantity: orderQuantity,
-                    getOrderItemQuantity: getOrderItemQuantity,
-                    increaseOrderItemQuantity: increaseOrderItemQuantity
-                }}>
+            <OrderedItemsProvider>
                 <BrowserRouter>
                     <MenuPage />
                 </BrowserRouter>
-            </CreateOrderedItemsContext.Provider>
+            </OrderedItemsProvider>
         ));
 
-        const firstBuyBtn = screen.getAllByText('Buy!')[0];
-        // const firstBuyBtn = screen.getAllByText('-')[0];
-        await act(async () => userEvent.click(firstBuyBtn));
+        await waitForElementToBeRemoved(() => screen.queryByText(/Loading/))
 
+        const firstBuyBtn = screen.getAllByText('Buy!')[0];
+        await act(async () => userEvent.click(firstBuyBtn));
         setTimeout(() => {
             expect(firstBuyBtn.textContent).toBe('-');
-            console.log(getOrderItemQuantity)
-            screen.debug()
+            // screen.debug()
         }, 500)
         
     })
 
     it('when entered x in SEARCH, all elements have x in title', async () => {
-        // render(<TestWrapper children={<MenuPage />} />);
-
         await act(() => renderMenuPage())
 
         const searchInput = screen.getByPlaceholderText('search for a dish');
@@ -94,9 +98,6 @@ describe('render MenuPage', () => {
     })
 
     it('after changing the category, all rendered items have that category', async () => {
-        // render(<TestWrapper children={<MenuPage />} />);
-        // await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
-
         await act(() => renderMenuPage())
         // await waitForElementToBeRemoved(() => screen.queryByText(/Loading/));
 
@@ -108,6 +109,22 @@ describe('render MenuPage', () => {
                 expect(image.src!).toMatch(/plant/)
             });
         }, 2000);
+    })
+
+    it('checks if changing category sets the correct state', async () => {
+        await act(() => renderMenuPage())
+        const vegeCategoryButton = screen.getByText('Vege');
+        const vegeCategoryButtonClass = vegeCategoryButton.getAttribute('class')
+        console.log(vegeCategoryButtonClass)
+        
+        await act(() => fireEvent.click(vegeCategoryButton));
+        await act(() => {
+            const vegeCategoryButtonAfter = screen.getByText('Vege');
+            const vegeCategoryButtonClassAfterClick = vegeCategoryButtonAfter.getAttribute('class')
+            console.log(vegeCategoryButtonClassAfterClick)
+            expect(vegeCategoryButtonClass).not.toEqual(vegeCategoryButtonClassAfterClick)
+        })
+        
     })
 
     it('checks if menu items are sorted by price ASCENDING', async () => {
@@ -142,6 +159,8 @@ describe('render MenuPage', () => {
             expect(isPriceArraySorted(menuPrices, false)).toBe(true);
         }, 2000);
     })
+
+    
 
 })
 

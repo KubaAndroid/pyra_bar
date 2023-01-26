@@ -29,8 +29,8 @@ function MenuList({ items, setIsModalOpen, setCurrentItem }: MenuType) {
           key={item.id}
           menuItem={item}
           index={index}
-          setIsModalOpen={setIsModalOpen}
-          setCurrentItem={setCurrentItem}
+          // setIsModalOpen={setIsModalOpen}
+          // setCurrentItem={setCurrentItem}
       />)}
     </StyledMenuList>
   )
