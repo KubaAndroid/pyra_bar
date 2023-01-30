@@ -1,9 +1,9 @@
-import React, { FormEvent, MutableRefObject, useRef } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { FormEvent, MutableRefObject, useRef } from 'react'
+// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { H1 } from '../../pages/MenuPage';
-import { FormButton, StyledForm } from '../order/OrderForm';
-
+import { FormButton } from '../order/OrderForm';
 
 const ContactFormContainer = styled.div`
   padding: 1rem;
@@ -46,19 +46,17 @@ const FormFieldTextArea = styled.textarea`
   min-height: 200px;
 `
 
-
 export class UserMessage {
   email?: string;
   message?: string;
 }
 
-
 const ContactForm = () => {
   const emailInputRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
   const messageInputRef: MutableRefObject<HTMLTextAreaElement | null> = useRef(null);
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
-  function submitHandler(event: FormEvent<HTMLFormElement> ) {
+  function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const enteredEmail = emailInputRef.current?.value
     const enteredMessage = messageInputRef.current?.value

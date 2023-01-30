@@ -30,19 +30,19 @@ const renderOrderItem = () => {
 
 describe("render OrderItem component", () => {
     it('checks if the price of an item is rendered correctly', () => {
-        renderOrderItem()
+        renderOrderItem();
         const priceP = screen.getByText(/Price/).textContent?.split(/:/)[1];
         expect(priceP).toBe(` ${mockOrderItem.price.toFixed(2)}`);
     })
 
     it('checks if the quantity of an item is rendered correctly', () => {
-        renderOrderItem()
+        renderOrderItem();
         const quantity = screen.getByText(/Quantity/).textContent?.split(/:/)[1];
         expect(quantity).toBe(` ${mockOrderItem.quantity}`);
     })
 
     it('tests the INCREASE button', async () => {
-        const store = createMockStore()
+        const store = createMockStore();
         const increaseOrderItemQuantity = jest.fn()
         render(
             <CreateOrderedItemsContext.Provider
@@ -55,14 +55,14 @@ describe("render OrderItem component", () => {
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider>
         )
-        const increaseButton = await screen.findByText('+')
-        act(() => fireEvent.click(increaseButton))
+        const increaseButton = await screen.findByText('+');
+        act(() => fireEvent.click(increaseButton));
 
-        expect(increaseOrderItemQuantity).toBeCalled()
+        expect(increaseOrderItemQuantity).toBeCalled();
     });
 
     it('tests the DECREASE button', async () => {
-        const store = createMockStore()
+        const store = createMockStore();
         const reduceOrderItemQuantity = jest.fn()
         render(
             <CreateOrderedItemsContext.Provider
@@ -75,15 +75,15 @@ describe("render OrderItem component", () => {
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider>
         )
-        const decreaseButton = await screen.findByText('-')
-        act(() => fireEvent.click(decreaseButton))
+        const decreaseButton = await screen.findByText('-');
+        act(() => fireEvent.click(decreaseButton));
 
-        expect(reduceOrderItemQuantity).toBeCalled()
+        expect(reduceOrderItemQuantity).toBeCalled();
     });
 
     it('tests the TRASH button', async () => {
-        const store = createMockStore()
-        const removeOrderItem = jest.fn()
+        const store = createMockStore();
+        const removeOrderItem = jest.fn();
         render(
             <CreateOrderedItemsContext.Provider
                 value={{
@@ -95,9 +95,9 @@ describe("render OrderItem component", () => {
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider>
         )
-        const trashButton = screen.getByAltText('trash')
-        act(() => fireEvent.click(trashButton))
-        expect(removeOrderItem).toBeCalled()
+        const trashButton = screen.getByAltText('trash');
+        act(() => fireEvent.click(trashButton));
+        expect(removeOrderItem).toBeCalled();
     });
 
 

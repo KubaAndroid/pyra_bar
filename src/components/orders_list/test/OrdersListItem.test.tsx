@@ -1,12 +1,10 @@
-import { render, screen } from '@testing-library/react'
-import { FC, useEffect, useState } from 'react';
+import { fireEvent, render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom';
 import OrdersListItem from '../OrdersListItem';
-import { CreateOrderedItemsContext, OrderedItemsProvider, useOrderContext } from '../../../context/ShopContext';
+import { CreateOrderedItemsContext } from '../../../context/ShopContext';
 import UserOrdersModel from '../../../models/UserOrdersModel';
 import { createMockStore } from '../../../tests/TestWrapper';
-
-
+import { act } from 'react-dom/test-utils';
 
 const mockUserOrder: UserOrdersModel = {
     userId: 3210894,
@@ -21,51 +19,34 @@ const mockUserOrder: UserOrdersModel = {
       id: 39
 }
 
-// type OrderType = {
-//   order: UserOrdersModel
-// }
+describe('render OrderList Item', () => {
 
-// const OrderListItemWrapper: FC<OrderType> = ({ order }: OrderType) => {
-//     const [isExtended, setIsExtended] = useState<Boolean>(false)
-//     const {
-//         getMenuItemById,
-//         getClientById
-//     } = useOrderContext()
-
-//     useEffect(() => {
-//         setIsExtended(true)
-//         setTimeout(() => {
-//             // console.log(isExtended)
-//         }, 2000)
-//     })
-//     return (
-//         <>
-//             <OrderedItemsProvider>
-//                 <OrdersListItem order={order} />
-//             </OrderedItemsProvider>
-//         </>
-//     )
-// }
-
-
-describe('render MenuItemView', () => {
     it('checks if ORDER ID is displayed correctly', () => {
-        // render(<OrderListItemWrapper order={mockUserOrder} />)
-
         const store = createMockStore()
+        const setIsExtended = jest.fn()
         render(
             <CreateOrderedItemsContext.Provider
                 value={{
-                    ...store
+                    ...store,
+                    setIsExtended: setIsExtended
                 }}>
                 <BrowserRouter>
                     <OrdersListItem order={mockUserOrder} />
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider> 
-        )
+        );
         
-        const orderNumber = screen.getByText(/Order/).textContent?.split(' ')[1]
-        expect(orderNumber).toBe(`${mockUserOrder.id}`)
+        const orderNumber = screen.getByText(/Order/).textContent?.split(' ')[1];
+        expect(orderNumber).toBe(`${mockUserOrder.id}`);
+
+        const firstDiv = screen.getAllByRole('columnheader')[0];
+        const fitstDivBeforeClick = firstDiv.textContent
+        act(() => fireEvent.click(firstDiv))
+
+        const firstDivAfter = screen.getAllByRole('columnheader')[0];
+        const fitstDivAfterClick = firstDivAfter.textContent
+        
+        expect(fitstDivBeforeClick).not.toBe(fitstDivAfterClick);
     })
 
 })

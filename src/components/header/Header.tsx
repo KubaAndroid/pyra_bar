@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import pyra from '../../assets/img/potato_logo.png';
 import styled from 'styled-components';
-import { useOrderContext } from '../../context/ShopContext';
 
 const HeaderDiv = styled.header`
   display: flex;
@@ -32,6 +31,9 @@ const PyraDiv = styled.div`
   justify-content: center;
   @media screen and (max-width: 1000px) {
     display: none;
+  }
+  @media screen and (max-width: 1200px) {
+    font-size: 42px;
   }
 `
 const NavigationDiv = styled.div`

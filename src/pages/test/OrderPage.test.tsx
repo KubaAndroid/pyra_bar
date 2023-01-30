@@ -11,7 +11,7 @@ interface IOrderItemModel {
 }
 
 const renderOrderItem = ({orderedItem}: IOrderItemModel) => {
-    const store = createMockStore()
+    const store = createMockStore();
     render(
         <CreateOrderedItemsContext.Provider
             value={{
@@ -25,7 +25,7 @@ const renderOrderItem = ({orderedItem}: IOrderItemModel) => {
 }
 
 const renderOrderPage = () => {
-    const store = createMockStore()
+    const store = createMockStore();
     render(
         <CreateOrderedItemsContext.Provider
             value={{
@@ -47,9 +47,8 @@ const mockOrderItem: OrderItemModel = {
 describe("render OrderPage", () => {
 
     it('checks if OrderPage with empty cart renders correctly', () => {
-        // render(<MockWrapper children={<OrderPage orderedItems={[]} />} />)
 
-        const store = createMockStore()
+        const store = createMockStore();
         render(
             <CreateOrderedItemsContext.Provider
                 value={{
@@ -61,34 +60,22 @@ describe("render OrderPage", () => {
             </CreateOrderedItemsContext.Provider> 
         )
 
-        const emptyCartText = screen.getByText(/Cart/)?.textContent
-        expect(emptyCartText).toBe('Cart is empty')
+        const emptyCartText = screen.getByText(/Cart/)?.textContent;
+        expect(emptyCartText).toBe('Cart is empty');
     })
 
     it('checks if OrderPage shows price of ordered item correctly', () => {
-        // render(<MockWrapper children={<OrderPage orderedItems={[mockOrderItem]} />} />)
-        
-        renderOrderItem({ orderedItem: mockOrderItem })
-        
-        renderOrderPage()
+        renderOrderPage();
 
         const sumTotalText = screen.getByText(/Sum total/)?.textContent
         expect(sumTotalText).toBe('Sum total: 48.00')
     })
 
     it('checks if OrderPage shows Confirm button', () => {
-        const mockOrderItem: OrderItemModel = {
-            id: 0,
-            quantity: 2,
-            price: 455
-        }
+        renderOrderPage();
 
-        // renderOrderItem({orderedItem: mockOrderItem})
-        renderOrderPage()
-
-        // render(<MockWrapper children={<OrderPage orderedItems={[mockOrderItem]}/>} />)
-        const confirmButton = screen.getByText('Confirm')
-        expect(confirmButton).toBeInTheDocument()
+        const confirmButton = screen.getByText('Confirm');
+        expect(confirmButton).toBeInTheDocument();
     })
 
 

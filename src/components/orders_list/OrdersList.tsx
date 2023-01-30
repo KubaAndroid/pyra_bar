@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useOrderContext } from '../../context/ShopContext'
+import { getAllMenuItems, getAllOrders } from '../../utils'
 import OrdersListItem from './OrdersListItem'
 
 const OrdersContainer = styled.div`
@@ -18,12 +19,12 @@ const OrdersContainer = styled.div`
 `
 
 function OrdersList() {
-    const { getAllOrders, ordersList, getAllMenuItems } = useOrderContext()
+    const { setOrdersList, ordersList, allMenuItems, setMenuItems, setFilteredMenuItems } = useOrderContext()
     
     useEffect(() => {
         const getOrders = async () => {
-          await getAllOrders()
-          await getAllMenuItems()
+          await getAllOrders(setOrdersList)
+          await getAllMenuItems(allMenuItems, setMenuItems, setFilteredMenuItems)
         }
         getOrders()
     }, [])

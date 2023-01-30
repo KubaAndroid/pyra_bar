@@ -4,10 +4,10 @@ import fireIcon from '../assets/img/fire.png';
 import vegeIcon from '../assets/img/plant.png';
 import noLactoseIcon from '../assets/img/vegan.png';
 import allCategoriesIcon from '../assets/img/food.png';
-import { useEffect, useState } from "react";
-import MenuItemModel from "../models/MenuItemModel";
+import { useEffect } from "react";
 import MenuModal from "../components/menu/MenuModal";
 import MenuList from "../components/menu/MenuList";
+import { getAllMenuItems } from "../utils/index"
 
 interface IButtonProps {
   isActive?: boolean
@@ -59,14 +59,6 @@ const SearchInput = styled.input`
     margin-left: 4px;
 `
 
-const IsLoading = styled.div`
-width: 100%;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-`
-
 export const CategoryIcon = styled.img`
   width: 25px;
 `
@@ -81,7 +73,8 @@ const MenuCategory = {
 
 const MenuPage = () => {
   const {
-    getAllMenuItems,
+    allMenuItems,
+    setMenuItems,
     filteredMenuItems,
     setFilteredMenuItems,
     sortMenuItemsByPrice,
@@ -94,93 +87,76 @@ const MenuPage = () => {
     currentlySelectedMenuItem,
   } = useOrderContext()
 
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
-  // const [isModalOpen, setIsModalOpen] = useState<Boolean>(false);
-  
-
   useEffect(() => {
     const getMenuItems = async () => {
-      const menuItems = await getAllMenuItems()
+      const menuItems = await getAllMenuItems(allMenuItems, setMenuItems, setFilteredMenuItems)
       setFilteredMenuItems(menuItems)
-      setIsLoading(false)
     }
     getMenuItems()
   }, [])
   
-  
-  if (isLoading) {
-    return (
-      <PageBackground>
-        <IsLoading>Loading...</IsLoading>
-      </PageBackground>
-    )
-  }
-  else {
-    return (
-      <>
-        {isModalOpen ? (<MenuModal menuItem={currentlySelectedMenuItem} openedModal={setIsModalOpen} />) : (
-          <PageBackground>
-            <CategoryButtons>
-              <div>
-                Sort by price:
-                <CategoryButton
-                  isActive={currentSorting === "asc"}
-                  onClick={() => {
-                  sortMenuItemsByPrice(true)
-                }}>Asc</CategoryButton>
-                
-                <CategoryButton
-                  isActive={currentSorting === "desc"}
-                  onClick={() => {
-                  sortMenuItemsByPrice(false)
-                }}>Desc</CategoryButton>
-              </div>
+  return (
+    <>
+      {isModalOpen ? (<MenuModal menuItem={currentlySelectedMenuItem} openedModal={setIsModalOpen} />) : (
+        <PageBackground>
+          <CategoryButtons>
+            <div>
+              Sort by price:
+              <CategoryButton
+                isActive={currentSorting === "asc"}
+                onClick={() => {
+                sortMenuItemsByPrice(true)
+              }}>Asc</CategoryButton>
+              <CategoryButton
+                isActive={currentSorting === "desc"}
+                onClick={() => {
+                sortMenuItemsByPrice(false)
+              }}>Desc</CategoryButton>
+            </div>
 
-              <div>
-                <CategoryButton
-                  isActive={currentFilter === ""}
-                  onClick={() => filterMenuItems(MenuCategory.all)}>
-                  <CategoryIcon src={allCategoriesIcon} alt="all" /> All
-                </CategoryButton>
+            <div>
+              <CategoryButton
+                isActive={currentFilter === ""}
+                onClick={() => filterMenuItems(MenuCategory.all)}>
+                <CategoryIcon src={allCategoriesIcon} alt="all" /> All
+              </CategoryButton>
+              <CategoryButton
+                isActive={currentFilter === MenuCategory.spicy}
+                onClick={() => filterMenuItems(MenuCategory.spicy)}>
+                <CategoryIcon src={fireIcon} alt="spicy" /> Spicy
+              </CategoryButton>
+              <CategoryButton
+                isActive={currentFilter === MenuCategory.vege}
+                onClick={() => filterMenuItems(MenuCategory.vege)}>
+                <CategoryIcon src={vegeIcon} alt="vege" /> Vege
+              </CategoryButton>
+              <CategoryButton
+                isActive={currentFilter === MenuCategory.lactoseFree}
+                onClick={() => filterMenuItems(MenuCategory.lactoseFree)}>
+                <CategoryIcon src={noLactoseIcon} alt="lactoseFree" /> Lactose free
+              </CategoryButton>
+            </div>
+          </CategoryButtons>
 
-                <CategoryButton
-                  isActive={currentFilter === MenuCategory.spicy}
-                  onClick={() => filterMenuItems(MenuCategory.spicy)}>
-                  <CategoryIcon src={fireIcon} alt="spicy" /> Spicy
-                </CategoryButton>
-                <CategoryButton
-                  isActive={currentFilter === MenuCategory.vege}
-                  onClick={() => filterMenuItems(MenuCategory.vege)}>
-                  <CategoryIcon src={vegeIcon} alt="vege" /> Vege
-                </CategoryButton>
-                <CategoryButton
-                  isActive={currentFilter === MenuCategory.lactoseFree}
-                  onClick={() => filterMenuItems(MenuCategory.lactoseFree)}>
-                  <CategoryIcon src={noLactoseIcon} alt="lactoseFree" /> Lactose free
-                </CategoryButton>
-              </div>
-            </CategoryButtons>
+          <CategoryButtons>
+            <div>
+              Search: <SearchInput
+                type="text"
+                placeholder="search for a dish"
+                onChange={(e) => {
+                  searchMenuItems(e.target.value)
+                }} />
+            </div>
+          </CategoryButtons>
 
-            <CategoryButtons>
-              <div>
-                Search: <SearchInput
-                  type="text"
-                  placeholder="search for a dish"
-                  onChange={(e) => {
-                    searchMenuItems(e.target.value)
-                  }} />
-              </div>
-            </CategoryButtons>
-
-            <H1>Menu</H1>
-            <MenuList
-              items={filteredMenuItems}
-            />
-          </PageBackground>
-        )}
-      </>
-    )
-  }
+          <H1>Menu</H1>
+          <MenuList
+            items={filteredMenuItems}
+          />
+        </PageBackground>
+      )}
+    </>
+  )
 }
 
 export default MenuPage

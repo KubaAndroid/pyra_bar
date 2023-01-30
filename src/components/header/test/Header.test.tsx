@@ -1,4 +1,3 @@
-import React from "react"
 import { render, screen } from '@testing-library/react'
 import Header from '../Header'
 import { BrowserRouter } from "react-router-dom"
@@ -22,8 +21,6 @@ describe("render Header component", () => {
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider> 
         )
-        // render(<TestWrapper children={<Header orderQuantity={numberOfItemsInCart} />} />)
-
         const badge = screen.getByTestId('badge');
         expect(badge.textContent).toBe(`${numberOfItemsInCart}`);
     })
@@ -40,7 +37,6 @@ describe("render Header component", () => {
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider> 
         )
-
         const navLinks = screen.getAllByRole('listitem');
         expect(navLinks.length).toBe(3);
     })

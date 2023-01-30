@@ -4,11 +4,9 @@ import OrderModel from "../models/OrderModel";
 import ClientModel from "../models/ClientModel";
 import OrderItemModel from '../models/OrderItemModel';
 import UserOrdersModel from '../models/UserOrdersModel';
-import { UserMessage } from '../components/contact/ContactForm';
-
+import { fetchClients, fetchMenuItems, fetchOrders, getMenuItemsById, getOrderQuantity } from '../utils';
 
 export interface OrderedItemsContext {
-    getOrderItemQuantity: (id: number) => number
     increaseOrderItemQuantity: (id: number) => void
     reduceOrderItemQuantity: (id: number) => void
     removeOrderItem: (id: number) => void
@@ -17,11 +15,12 @@ export interface OrderedItemsContext {
     setOrderItems: React.Dispatch<React.SetStateAction<OrderItemModel[]>>
     setOrdersList: React.Dispatch<React.SetStateAction<OrderModel[]>>
     orderedMenuItems: MenuItemModel[]
-    getAllMenuItems: () => Promise<MenuItemModel[]>
+    // getAllMenuItems: () => Promise<MenuItemModel[]>
     clearOrder: () => void
-    getMenuItemById: (id: number) => MenuItemModel | undefined
-    getClientById: (id: number) => ClientModel
+    getMenuItemById: (id: number, items: MenuItemModel[]) => MenuItemModel | undefined
+    // getClientById: (id: number) => ClientModel
     allMenuItems: MenuItemModel[]
+    setMenuItems: React.Dispatch<React.SetStateAction<MenuItemModel[]>>
     filteredMenuItems: MenuItemModel[]
     setFilteredMenuItems: React.Dispatch<React.SetStateAction<MenuItemModel[]>>
     sortMenuItemsByPrice: (ascending: boolean) => void
@@ -30,21 +29,19 @@ export interface OrderedItemsContext {
     filterMenuItems: (filterBy: string) => void
     searchMenuItems: (searchQuery: string) => void
     ordersList: OrderModel[]
-    getAllOrders: () => Promise<OrderModel[]>
+    // getAllOrders: () => Promise<OrderModel[]>
     currentFilter: string
     currentSorting: string
     setIsSnackbarVisible: React.Dispatch<React.SetStateAction<Boolean>>
     isSnackbarVisible: Boolean
-    saveUser(user: ClientModel): Promise<void>
-    postOrder(order: UserOrdersModel): Promise<void>
-    
+    // saveUser(user: ClientModel): Promise<void>
+    // postOrder(order: UserOrdersModel): Promise<void>
     setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>
     isModalOpen: Boolean
-    setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
-    
     currentlySelectedMenuItem: MenuItemModel
     setCurrentlySelectedMenuItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
-
+    isExtended: Boolean
+    setIsExtended: React.Dispatch<React.SetStateAction<Boolean>>
 }
 
 export const CreateOrderedItemsContext = createContext({} as OrderedItemsContext)
@@ -68,13 +65,11 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     const [ordersList, setOrdersList] = useState<OrderModel[]>([])
     const [clientsList, setClientsList] = useState<ClientModel[]>([])
     const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
-
     const [isModalOpen, setIsModalOpen] = useState<Boolean>(false)
-    const [currentItem, setCurrentItem] = useState<MenuItemModel>(allMenuItems[0])
     const [currentlySelectedMenuItem, setCurrentlySelectedMenuItem] = useState<MenuItemModel>(filteredMenuItems[0]);
-
     const [, updateState] = useState<object>({});
     const forceUpdate = useCallback(() => updateState({}), []);
+    const [isExtended, setIsExtended] = useState<Boolean>(false);
 
     useEffect(() => {
         const getOrders = async () => {
@@ -88,42 +83,24 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         }
         getOrders()
         getClients()
-    }, [])
+    }, []);
 
-    const fetchMenuItems = async () => {
-        const res = await fetch('http://localhost:5000/menuItems')
-        const data = await res.json()
-        return data
-    }
+    
+    // const getAllMenuItems = async (): Promise<MenuItemModel[]> => {
+    //     if (allMenuItems.length < 1) {
+    //         const fetchedMenuItems = await fetchMenuItems()
+    //         setMenuItems(fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
+    //         setFilteredMenuItems(fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
+    //         return fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1)
+    //     }
+    //     return allMenuItems as MenuItemModel[]
+    // }
 
-    const fetchOrders = async() => {
-        const res = await fetch('http://localhost:5000/orders')
-        const data = await res.json()
-        return data
-    }
-
-    const fetchClients = async() => {
-        const res = await fetch('http://localhost:5000/users')
-        const data = await res.json()
-        return data
-    }
-
-    const getAllMenuItems = async (): Promise<MenuItemModel[]> => {
-        if (allMenuItems.length < 1) {
-            const fetchedMenuItems = await fetchMenuItems()
-            setMenuItems(fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
-            setFilteredMenuItems(fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
-            return fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1)
-        }
-        return allMenuItems
-    }
-
-    const getAllOrders = async ():Promise<OrderModel[]> => {
-        const fetchedOrders = await fetchOrders()
-        setOrdersList(fetchedOrders.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
-        // console.log(fetchedOrders)
-        return fetchedOrders as OrderModel[]
-    }
+    // const getAllOrders = async ():Promise<OrderModel[]> => {
+    //     const fetchedOrders = await fetchOrders()
+    //     setOrdersList(fetchedOrders.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
+    //     return fetchedOrders as OrderModel[]
+    // }
 
     function sortMenuItemsByPrice(ascending: Boolean): void {
         if (ascending) {
@@ -139,53 +116,52 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         }
     }
 
-    async function saveUser(user: ClientModel) {
-        await fetch('http://localhost:5000/users', {
-        method: "POST",
-        body: JSON.stringify(user),
-        headers: {
-            "Content-Type": "application/json"
-        }
-        }).then(() => setClientsList([...clientsList, user]))
-    }
+    // async function saveUser(user: ClientModel) {
+    //     await fetch('http://localhost:5000/users', {
+    //     method: "POST",
+    //     body: JSON.stringify(user),
+    //     headers: {
+    //         "Content-Type": "application/json"
+    //     }
+    //     }).then(() => setClientsList([...clientsList, user]))
+    // } 
 
-    async function postOrder(order: UserOrdersModel) {
-        await fetch('http://localhost:5000/orders', {
-            method: "POST",
-            body: JSON.stringify(order),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(() => {
-            // showSnack()
-            setIsSnackbarVisible(true)
-        })
-    }
+    // async function postOrder(order: UserOrdersModel) {
+    //     await fetch('http://localhost:5000/orders', {
+    //         method: "POST",
+    //         body: JSON.stringify(order),
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         }
+    //     }).then(() => {
+    //         setIsSnackbarVisible(true)
+    //     })
+    // }
 
-    
+    // const orderQuantity = orderedItems?.reduce((quantity, item) => item.quantity + quantity, 0)
 
-    const orderQuantity = orderedItems?.reduce((quantity, item) => item.quantity + quantity, 0)
+
+    const orderQuantity = getOrderQuantity(orderedItems)
 
     function clearOrder() {
         setOrderItems([]);
         setOrderedMenuItems([])
     }
 
-    function getOrderItemQuantity(id: number) {
-        return orderedItems.find(item => item.id === id)?.quantity || 0
-    }
+    // function getOrderItemQuantity(id: number) {
+    //     return orderedItems.find(item => item.id === id)?.quantity || 0
+    // }
+    
 
-    function getMenuItemById(id: number) {
-        return allMenuItems.find(item => item.id === id)
-    }
+    const getMenuItemById = (id: number) => getMenuItemsById(id, allMenuItems)
 
-    const getClientById = (id: number) => {
-        return clientsList.find(user => user.id === id)!
-    }
+    // function getMenuItemById(id: number) {
+    //     return allMenuItems.find(item => item.id === id)
+    // }
 
-    function getOrderById(id: number) {
-        return ordersList.find(order => order.id === id)
-    }
+    // const getClientById = (id: number) => {
+    //     return clientsList.find(user => user.id === id)!
+    // }
 
     const filterMenuItems = (filterBy: string) => {
         if (filterBy === 'all') {
@@ -198,7 +174,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         const filteredResults = allMenuItems.filter(item => item.category.includes(filterBy) && 
             item.name.toLowerCase().includes(searchQuery))
         setFilteredMenuItems(filteredResults)
-    }
+    } // todo: wydzielic do utils
 
     const searchMenuItems = (query: string) => {
         setSearchQuery(query.toLowerCase())
@@ -210,7 +186,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     }
 
     function increaseOrderItemQuantity(id: number) {
-        const newMenuItem = getMenuItemById(id)!
+        const newMenuItem = getMenuItemsById(id, allMenuItems)!
         setOrderedMenuItems([...orderedMenuItems, newMenuItem!])
         setOrderItems(currentItems => {
             if (currentItems.find(item => item.id === id) == null) {
@@ -228,7 +204,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     }
 
     function reduceOrderItemQuantity(id: number) {
-         const newMenuItem = getMenuItemById(id)!
+         const newMenuItem = getMenuItemsById(id, allMenuItems)!
         setOrderItems(currentItems => {
             if (currentItems.find(item => item.id === id)?.quantity === 1) {
                 return currentItems.filter(item => item.id !== id)
@@ -256,7 +232,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     return (
         <CreateOrderedItemsContext.Provider
             value={{
-                getOrderItemQuantity,
+                // getOrderItemQuantity,
                 increaseOrderItemQuantity,
                 reduceOrderItemQuantity,
                 removeOrderItem,
@@ -265,11 +241,12 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 setOrdersList,
                 orderQuantity,
                 orderedMenuItems,
-                getAllMenuItems,
+                // getAllMenuItems,
                 clearOrder,
                 getMenuItemById,
-                getClientById,
+                // getClientById,
                 allMenuItems,
+                setMenuItems,
                 filteredMenuItems,
                 setFilteredMenuItems,
                 sortMenuItemsByPrice,
@@ -278,18 +255,19 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 filterMenuItems,
                 searchMenuItems,
                 ordersList,
-                getAllOrders,
+                // getAllOrders,
                 currentFilter,
                 currentSorting,
                 isSnackbarVisible,
                 setIsSnackbarVisible,
-                saveUser,
-                postOrder,
+                // saveUser,
+                // postOrder,
                 setIsModalOpen,
-                setCurrentItem,
                 isModalOpen,
                 currentlySelectedMenuItem,
-                setCurrentlySelectedMenuItem
+                setCurrentlySelectedMenuItem,
+                isExtended,
+                setIsExtended
             }}>
             {children}
         </CreateOrderedItemsContext.Provider>

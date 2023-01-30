@@ -1,5 +1,5 @@
 export default interface ClientModel {
-    id: number; //Math.floor(Math.random() * (10000000)) + 1;
+    id: number;
     firstName?: string;
     lastName?: string;
     emailAddress?: string;

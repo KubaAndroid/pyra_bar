@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import MenuItemModel from '../../models/MenuItemModel'
 import MenuItemLayout from './MenuItemLayout'
@@ -14,14 +13,10 @@ const StyledMenuList = styled.div`
 `
 
 interface MenuType {
-  items: MenuItemModel[],
-  // setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>
-  // setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
+  items: MenuItemModel[]
 }
 
 function MenuList({ items }: MenuType) {
-
-
   return (
     <StyledMenuList>
       {items.map((item, index) =>

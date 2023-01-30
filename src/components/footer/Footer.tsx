@@ -10,7 +10,6 @@ const FooterDiv = styled.footer`
   margin-top: 0;
   margin-bottom: 10px;
   width: 80%;
-  /* height: 14rem; */
   display: flex;
   text-align: center;
   align-items: center;
@@ -64,7 +63,7 @@ const Footer = () => {
       <FooterIcons>
         <p><FontAwesomeIcon icon={ faTwitter } style={{height: '50px'}}></FontAwesomeIcon></p>
         <p><FontAwesomeIcon icon={ faInstagram } style={{height: '50px'}}></FontAwesomeIcon></p>
-        <div><FontAwesomeIcon icon={ faFacebook } style={{height: '50px'}}></FontAwesomeIcon></div>
+        <p><FontAwesomeIcon icon={ faFacebook } style={{height: '50px'}}></FontAwesomeIcon></p>
         <FontAwesomeIcon icon={ faSnapchat } style={{height: '50px'}}></FontAwesomeIcon>
       </FooterIcons>
 

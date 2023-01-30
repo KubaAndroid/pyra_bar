@@ -4,6 +4,7 @@ import { useOrderContext } from '../../context/ShopContext'
 import ClientModel from '../../models/ClientModel'
 import MenuItemModel from '../../models/MenuItemModel'
 import UserOrdersModel from '../../models/UserOrdersModel'
+import { getClientById } from '../../utils'
 
 const OrderListItemContainer = styled.div`
   display: flex;
@@ -39,11 +40,12 @@ function OrdersListItem({ order }: OrderType) {
     const [isExtended, setIsExtended] = useState<Boolean>(false)
     const {
         getMenuItemById,
-        getClientById
+        clientsList,
+        allMenuItems
     } = useOrderContext()
 
     const clientId: number = order.userId!
-    const client: ClientModel = getClientById(clientId)
+    const client: ClientModel = getClientById(clientId, clientsList)
     let sumTotal: number = 0
     const boughtItems: MenuItemModel[] = []
     const itemsArray: SingleListItem[] = []
@@ -51,7 +53,7 @@ function OrdersListItem({ order }: OrderType) {
 
     const orderedItems = () => {
       order.menuItems?.forEach(itemId => {
-          let menuItem = getMenuItemById(itemId)
+          let menuItem = getMenuItemById(itemId, allMenuItems)
           if (menuItem != null || menuItem !== undefined) {
             boughtItems.push(menuItem)
             let currentItem = displayItem.get(itemId)
@@ -84,7 +86,7 @@ function OrdersListItem({ order }: OrderType) {
 
 
     return (
-      <OrderListItemContainer onClick={() => setIsExtended(!isExtended)} key={order.id}>
+      <OrderListItemContainer onClick={() => setIsExtended(!isExtended)} key={order.id} role="columnheader">
         <OrderListRow>
           <div>Order {order.id}</div> Date: {order.date}
         </OrderListRow>

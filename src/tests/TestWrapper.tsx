@@ -6,8 +6,9 @@ import OrderModel from "../models/OrderModel"
 
 export function createMockStore(): OrderedItemsContext {
     let allMenuItems: MenuItemModel[] = db['menuItems']
+    const setMenuItems= jest.fn()
     let filteredMenuItems: MenuItemModel[] = allMenuItems
-    const getOrderItemQuantity = jest.fn()
+    // const getOrderItemQuantity = jest.fn()
     const increaseOrderItemQuantity = jest.fn()
     const reduceOrderItemQuantity = jest.fn()
     const removeOrderItem = jest.fn()
@@ -16,7 +17,7 @@ export function createMockStore(): OrderedItemsContext {
     const setOrderItems = jest.fn()
     const setOrdersList = jest.fn()
     let orderedMenuItems: MenuItemModel[] = []
-    const getAllMenuItems = async () => await allMenuItems
+    // const getAllMenuItems = async () => await allMenuItems
     const clearOrder = () => orderedItems = []
     const getMenuItemById = (id: number) => allMenuItems.find(item => item.id === id)
     let clientsList = db['users']
@@ -27,23 +28,25 @@ export function createMockStore(): OrderedItemsContext {
     const filterMenuItems = (filterBy: string) => jest.fn()
     const searchMenuItems = (searchQuery: string) => jest.fn()
     let ordersList: OrderModel[] = []
-    const getAllOrders = jest.fn()
+    // const getAllOrders = jest.fn()
     let currentFilter = ""
     let currentSorting = ""
     const setIsSnackbarVisible = jest.fn()
     const isSnackbarVisible = false
-    const saveUser = jest.fn()
-    const postOrder = jest.fn()
-
+    // const saveUser = jest.fn()
+    // const postOrder = jest.fn()
     const setIsModalOpen = jest.fn()
     let isModalOpen = false
-    const setCurrentItem = jest.fn()
+    // const setCurrentItem = jest.fn()
     let currentlySelectedMenuItem = allMenuItems[0]
     const setCurrentlySelectedMenuItem = jest.fn()
+    let isExtended = false
+    const setIsExtended = jest.fn()
 
     return {
-        getOrderItemQuantity,
+        // getOrderItemQuantity,
         allMenuItems,
+        setMenuItems,
         filteredMenuItems,
         getMenuItemById,
         orderedItems,
@@ -54,27 +57,29 @@ export function createMockStore(): OrderedItemsContext {
         setOrderItems,
         setOrdersList,
         orderedMenuItems,
-        getAllMenuItems,
+        // getAllMenuItems,
         clearOrder,
         clientsList,
-        getClientById,
+        // getClientById,
         setFilteredMenuItems,
         sortMenuItemsByPrice,
         setClientsList,
         filterMenuItems,
         searchMenuItems,
         ordersList,
-        getAllOrders,
+        // getAllOrders,
         currentFilter,
         currentSorting,
         setIsSnackbarVisible,
         isSnackbarVisible,
-        saveUser,
-        postOrder,
+        // saveUser,
+        // postOrder,
         setIsModalOpen,
-        setCurrentItem,
+        // setCurrentItem,
         isModalOpen,
         currentlySelectedMenuItem,
-        setCurrentlySelectedMenuItem
+        setCurrentlySelectedMenuItem,
+        isExtended,
+        setIsExtended
     }
 }

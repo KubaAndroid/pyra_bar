@@ -6,13 +6,12 @@ import noLactoseIcon from '../../assets/img/vegan.png';
 import allCategoriesIcon from '../../assets/img/food.png';
 import styled from 'styled-components';
 import { CategoryIcon } from '../../pages/MenuPage';
+import { getOrderItemQuantity } from '../../utils';
 
 
 interface MenuItemType {
     menuItem: MenuItemModel,
-    index: number,
-    // setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>,
-    // setCurrentItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
+    index: number
 }
 
 const MenuItemCard = styled.li`
@@ -79,59 +78,59 @@ const MarginalizedDiv = styled.div`
 
 function MenuItemLayout({ menuItem, index }: MenuItemType) {
 
-    const {
-        getOrderItemQuantity,
-        increaseOrderItemQuantity,
-        reduceOrderItemQuantity,
-        setIsModalOpen,
-      setCurrentItem,
-        setCurrentlySelectedMenuItem
+  const {
+    orderedItems,
+    increaseOrderItemQuantity,
+    reduceOrderItemQuantity,
+    setIsModalOpen,
+    setCurrentlySelectedMenuItem
   } = useOrderContext()
   
-    const quantity = getOrderItemQuantity(menuItem.id)
-    const selectedIcon = (dishType: String) => {
-        if (dishType === 'vege') {
-            return vegeIcon
-        } else if (dishType === 'spicy') {
-            return fireIcon
-        } else if (dishType === 'lactoseFree'){
-            return noLactoseIcon
-        } else {
-            return allCategoriesIcon
-        }
-    }
-    const myIcon = selectedIcon(menuItem.category)
+  const quantity = getOrderItemQuantity(menuItem.id, orderedItems)
+  
+  const selectedIcon = (dishType: String) => {
+      if (dishType === 'vege') {
+          return vegeIcon
+      } else if (dishType === 'spicy') {
+          return fireIcon
+      } else if (dishType === 'lactoseFree'){
+          return noLactoseIcon
+      } else {
+          return allCategoriesIcon
+      }
+  }
+  const myIcon = selectedIcon(menuItem.category)
 
-    return (
-        <>
-            <MenuItemCard>
-                <MenuItemCardImgDiv>
-                  <MenuItemCardImg src={menuItem.imgUrl} alt="good food!" />
-                </MenuItemCardImgDiv>
-                <MenuItemCardContent>
-                  <h3>{menuItem.name} <CategoryIcon src={myIcon} alt="food category" /></h3>
-                  <InfoButton
-                      onClick={() => {
-                        setCurrentlySelectedMenuItem(menuItem)            
-                        setIsModalOpen(true)
-                      }}>Info</InfoButton>
-                  {index < 4 ? <MarginalizedDiv>{menuItem.description}</MarginalizedDiv> : null}
-                  <MarginalizedDiv>Price: { menuItem.price.toFixed(2)}</MarginalizedDiv>
-                </MenuItemCardContent>
-                <MenuItemCardBottom>
-                  {quantity === 0 ? (
-                    <div>
-                      <BuyButton onClick={() => increaseOrderItemQuantity(menuItem.id)}>Buy!</BuyButton>
-                    </div>
-                  ) : (
-                    <div>
-                      <BuyButton onClick={() => reduceOrderItemQuantity(menuItem.id)}>-</BuyButton>
-                      <BuyButton>{quantity}</BuyButton>
-                      <BuyButton onClick={() => increaseOrderItemQuantity(menuItem.id)}>+</BuyButton>
-                    </div>
-                  )}
-                </MenuItemCardBottom>
-            </MenuItemCard>
+  return (
+      <>
+        <MenuItemCard>
+          <MenuItemCardImgDiv>
+            <MenuItemCardImg src={menuItem.imgUrl} alt="good food!" />
+          </MenuItemCardImgDiv>
+          <MenuItemCardContent>
+            <h3>{menuItem.name} <CategoryIcon src={myIcon} alt="food category" /></h3>
+            <InfoButton
+                onClick={() => {
+                  setCurrentlySelectedMenuItem(menuItem)            
+                  setIsModalOpen(true)
+                }}>Info</InfoButton>
+            {index < 4 ? <MarginalizedDiv>{menuItem.description}</MarginalizedDiv> : null}
+            <MarginalizedDiv>Price: { menuItem.price.toFixed(2)}</MarginalizedDiv>
+          </MenuItemCardContent>
+          <MenuItemCardBottom>
+            {quantity === 0 ? (
+              <div>
+                <BuyButton onClick={() => increaseOrderItemQuantity(menuItem.id)}>Buy!</BuyButton>
+              </div>
+            ) : (
+              <div>
+                <BuyButton onClick={() => reduceOrderItemQuantity(menuItem.id)}>-</BuyButton>
+                <BuyButton>{quantity}</BuyButton>
+                <BuyButton onClick={() => increaseOrderItemQuantity(menuItem.id)}>+</BuyButton>
+              </div>
+            )}
+          </MenuItemCardBottom>
+        </MenuItemCard>
     </>
   )
 }

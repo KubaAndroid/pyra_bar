@@ -2,11 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import MenuItemModel from '../../models/MenuItemModel'
 import { useOrderContext } from '../../context/ShopContext'
-
-type ModalType = {
-    openedModal: Function
-    menuItem: MenuItemModel
-}
+import { getOrderItemQuantity } from '../../utils'
 
 export const BuyButton = styled.button`
   font: inherit;
@@ -88,16 +84,21 @@ const BottomDiv = styled.div`
 `
 
 
+interface IModalType {
+  openedModal: Function
+  menuItem: MenuItemModel
+}
 
-function MenuModal({ openedModal }: ModalType) {
+function MenuModal({ openedModal }: IModalType) {
   const {
-        getOrderItemQuantity,
-        increaseOrderItemQuantity,
+    // getOrderItemQuantity,
+    orderedItems,
+    increaseOrderItemQuantity,
     reduceOrderItemQuantity,
-        currentlySelectedMenuItem
+    currentlySelectedMenuItem
   } = useOrderContext()
   
-  const quantity = getOrderItemQuantity(currentlySelectedMenuItem!.id)!
+  const quantity = getOrderItemQuantity(currentlySelectedMenuItem!.id, orderedItems)!
 
   return (
       <ModalBackground>

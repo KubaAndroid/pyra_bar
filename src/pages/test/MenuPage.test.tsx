@@ -1,5 +1,4 @@
 import { fireEvent, render, screen, waitForElementToBeRemoved, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
 import { BrowserRouter } from 'react-router-dom';
 import { CreateOrderedItemsContext, OrderedItemsProvider } from '../../context/ShopContext';
@@ -30,9 +29,9 @@ describe('render MenuPage', () => {
         setTimeout(() => {
             const menuItemNames = screen.getAllByRole('heading', { level: 3 });
             menuItemNames.forEach((e) => {
-                expect(e.textContent!).toMatch(/Curr/)
+                expect(e.textContent!).toMatch(/Curr/);
             });
-        }, 1500);
+        }, 2000);
     })
 
     it('after changing the category, all rendered items have that category', async () => {
@@ -47,7 +46,7 @@ describe('render MenuPage', () => {
         setTimeout(() => {
             const categoryImgs = screen.getAllByAltText('food category') as HTMLImageElement[];
             categoryImgs.forEach((image) => {
-                expect(image.src!).toMatch(/plant/)
+                expect(image.src!).toMatch(/plant/);
             });
         }, 2000);
     });
@@ -63,8 +62,8 @@ describe('render MenuPage', () => {
     });
 
     it('checks if filtering is executed when SORT buttons are pressed', async () => {
-        const store = createMockStore()
-        const filterMenuItems = jest.fn()
+        const store = createMockStore();
+        const filterMenuItems = jest.fn();
 
         await act(() => render(
             <CreateOrderedItemsContext.Provider
@@ -78,26 +77,26 @@ describe('render MenuPage', () => {
             </CreateOrderedItemsContext.Provider>
         ));
 
-        const allButton = screen.getByAltText('all')
+        const allButton = screen.getByAltText('all');
         act(() => fireEvent.click(allButton));
-        expect(filterMenuItems).toBeCalled()
+        expect(filterMenuItems).toBeCalled();
 
-        const spicyButton = screen.getByAltText('spicy')
+        const spicyButton = screen.getByAltText('spicy');
         act(() => fireEvent.click(spicyButton));
-        expect(filterMenuItems).toBeCalled()
+        expect(filterMenuItems).toBeCalled();
 
-        const vegeButton = screen.getByAltText('vege')
+        const vegeButton = screen.getByAltText('vege');
         act(() => fireEvent.click(vegeButton));
-        expect(filterMenuItems).toBeCalled()
+        expect(filterMenuItems).toBeCalled();
         
-        const lactoseButton = screen.getByAltText('lactoseFree')
+        const lactoseButton = screen.getByAltText('lactoseFree');
         act(() => fireEvent.click(lactoseButton));
-        expect(filterMenuItems).toBeCalled()
+        expect(filterMenuItems).toBeCalled();
     });
 
     it('checks if sorting is executed when SORT ASC/DESC buttons are pressed', async () => {
-        const store = createMockStore()
-        const sortMenuItemsByPrice = jest.fn()
+        const store = createMockStore();
+        const sortMenuItemsByPrice = jest.fn();
 
         await act(() => render(
             <CreateOrderedItemsContext.Provider
@@ -110,32 +109,31 @@ describe('render MenuPage', () => {
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider>
         ));
-        screen.debug()
-        const ascButton = screen.getByText('Asc')
+        const ascButton = screen.getByText('Asc');
         act(() => fireEvent.click(ascButton));
-        expect(sortMenuItemsByPrice).toBeCalled()
+        expect(sortMenuItemsByPrice).toBeCalled();
 
-        const descButton = screen.getByText('Desc')
+        const descButton = screen.getByText('Desc');
         act(() => fireEvent.click(descButton));
-        expect(sortMenuItemsByPrice).toBeCalled()
+        expect(sortMenuItemsByPrice).toBeCalled();
 
     });
 })
 
 function isPriceArraySorted(arr: HTMLElement[], ascending: boolean) {  
-    let flag = true
+    let flag = true;
     if (ascending) {
         for (let i = 1; i < arr.length; i++) {
             if (arr[i - 1] > arr[i]) {
-                flag = false
+                flag = false;
             }
         }
     } else {
         for (let i = 1; i < arr.length; i++) {
             if (arr[i - 1] < arr[i]) {
-                flag = false
+                flag = false;
             }
         }
     }
-    return flag
+    return flag;
 } 

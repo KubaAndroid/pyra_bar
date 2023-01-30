@@ -6,6 +6,7 @@ import { useOrderContext } from '../../context/ShopContext';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import OrderSnackbar from './OrderSnackbar';
 import styled from 'styled-components';
+import { postOrder, saveUser } from '../../utils';
 
 
 const FormContainer = styled.div`
@@ -80,12 +81,9 @@ function OrderForm() {
         clearOrder,
         setIsSnackbarVisible, 
         isSnackbarVisible,
-        saveUser,
-        postOrder
+        clientsList, 
+        setClientsList
   } = useOrderContext()
-
-  // console.log(orderedMenuItems)
-  // const [isSnackbarVisible, setIsSnackbarVisible] = useState<Boolean>(false)
 
   const { handleSubmit, register, formState: { errors } } = useForm<Inputs>();
   const navigate = useNavigate();
@@ -102,7 +100,7 @@ function OrderForm() {
       addressCity: data.city,
       addressZipCode: data.zip
     }
-    saveUser(_user)
+    saveUser(_user, clientsList, setClientsList)
     
     const orderedItemsIds = orderedMenuItems.map(({ id }) => id);
     const todayDate = new Date().toUTCString().slice(0, -4);
@@ -111,7 +109,7 @@ function OrderForm() {
         date: todayDate,
         menuItems: orderedItemsIds
     }
-    postOrder(_userOrder);
+    postOrder(_userOrder, setIsSnackbarVisible);
     showSnack()
   }
   
@@ -133,7 +131,7 @@ function OrderForm() {
             <FormColumn>
               <label>First name:</label>
               <input type="text" placeholder="First name" {...register("fname", { required: true, maxLength: 80 })} />
-                {errors.fname?.type === 'required' && <p role="alert" style={{ color: 'red' }}>First name is required</p>}
+              {errors.fname?.type === 'required' && <p role="alert" style={{ color: 'red' }}>First name is required</p>}
             </FormColumn>
             <FormColumn>
               <label>Last name:</label>
@@ -157,17 +155,16 @@ function OrderForm() {
 
         <FormRow>
             <FormColumn>
-          <label>Street:</label>
-            <input type="text" placeholder="Street" {...register("street", { required: true, maxLength: 80 })} />
+              <label>Street:</label>
+              <input type="text" placeholder="Street" {...register("street", { required: true, maxLength: 80 })} />
               {errors.street?.type === 'required' && <p role="alert" style={{ color: 'red' }}>street name is required</p>}
-              </FormColumn>
+            </FormColumn>
             <FormColumn>
-
-          <label>Street number:</label>
-            <input type="text" placeholder="Street number" {...register("streetNumber", { required: true, maxLength: 80 })} />
-            {errors.streetNumber?.type === 'required' && <p role="alert" style={{color: 'red'}}>street number is required</p>}
-        </FormColumn>
-          </FormRow>
+              <label>Street number:</label>
+              <input type="text" placeholder="Street number" {...register("streetNumber", { required: true, maxLength: 80 })} />
+              {errors.streetNumber?.type === 'required' && <p role="alert" style={{color: 'red'}}>street number is required</p>}
+          </FormColumn>
+        </FormRow>
 
         <FormRow>
           <FormColumn>
@@ -175,12 +172,12 @@ function OrderForm() {
             <input type="text" placeholder="City" {...register("city", { required: true, maxLength: 80 })} />
             {errors.city?.type === 'required' && <p role="alert" style={{color: 'red'}}>city is required</p>}
           </FormColumn>
-            <FormColumn>
-          <label>Zip code:</label>
+          <FormColumn>
+            <label>Zip code:</label>
             <input type="text" placeholder="Zip code" {...register("zip", { required: true, maxLength: 80 })} />
             {errors.zip?.type === 'required' && <p role="alert" style={{color: 'red'}}>zip code is required</p>}
-         </FormColumn>
-          </FormRow>
+          </FormColumn>
+        </FormRow>
         <FormButton>Place order</FormButton>
         </StyledForm>
         {isSnackbarVisible && <OrderSnackbar />}

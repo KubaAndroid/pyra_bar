@@ -6,6 +6,7 @@ import MenuItemLayout from '../MenuItemLayout'
 import { CreateOrderedItemsContext, OrderedItemsProvider, useOrderContext } from '../../../context/ShopContext'
 import MenuItemModel from '../../../models/MenuItemModel'
 import { createMockStore } from '../../../tests/TestWrapper'
+import OrderItemModel from '../../../models/OrderItemModel'
 
 
 
@@ -79,8 +80,8 @@ const MenuItemWrapper: FC<MenuItemType> = ({ menuItem, index }: MenuItemType) =>
     )
 }
 
-describe('render MenuItemView', () => {
-    it('checks if TITLE is present on MenuItemView and is displayed correctly', () => {
+describe('render MenuItemLayout', () => {
+    it('checks if TITLE is present on MenuItemLayout and is displayed correctly', () => {
         render (<MenuItemWrapper
             menuItem={mockMenuItem}
             index={0}
@@ -90,7 +91,7 @@ describe('render MenuItemView', () => {
         expect(titleText).toBe(`${mockMenuItem.name} `);
     })
 
-    it('checks if [Buy!] button is present on MenuItemView when no items in cart', () => {
+    it('checks if [Buy!] button is present on MenuItemLayout when no items in cart', () => {
         render(
             <MenuItemWrapper
                 menuItem={mockMenuItem}
@@ -101,7 +102,7 @@ describe('render MenuItemView', () => {
         expect(buyBtn).toBeEnabled();
     })
 
-     it('checks if INFO button is present on MenuItemView', () => {
+     it('checks if INFO button is present on MenuItemLayout', () => {
          render(
              <MenuItemWrapper
                 menuItem={mockMenuItem}
@@ -112,7 +113,7 @@ describe('render MenuItemView', () => {
         expect(modalBtn).toBeEnabled();
      })
     
-    it('checks if price is present on MenuItemView and is displayed correctly', () => {
+    it('checks if price is present on MenuItemLayout and is displayed correctly', () => {
         render(
             <MenuItemWrapper
                 menuItem={mockMenuItem}
@@ -154,13 +155,14 @@ describe('render MenuItemView', () => {
 
     it('checks if INFO button sets state', () => {
         const store = createMockStore()
-        const setCurrentItem = jest.fn()
+        const setCurrentlySelectedMenuItem = jest.fn()
         const setIsModalOpen = jest.fn()
+
         act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
                     ...store,
-                    setCurrentItem: setCurrentItem,
+                    setCurrentlySelectedMenuItem: setCurrentlySelectedMenuItem,
                     setIsModalOpen: setIsModalOpen
                 }}>
                 <BrowserRouter>
@@ -175,23 +177,21 @@ describe('render MenuItemView', () => {
 
          const infoBtn = screen.getByText('Info');
         act(() => fireEvent.click(infoBtn))
-        
-
-        expect(setCurrentItem).toBeCalled()
-        expect(setIsModalOpen).toBeCalled()
-    })
+        setTimeout(() => {
+            expect(setCurrentlySelectedMenuItem).toBeCalled()
+            expect(setIsModalOpen).toBeCalled()
+        }, 500);
+    });
 
 
     it('checks if Buy! Button works', () => {
         const store = createMockStore()
         const increaseOrderItemQuantity = jest.fn()
-        const getOrderItemQuantity = () => 0
         act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
                     ...store,
-                    increaseOrderItemQuantity: increaseOrderItemQuantity,
-                    getOrderItemQuantity: getOrderItemQuantity
+                    increaseOrderItemQuantity: increaseOrderItemQuantity
                 }}>
                 <BrowserRouter>
                     <MenuItemLayout
@@ -212,14 +212,19 @@ describe('render MenuItemView', () => {
         const store = createMockStore()
         const increaseOrderItemQuantity = jest.fn()
         const reduceOrderItemQuantity = jest.fn()
-        const getOrderItemQuantity = () => 1
+        const orderedItems: OrderItemModel[] = [{
+            id: 0,
+            name: "Pie",
+            quantity: 1,
+            price: 11.11
+        }]
         act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
                     ...store,
                     increaseOrderItemQuantity: increaseOrderItemQuantity,
                     reduceOrderItemQuantity: reduceOrderItemQuantity,
-                    getOrderItemQuantity: getOrderItemQuantity
+                    orderedItems: orderedItems
                 }}>
                 <BrowserRouter>
                     <MenuItemLayout

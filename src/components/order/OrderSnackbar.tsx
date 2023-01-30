@@ -21,23 +21,18 @@ const OkButton = styled.button`
 
 const fadeIn = keyframes`
   0% {
-    /* bottom: 0; */
     opacity: 0;
   }
   25% {
-    /* bottom: 0.5; */
     opacity: 0.6;
   }
   50% {
-    /* bottom: 1; */
     opacity: 1;
   }
   100% {
-    /* bottom: 0; */
     opacity: 1;
   }
 `
-
 
 const SnackbarLayout = styled.div`
   position: fixed;
@@ -57,8 +52,7 @@ const SnackbarLayout = styled.div`
   align-items: center;
   animation-name: ${fadeIn};
   animation-duration: 5s;
-`;
-/* animation: ${fadeIn} 2.5s, ${fadeOut} 1.5s 1; */
+`
 
 const OrderSnackbar = () => {
   const navigate = useNavigate();
@@ -70,8 +64,8 @@ const OrderSnackbar = () => {
       <Message>The order has been placed!
         <OkButton
           onClick={() => {
-          clearOrder();
-          navigate('/', { replace: true });
+            clearOrder();
+            navigate('/', { replace: true });
           }}>OK
         </OkButton>
       </Message>

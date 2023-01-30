@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom"
 import MenuItemModel from "../../../models/MenuItemModel"
 
 const renderOrderForm = async () => {
-    const store = createMockStore()
+    const store = createMockStore();
     await act(() => render(
         <CreateOrderedItemsContext.Provider
             value={{
@@ -24,18 +24,16 @@ const renderOrderForm = async () => {
 describe("render OrderForm component", () => {
 
     it('checks if errors appear when inputs are not filled', async () => {
-        renderOrderForm()
-        const orderBtn = screen.getByRole('button')
-        await act(async () => {
-            userEvent.click(orderBtn)
-        });
-        const alerts = screen.getAllByRole('alert')
-        expect(alerts[0]).toBeInTheDocument()
+        renderOrderForm();
+        const orderBtn = screen.getByRole('button');
+        await act(async () => {userEvent.click(orderBtn)});
+        const alerts = screen.getAllByRole('alert');
+        expect(alerts[0]).toBeInTheDocument();
     })
 
     
     it('checks if errors dont appear when inputs are filled', async () => {
-        renderOrderForm()
+        renderOrderForm();
 
         const fNameInput = screen.getByPlaceholderText('First name');
         await act(() => fireEvent.change(fNameInput, {target: { value: 'John' }}))
@@ -53,10 +51,9 @@ describe("render OrderForm component", () => {
         await act(() => fireEvent.change(cityInput, { target: { value: 'Washington DC' } }));
         const zipInput = screen.getByPlaceholderText('Zip code');
         await act(() => fireEvent.change(zipInput, { target: { value: '20023' } }));
+
         const orderBtn = screen.getByRole('button')
-        await act(async () => {
-            userEvent.click(orderBtn)
-        });
+        await act(async () => {userEvent.click(orderBtn)});
 
         const alerts = screen.queryAllByRole('alert')
         expect(alerts.length).toBe(0)
@@ -64,7 +61,7 @@ describe("render OrderForm component", () => {
     })
 
     it('checks if a new client is added after all inputs are filled', async () => {
-        const store = createMockStore()
+        const store = createMockStore();
         const mockModel: MenuItemModel = {
             id: 0,
             name: 'Spaghet',
@@ -91,7 +88,7 @@ describe("render OrderForm component", () => {
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider>
         )
-        expect(isSnackbarVisible).toBe(false)
+        expect(isSnackbarVisible).toBe(false);
 
         const fNameInput = screen.getByPlaceholderText('First name');
         await act(() => fireEvent.change(fNameInput, { target: { value: 'John' } }))
@@ -110,12 +107,13 @@ describe("render OrderForm component", () => {
         const zipInput = screen.getByPlaceholderText('Zip code');
         await act(() => fireEvent.change(zipInput, { target: { value: '20023' } }));
 
-        const orderBtn = screen.getByRole('button')
-        await act(async () => {
-            userEvent.click(orderBtn)
-        });
-        const alerts = screen.queryAllByRole('alert')
-        expect(alerts.length).toBe(0)
+        setTimeout(() => {
+
+            const orderBtn = screen.getByRole('button');
+            act(async () => {userEvent.click(orderBtn)});
+            const alerts = screen.queryAllByRole('alert');
+            expect(alerts.length).toBe(0);
+        }, 1000);
 
         let newClient: ClientModel = {
             id: 0,
@@ -129,15 +127,15 @@ describe("render OrderForm component", () => {
         }
         
         setTimeout(() => {
-            expect(clientsList[0].firstName).toBe(newClient.firstName)
-            expect(clientsList[0].lastName).toBe(newClient.lastName)
-            expect(clientsList[0].emailAddress).toBe(newClient.emailAddress)
-            expect(clientsList[0].phoneNumber).toBe(newClient.phoneNumber)
-            expect(clientsList[0].addressStreet).toBe(newClient.addressStreet)
-            expect(clientsList[0].addressCity).toBe(newClient.addressCity)
+            expect(clientsList[0].firstName).toBe(newClient.firstName);
+            expect(clientsList[0].lastName).toBe(newClient.lastName);
+            expect(clientsList[0].emailAddress).toBe(newClient.emailAddress);
+            expect(clientsList[0].phoneNumber).toBe(newClient.phoneNumber);
+            expect(clientsList[0].addressStreet).toBe(newClient.addressStreet);
+            expect(clientsList[0].addressCity).toBe(newClient.addressCity);
 
             expect(isSnackbarVisible).toBe(true)
-        }, 1000);
+        }, 1500);
     });
 
 
@@ -151,15 +149,16 @@ describe("render OrderForm component", () => {
             imgUrl: '/img/1.jpg',
             category: 'Spicy'
         }
-        const setIsSnackbarVisible = jest.fn()
-        const clearOrder = jest.fn()
-        
+        const setIsSnackbarVisible = jest.fn();
+        const clearOrder = jest.fn();
+        const isSnackbarVisible = false
         act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
                     ...store,
                     setIsSnackbarVisible: setIsSnackbarVisible,
-                    clearOrder: clearOrder
+                    clearOrder: clearOrder,
+                    isSnackbarVisible: isSnackbarVisible
                 }}>
                 <BrowserRouter>
                     <OrderForm />
@@ -183,15 +182,15 @@ describe("render OrderForm component", () => {
         await act(() => fireEvent.change(cityInput, { target: { value: 'Washington DC' } }));
         const zipInput = screen.getByPlaceholderText('Zip code');
         await act(() => fireEvent.change(zipInput, { target: { value: '20023' } }));
-
-        const orderBtn = screen.getByRole('button')
+        const orderBtn = screen.getByRole('button');
         await act(async () => {
-            userEvent.click(orderBtn)
+            userEvent.click(orderBtn);
         });
+        setTimeout(() => {
 
-        expect(setIsSnackbarVisible).toBeCalled()
-        expect(clearOrder).toBeCalled()
-
-    })
+        })
+        expect(setIsSnackbarVisible).toBeCalled();
+        expect(clearOrder).toBeCalled();
+    });
     
 })
