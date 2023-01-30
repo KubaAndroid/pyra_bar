@@ -12,13 +12,13 @@ export function createMockStore(): OrderedItemsContext {
     const increaseOrderItemQuantity = jest.fn()
     const reduceOrderItemQuantity = jest.fn()
     const removeOrderItem = jest.fn()
-    let orderQuantity = 0
+    // let orderQuantity = 0
     let orderedItems: OrderItemModel[] = []
     const setOrderItems = jest.fn()
     const setOrdersList = jest.fn()
     let orderedMenuItems: MenuItemModel[] = []
     // const getAllMenuItems = async () => await allMenuItems
-    const clearOrder = () => orderedItems = []
+    // const clearOrder = () => orderedItems = []
     const getMenuItemById = (id: number) => allMenuItems.find(item => item.id === id)
     let clientsList = db['users']
     const getClientById = (id: number) => clientsList.find(user => user.id === id)!
@@ -42,6 +42,7 @@ export function createMockStore(): OrderedItemsContext {
     const setCurrentlySelectedMenuItem = jest.fn()
     let isExtended = false
     const setIsExtended = jest.fn()
+    const setOrderedMenuItems = jest.fn()
 
     return {
         // getOrderItemQuantity,
@@ -53,12 +54,12 @@ export function createMockStore(): OrderedItemsContext {
         increaseOrderItemQuantity,
         reduceOrderItemQuantity,
         removeOrderItem,
-        orderQuantity,
+        // orderQuantity,
         setOrderItems,
         setOrdersList,
         orderedMenuItems,
         // getAllMenuItems,
-        clearOrder,
+        // clearOrder,
         clientsList,
         // getClientById,
         setFilteredMenuItems,
@@ -80,6 +81,7 @@ export function createMockStore(): OrderedItemsContext {
         currentlySelectedMenuItem,
         setCurrentlySelectedMenuItem,
         isExtended,
-        setIsExtended
+        setIsExtended,
+        setOrderedMenuItems
     }
 }

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import { useOrderContext } from "../../context/ShopContext";
+import { clearOrder } from "../../utils";
 
 const Message = styled.div`
   flex: 80%;
@@ -57,14 +58,14 @@ const SnackbarLayout = styled.div`
 const OrderSnackbar = () => {
   const navigate = useNavigate();
   const {
-    clearOrder
+    setOrderItems, setOrderedMenuItems
   } = useOrderContext()
   return (
     <SnackbarLayout>
       <Message>The order has been placed!
         <OkButton
           onClick={() => {
-            clearOrder();
+            clearOrder(setOrderItems, setOrderedMenuItems);
             navigate('/', { replace: true });
           }}>OK
         </OkButton>

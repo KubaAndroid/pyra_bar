@@ -83,3 +83,10 @@ export const getAllOrders = async (setOrdersList: (value: React.SetStateAction<O
     return fetchedOrders as OrderModel[]
 }
 
+export function clearOrder(
+    setOrderItems: (value: React.SetStateAction<OrderItemModel[]>) => void,
+    setOrderedMenuItems: (value: React.SetStateAction<MenuItemModel[]>) => void
+) {
+    setOrderItems([]);
+    setOrderedMenuItems([]);
+}

@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
-import { fetchMenuItems, fetchOrders, getAllMenuItems, getAllOrders, getMenuItemsById, getOrderItemQuantity, getOrderQuantity, postOrder, saveUser } from '.';
+import { clearOrder, fetchMenuItems, fetchOrders, getAllMenuItems, getAllOrders, getMenuItemById, getOrderItemQuantity, getOrderQuantity, postOrder, saveUser } from '.';
 import ClientModel from '../models/ClientModel';
 import MenuItemModel from '../models/MenuItemModel';
 import OrderItemModel from '../models/OrderItemModel';
@@ -21,7 +21,7 @@ describe('testing UTIL functions', () => {
         setTimeout(async() => {
             let fetchedMenuItems: MenuItemModel[] = await fetchMenuItems();
             expect(fetchedMenuItems.length).toBeGreaterThanOrEqual(1);
-            expect(mockMenuItem.name).toBe(getMenuItemsById(0, fetchedMenuItems)?.name)
+            expect(mockMenuItem.name).toBe(getMenuItemById(0, fetchedMenuItems)?.name)
         }, 1000);
         
     });
@@ -123,7 +123,7 @@ describe('testing UTIL functions', () => {
         }, 1200);
     });
 
-    it('checks if getAllMenuItems works correctly', async () => {
+    it('checks if getAllMenuItems works correctly if items are already in array', async () => {
         const setMenuItems = jest.fn()
         const setFilteredMenuItems = jest.fn()
         const allMenuItems: MenuItemModel[] = [
@@ -146,6 +146,28 @@ describe('testing UTIL functions', () => {
             expect(setFilteredMenuItems).toHaveBeenCalled();
         }, 1200);
     });
+
+
+    it('checks if getAllMenuItems works correctly if array is empty', async () => {
+        const setMenuItems = jest.fn()
+        const setFilteredMenuItems = jest.fn()
+        const allMenuItems: MenuItemModel[] = []
+        let fetchedMenuItems: MenuItemModel[]
+        act(async () => fetchedMenuItems = await getAllMenuItems(allMenuItems, setMenuItems, setFilteredMenuItems));
+        setTimeout(() => {
+            expect(fetchedMenuItems.length).toBeGreaterThanOrEqual(1);
+            expect(setMenuItems).toHaveBeenCalled();
+            expect(setFilteredMenuItems).toHaveBeenCalled();
+        }, 1200);
+    });
+
+    it('checks if clearOrder clears order', () => {
+        const setOrderItems = jest.fn();
+        const setOrderedMenuItems = jest.fn()
+        clearOrder(setOrderItems, setOrderedMenuItems);
+        expect(setOrderItems).toHaveBeenCalled()
+        expect(setOrderedMenuItems).toHaveBeenCalled()
+    })
     
     
 })

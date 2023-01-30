@@ -6,7 +6,7 @@ import { useOrderContext } from '../../context/ShopContext';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import OrderSnackbar from './OrderSnackbar';
 import styled from 'styled-components';
-import { postOrder, saveUser } from '../../utils';
+import { clearOrder, postOrder, saveUser } from '../../utils';
 
 
 const FormContainer = styled.div`
@@ -78,7 +78,8 @@ type Inputs = {
 function OrderForm() {
     const {
         orderedMenuItems,
-        clearOrder,
+        setOrderItems,
+        setOrderedMenuItems,
         setIsSnackbarVisible, 
         isSnackbarVisible,
         clientsList, 
@@ -116,11 +117,11 @@ function OrderForm() {
   
   const showSnack = () => {
     setIsSnackbarVisible(true);
-    clearOrder();
+    clearOrder(setOrderItems, setOrderedMenuItems);
     setTimeout(() => {
       setIsSnackbarVisible(false);
       navigate('/', { replace: true });
-    }, 6000);
+    }, 3000);
   }
     
   return (

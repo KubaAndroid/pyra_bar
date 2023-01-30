@@ -9,15 +9,18 @@ import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import { useOrderContext } from "./context/ShopContext";
+import { getOrderQuantity } from "./utils";
 
 function App() {
-  const { orderQuantity, orderedItems } = useOrderContext()
+  // const { orderQuantity, orderedItems } = useOrderContext()
+  const { orderedItems } = useOrderContext()
+  const quantity = getOrderQuantity(orderedItems)
   
   return (
     <>
       <GlobalStyle />
       <BrowserRouter>
-        <Header orderQuantity={ orderQuantity } />
+        <Header orderQuantity={ quantity } />
         <Routes>
           <Route path='/' element={<MenuPage />} />
           <Route path='/order' element={<OrderPage orderedItems={orderedItems} />} />

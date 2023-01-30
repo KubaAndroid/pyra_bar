@@ -3,22 +3,19 @@ import MenuItemModel from '../models/MenuItemModel'
 import OrderModel from "../models/OrderModel";
 import ClientModel from "../models/ClientModel";
 import OrderItemModel from '../models/OrderItemModel';
-import UserOrdersModel from '../models/UserOrdersModel';
-import { fetchClients, fetchMenuItems, fetchOrders, getMenuItemsById, getOrderQuantity } from '../utils';
+import { fetchClients, fetchMenuItems, fetchOrders, getMenuItemById, getOrderQuantity } from '../utils';
 
 export interface OrderedItemsContext {
     increaseOrderItemQuantity: (id: number) => void
     reduceOrderItemQuantity: (id: number) => void
     removeOrderItem: (id: number) => void
-    orderQuantity: number
     orderedItems: OrderItemModel[]
     setOrderItems: React.Dispatch<React.SetStateAction<OrderItemModel[]>>
+    setOrderedMenuItems: (value: React.SetStateAction<MenuItemModel[]>) => void
     setOrdersList: React.Dispatch<React.SetStateAction<OrderModel[]>>
     orderedMenuItems: MenuItemModel[]
-    // getAllMenuItems: () => Promise<MenuItemModel[]>
-    clearOrder: () => void
-    getMenuItemById: (id: number, items: MenuItemModel[]) => MenuItemModel | undefined
-    // getClientById: (id: number) => ClientModel
+    // clearOrder: () => void
+    // getMenuItemById: (id: number, items: MenuItemModel[]) => MenuItemModel | undefined
     allMenuItems: MenuItemModel[]
     setMenuItems: React.Dispatch<React.SetStateAction<MenuItemModel[]>>
     filteredMenuItems: MenuItemModel[]
@@ -29,13 +26,10 @@ export interface OrderedItemsContext {
     filterMenuItems: (filterBy: string) => void
     searchMenuItems: (searchQuery: string) => void
     ordersList: OrderModel[]
-    // getAllOrders: () => Promise<OrderModel[]>
     currentFilter: string
     currentSorting: string
     setIsSnackbarVisible: React.Dispatch<React.SetStateAction<Boolean>>
     isSnackbarVisible: Boolean
-    // saveUser(user: ClientModel): Promise<void>
-    // postOrder(order: UserOrdersModel): Promise<void>
     setIsModalOpen: React.Dispatch<React.SetStateAction<Boolean>>
     isModalOpen: Boolean
     currentlySelectedMenuItem: MenuItemModel
@@ -85,22 +79,6 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         getClients()
     }, []);
 
-    
-    // const getAllMenuItems = async (): Promise<MenuItemModel[]> => {
-    //     if (allMenuItems.length < 1) {
-    //         const fetchedMenuItems = await fetchMenuItems()
-    //         setMenuItems(fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
-    //         setFilteredMenuItems(fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
-    //         return fetchedMenuItems.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1)
-    //     }
-    //     return allMenuItems as MenuItemModel[]
-    // }
-
-    // const getAllOrders = async ():Promise<OrderModel[]> => {
-    //     const fetchedOrders = await fetchOrders()
-    //     setOrdersList(fetchedOrders.sort((a: MenuItemModel, b: MenuItemModel) => a.name > b.name ? 1 : -1))
-    //     return fetchedOrders as OrderModel[]
-    // }
 
     function sortMenuItemsByPrice(ascending: Boolean): void {
         if (ascending) {
@@ -116,53 +94,6 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         }
     }
 
-    // async function saveUser(user: ClientModel) {
-    //     await fetch('http://localhost:5000/users', {
-    //     method: "POST",
-    //     body: JSON.stringify(user),
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     }
-    //     }).then(() => setClientsList([...clientsList, user]))
-    // } 
-
-    // async function postOrder(order: UserOrdersModel) {
-    //     await fetch('http://localhost:5000/orders', {
-    //         method: "POST",
-    //         body: JSON.stringify(order),
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         }
-    //     }).then(() => {
-    //         setIsSnackbarVisible(true)
-    //     })
-    // }
-
-    // const orderQuantity = orderedItems?.reduce((quantity, item) => item.quantity + quantity, 0)
-
-
-    const orderQuantity = getOrderQuantity(orderedItems)
-
-    function clearOrder() {
-        setOrderItems([]);
-        setOrderedMenuItems([])
-    }
-
-    // function getOrderItemQuantity(id: number) {
-    //     return orderedItems.find(item => item.id === id)?.quantity || 0
-    // }
-    
-
-    const getMenuItemById = (id: number) => getMenuItemsById(id, allMenuItems)
-
-    // function getMenuItemById(id: number) {
-    //     return allMenuItems.find(item => item.id === id)
-    // }
-
-    // const getClientById = (id: number) => {
-    //     return clientsList.find(user => user.id === id)!
-    // }
-
     const filterMenuItems = (filterBy: string) => {
         if (filterBy === 'all') {
             setCurrentFilter('')
@@ -174,7 +105,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         const filteredResults = allMenuItems.filter(item => item.category.includes(filterBy) && 
             item.name.toLowerCase().includes(searchQuery))
         setFilteredMenuItems(filteredResults)
-    } // todo: wydzielic do utils
+    }
 
     const searchMenuItems = (query: string) => {
         setSearchQuery(query.toLowerCase())
@@ -186,7 +117,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     }
 
     function increaseOrderItemQuantity(id: number) {
-        const newMenuItem = getMenuItemsById(id, allMenuItems)!
+        const newMenuItem = getMenuItemById(id, allMenuItems)!
         setOrderedMenuItems([...orderedMenuItems, newMenuItem!])
         setOrderItems(currentItems => {
             if (currentItems.find(item => item.id === id) == null) {
@@ -204,7 +135,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     }
 
     function reduceOrderItemQuantity(id: number) {
-         const newMenuItem = getMenuItemsById(id, allMenuItems)!
+         const newMenuItem = getMenuItemById(id, allMenuItems)!
         setOrderItems(currentItems => {
             if (currentItems.find(item => item.id === id)?.quantity === 1) {
                 return currentItems.filter(item => item.id !== id)
@@ -232,19 +163,15 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
     return (
         <CreateOrderedItemsContext.Provider
             value={{
-                // getOrderItemQuantity,
                 increaseOrderItemQuantity,
                 reduceOrderItemQuantity,
                 removeOrderItem,
                 orderedItems,
                 setOrderItems,
                 setOrdersList,
-                orderQuantity,
                 orderedMenuItems,
-                // getAllMenuItems,
-                clearOrder,
-                getMenuItemById,
-                // getClientById,
+                // clearOrder,
+                // getMenuItemById,
                 allMenuItems,
                 setMenuItems,
                 filteredMenuItems,
@@ -255,19 +182,17 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 filterMenuItems,
                 searchMenuItems,
                 ordersList,
-                // getAllOrders,
                 currentFilter,
                 currentSorting,
                 isSnackbarVisible,
                 setIsSnackbarVisible,
-                // saveUser,
-                // postOrder,
                 setIsModalOpen,
                 isModalOpen,
                 currentlySelectedMenuItem,
                 setCurrentlySelectedMenuItem,
                 isExtended,
-                setIsExtended
+                setIsExtended,
+                setOrderedMenuItems
             }}>
             {children}
         </CreateOrderedItemsContext.Provider>

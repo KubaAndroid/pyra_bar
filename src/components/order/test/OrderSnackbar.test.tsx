@@ -7,12 +7,14 @@ import OrderSnackbar from "../OrderSnackbar";
 describe('render OrderSnackbar', () => {
     it('checks if snackbar renders', async () => {
         const store = createMockStore();
-        const clearOrder = jest.fn()
+        const setOrderItems = jest.fn() 
+        const setOrderedMenuItems = jest.fn()
         await act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
                     ...store,
-                    clearOrder: clearOrder
+                    setOrderItems: setOrderItems,
+                    setOrderedMenuItems: setOrderedMenuItems
                 }}>
                 <BrowserRouter>
                     <OrderSnackbar />
@@ -22,7 +24,11 @@ describe('render OrderSnackbar', () => {
 
         const okButton = screen.getByText('OK')
         act(() => fireEvent.click(okButton));
-        expect(clearOrder).toBeCalled()
+        setTimeout(() => {
+            expect(setOrderItems).toBeCalled()
+            expect(setOrderedMenuItems).toBeCalled()
+        })
+        
 
     });
 

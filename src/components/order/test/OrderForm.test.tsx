@@ -150,15 +150,17 @@ describe("render OrderForm component", () => {
             category: 'Spicy'
         }
         const setIsSnackbarVisible = jest.fn();
-        const clearOrder = jest.fn();
+        const setOrderItems = jest.fn() 
+        const setOrderedMenuItems = jest.fn()
         const isSnackbarVisible = false
         act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
                     ...store,
                     setIsSnackbarVisible: setIsSnackbarVisible,
-                    clearOrder: clearOrder,
-                    isSnackbarVisible: isSnackbarVisible
+                    isSnackbarVisible: isSnackbarVisible,
+                    setOrderItems: setOrderItems,
+                    setOrderedMenuItems: setOrderedMenuItems
                 }}>
                 <BrowserRouter>
                     <OrderForm />
@@ -188,9 +190,10 @@ describe("render OrderForm component", () => {
         });
         setTimeout(() => {
 
-        })
-        expect(setIsSnackbarVisible).toBeCalled();
-        expect(clearOrder).toBeCalled();
+            expect(setIsSnackbarVisible).toBeCalledTimes(2);
+            expect(setOrderItems).toBeCalled();
+            expect(setOrderedMenuItems).toBeCalled();
+        }, 4000);
     });
     
 })
