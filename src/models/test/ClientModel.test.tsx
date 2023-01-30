@@ -1,6 +1,7 @@
 import ClientModel from '../ClientModel';
 
 describe('test Client model', () => {
+    
     it('new model created', () => {
         const mockModel: ClientModel = {
             id: 0,

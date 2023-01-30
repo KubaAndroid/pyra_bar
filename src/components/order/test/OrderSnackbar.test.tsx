@@ -5,6 +5,7 @@ import { createMockStore } from "../../../tests/TestWrapper";
 import OrderSnackbar from "../OrderSnackbar";
 
 describe('render OrderSnackbar', () => {
+    
     it('checks if snackbar renders', async () => {
         const store = createMockStore();
         const setOrderItems = jest.fn() 
@@ -22,14 +23,12 @@ describe('render OrderSnackbar', () => {
             </CreateOrderedItemsContext.Provider>
         ));
 
-        const okButton = screen.getByText('OK')
+        const okButton = screen.getByText('OK');
         act(() => fireEvent.click(okButton));
         setTimeout(() => {
-            expect(setOrderItems).toBeCalled()
-            expect(setOrderedMenuItems).toBeCalled()
-        })
-        
-
+            expect(setOrderItems).toBeCalled();
+            expect(setOrderedMenuItems).toBeCalled();
+        });
     });
 
 });

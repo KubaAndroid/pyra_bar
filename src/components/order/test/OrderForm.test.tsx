@@ -52,11 +52,11 @@ describe("render OrderForm component", () => {
         const zipInput = screen.getByPlaceholderText('Zip code');
         await act(() => fireEvent.change(zipInput, { target: { value: '20023' } }));
 
-        const orderBtn = screen.getByRole('button')
+        const orderBtn = screen.getByRole('button');
         await act(async () => {userEvent.click(orderBtn)});
 
-        const alerts = screen.queryAllByRole('alert')
-        expect(alerts.length).toBe(0)
+        const alerts = screen.queryAllByRole('alert');
+        expect(alerts.length).toBe(0);
         
     })
 
@@ -69,11 +69,11 @@ describe("render OrderForm component", () => {
             description: 'Delish Spaghet',
             imgUrl: '/img/1.jpg',
             category: 'Spicy'
-        }
+        };
 
-        const clientsList: ClientModel[] = []
-        let isSnackbarVisible = false
-        const orderedMenuItems: MenuItemModel[] = [mockModel]
+        const clientsList: ClientModel[] = [];
+        let isSnackbarVisible = false;
+        const orderedMenuItems: MenuItemModel[] = [mockModel];
         
         render(
             <CreateOrderedItemsContext.Provider
@@ -91,7 +91,7 @@ describe("render OrderForm component", () => {
         expect(isSnackbarVisible).toBe(false);
 
         const fNameInput = screen.getByPlaceholderText('First name');
-        await act(() => fireEvent.change(fNameInput, { target: { value: 'John' } }))
+        await act(() => fireEvent.change(fNameInput, { target: { value: 'John' } }));
         const lNameInput = screen.getByPlaceholderText('Last name');
         await act(() => fireEvent.change(lNameInput, { target: { value: 'Doe' } }));
         const emailInput = screen.getByPlaceholderText('Email');
@@ -134,13 +134,13 @@ describe("render OrderForm component", () => {
             expect(clientsList[0].addressStreet).toBe(newClient.addressStreet);
             expect(clientsList[0].addressCity).toBe(newClient.addressCity);
 
-            expect(isSnackbarVisible).toBe(true)
+            expect(isSnackbarVisible).toBe(true);
         }, 1500);
     });
 
 
     it('check if snackbar is being showed', async () => {
-        const store = createMockStore()
+        const store = createMockStore();
         const mockModel: MenuItemModel = {
             id: 0,
             name: 'Spaghet',
@@ -148,11 +148,11 @@ describe("render OrderForm component", () => {
             description: 'Delish Spaghet',
             imgUrl: '/img/1.jpg',
             category: 'Spicy'
-        }
+        };
         const setIsSnackbarVisible = jest.fn();
-        const setOrderItems = jest.fn() 
-        const setOrderedMenuItems = jest.fn()
-        const isSnackbarVisible = false
+        const setOrderItems = jest.fn();
+        const setOrderedMenuItems = jest.fn();
+        const isSnackbarVisible = false;
         act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
@@ -188,8 +188,8 @@ describe("render OrderForm component", () => {
         await act(async () => {
             userEvent.click(orderBtn);
         });
+        
         setTimeout(() => {
-
             expect(setIsSnackbarVisible).toBeCalledTimes(2);
             expect(setOrderItems).toBeCalled();
             expect(setOrderedMenuItems).toBeCalled();

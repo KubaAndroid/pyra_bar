@@ -74,7 +74,7 @@ describe("render OrderItem component", () => {
                     <OrderItem item={mockOrderItem} />
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider>
-        )
+        );
         const decreaseButton = await screen.findByText('-');
         act(() => fireEvent.click(decreaseButton));
 
@@ -94,7 +94,7 @@ describe("render OrderItem component", () => {
                     <OrderItem item={mockOrderItem} />
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider>
-        )
+        );
         const trashButton = screen.getByAltText('trash');
         act(() => fireEvent.click(trashButton));
         expect(removeOrderItem).toBeCalled();

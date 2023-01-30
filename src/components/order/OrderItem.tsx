@@ -86,4 +86,4 @@ function OrderItem({ item }: OrderType) {
   )
 }
 
-export default OrderItem
+export default OrderItem;

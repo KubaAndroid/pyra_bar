@@ -34,7 +34,6 @@ describe('render ContactForm', () => {
 
     it('checks if submitHandler works', async () => {
         const store = createMockStore()
-
         render(
             <CreateOrderedItemsContext.Provider
                 value={{
@@ -55,10 +54,6 @@ describe('render ContactForm', () => {
 
         const sendBtn = screen.getByRole('button')
         await act(() => fireEvent.click(sendBtn));
-
-        // waitFor(() => {
-        //     expect(mockedUsedNavigate).toHaveBeenCalled();
-        // });
         
     });
     

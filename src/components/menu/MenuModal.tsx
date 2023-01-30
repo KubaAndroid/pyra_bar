@@ -83,7 +83,6 @@ const BottomDiv = styled.div`
   margin: auto;
 `
 
-
 interface IModalType {
   openedModal: Function
   menuItem: MenuItemModel
@@ -91,7 +90,6 @@ interface IModalType {
 
 function MenuModal({ openedModal }: IModalType) {
   const {
-    // getOrderItemQuantity,
     orderedItems,
     increaseOrderItemQuantity,
     reduceOrderItemQuantity,
@@ -101,7 +99,7 @@ function MenuModal({ openedModal }: IModalType) {
   const quantity = getOrderItemQuantity(currentlySelectedMenuItem!.id, orderedItems)!
 
   return (
-      <ModalBackground>
+    <ModalBackground>
       <ModalContainer>
         <CloseDiv>
           <CloseButton onClick={() => openedModal(false)}> X </CloseButton>

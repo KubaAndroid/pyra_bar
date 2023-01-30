@@ -43,24 +43,24 @@ function OrdersListItem({ order }: OrderType) {
         allMenuItems
     } = useOrderContext()
 
-    const clientId: number = order.userId!
-    const client: ClientModel = getClientById(clientId, clientsList)
-    let sumTotal: number = 0
-    const boughtItems: MenuItemModel[] = []
-    const itemsArray: SingleListItem[] = []
+    const clientId: number = order.userId!;
+    const client: ClientModel = getClientById(clientId, clientsList);
+    let sumTotal: number = 0;
+    const boughtItems: MenuItemModel[] = [];
+    const itemsArray: SingleListItem[] = [];
     let displayItem = new Map<number, SingleListItem>()
 
     const orderedItems = () => {
       order.menuItems?.forEach(itemId => {
-          let menuItem = getMenuItemById(itemId, allMenuItems)
+          let menuItem = getMenuItemById(itemId, allMenuItems);
           if (menuItem != null || menuItem !== undefined) {
-            boughtItems.push(menuItem)
-            let currentItem = displayItem.get(itemId)
+            boughtItems.push(menuItem);
+            let currentItem = displayItem.get(itemId);
             if (currentItem === null || currentItem === undefined) {
               displayItem.set(itemId, { name: menuItem?.name ?? "", priceTotal: menuItem?.price ?? 0, quantity: 1, price: menuItem.price })
             } else {
-              currentItem.priceTotal += menuItem.price
-              currentItem.quantity += 1
+              currentItem.priceTotal += menuItem.price;
+              currentItem.quantity += 1;
             }
           }
       })
@@ -70,26 +70,23 @@ function OrdersListItem({ order }: OrderType) {
       }, 0)
 
       displayItem.forEach((v, k) => {
-        let newItem = { name: "", quantity: 0, priceTotal: 0, price: 0 }
-        newItem.name = v.name ?? ""
-        newItem.quantity = v.quantity ?? 0
-        newItem.priceTotal = v.priceTotal ?? 0
-        newItem.price = v.price
-        itemsArray.push(newItem)
+        let newItem = { name: "", quantity: 0, priceTotal: 0, price: 0 };
+        newItem.name = v.name ?? "";
+        newItem.quantity = v.quantity ?? 0;
+        newItem.priceTotal = v.priceTotal ?? 0;
+        newItem.price = v.price;
+        itemsArray.push(newItem);
       })
-      return boughtItems
+      return boughtItems;
     }
 
-    orderedItems()
-
-
+    orderedItems();
 
     return (
       <OrderListItemContainer onClick={() => setIsExtended(!isExtended)} key={order.id} role="columnheader">
         <OrderListRow>
           <div>Order {order.id}</div> Date: {order.date}
         </OrderListRow>
-    
         {isExtended && <div>
           <div> {client?.firstName} {client?.lastName} </div>
           <div>{client?.addressStreet} {client?.addressNumber}, {client?.addressZipCode}  {client?.addressCity} </div>
@@ -113,4 +110,4 @@ function OrdersListItem({ order }: OrderType) {
     )
 }
 
-export default OrdersListItem
+export default OrdersListItem;

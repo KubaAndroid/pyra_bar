@@ -7,6 +7,7 @@ import { createMockStore } from '../../../tests/TestWrapper'
 import MenuModal from '../MenuModal'
 
 describe('testing Menu Modal', () => {
+
     it('checks if Buy! Button works', () => {
         const store = createMockStore()
         const increaseOrderItemQuantity = jest.fn()
@@ -35,15 +36,15 @@ describe('testing Menu Modal', () => {
         ));
 
         const buyBtn = screen.getByText('Buy');
-        act(() => fireEvent.click(buyBtn))
-        expect(increaseOrderItemQuantity).toBeCalled()
+        act(() => fireEvent.click(buyBtn));
+        expect(increaseOrderItemQuantity).toBeCalled();
     });
 
     it('checks if + and - buttons works', () => {
-        const store = createMockStore()
-        const increaseOrderItemQuantity = jest.fn()
-        const reduceOrderItemQuantity = jest.fn()
-        const openedModal = jest.fn()
+        const store = createMockStore();
+        const increaseOrderItemQuantity = jest.fn();
+        const reduceOrderItemQuantity = jest.fn();
+        const openedModal = jest.fn();
         const mockModel: MenuItemModel = {
             id: 0,
             name: 'Spaghetti',
@@ -51,13 +52,13 @@ describe('testing Menu Modal', () => {
             description: 'Delish Spaghet',
             imgUrl: '/img/1.jpg',
             category: 'Spicy'
-        }
+        };
         const orderedItems: OrderItemModel[] = [{
             id: 0,
             name: "Pie",
             quantity: 1,
             price: 11.11
-        }]
+        }];
         act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
@@ -72,20 +73,16 @@ describe('testing Menu Modal', () => {
             </CreateOrderedItemsContext.Provider> 
         ))
         
-        // const addBtn = screen.getByText('Buy');
-        // act(() => fireEvent.click(addBtn))
-        // expect(increaseOrderItemQuantity).toBeCalled()
-
         const reduceBtn = screen.getByText('-');
-        act(() => fireEvent.click(reduceBtn))
-        expect(reduceOrderItemQuantity).toBeCalled()
+        act(() => fireEvent.click(reduceBtn));
+        expect(reduceOrderItemQuantity).toBeCalled();
     });
 
     it('checks if X button calls setState', () => {
-        const store = createMockStore()
-        const increaseOrderItemQuantity = jest.fn()
-        const reduceOrderItemQuantity = jest.fn()
-        const openedModal = jest.fn()
+        const store = createMockStore();
+        const increaseOrderItemQuantity = jest.fn();
+        const reduceOrderItemQuantity = jest.fn();
+        const openedModal = jest.fn();
         const mockModel: MenuItemModel = {
             id: 0,
             name: 'Spaghetti',
@@ -93,7 +90,7 @@ describe('testing Menu Modal', () => {
             description: 'Delish Spaghet',
             imgUrl: '/img/1.jpg',
             category: 'Spicy'
-        }
+        };
         act(() => render(
             <CreateOrderedItemsContext.Provider
                 value={{
@@ -105,7 +102,7 @@ describe('testing Menu Modal', () => {
                 <MenuModal openedModal={openedModal} menuItem={mockModel}  />
                 </BrowserRouter>
             </CreateOrderedItemsContext.Provider> 
-        ))
+        ));
         
         const closeBtn = screen.getByText('X');
         act(() => fireEvent.click(closeBtn));

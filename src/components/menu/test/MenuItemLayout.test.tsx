@@ -8,8 +8,6 @@ import MenuItemModel from '../../../models/MenuItemModel'
 import { createMockStore } from '../../../tests/TestWrapper'
 import OrderItemModel from '../../../models/OrderItemModel'
 
-
-
 interface MenuItemType {
     menuItem: MenuItemModel,
     index: number,
@@ -63,7 +61,6 @@ const renderOrderForm = ({menuItem} : IMenuItemProps) => {
     ))
 }
 
-
 const MenuItemWrapper: FC<MenuItemType> = ({ menuItem, index }: MenuItemType) => {
     return (
         <>
@@ -82,10 +79,11 @@ const MenuItemWrapper: FC<MenuItemType> = ({ menuItem, index }: MenuItemType) =>
 
 describe('render MenuItemLayout', () => {
     it('checks if TITLE is present on MenuItemLayout and is displayed correctly', () => {
-        render (<MenuItemWrapper
-            menuItem={mockMenuItem}
-            index={0}
-        />
+        render (
+            <MenuItemWrapper
+                menuItem={mockMenuItem}
+                index={0}
+            />
         )
         const titleText: string = screen.getByText(mockMenuItem.name).textContent ?? ""
         expect(titleText).toBe(`${mockMenuItem.name} `);
@@ -244,6 +242,5 @@ describe('render MenuItemLayout', () => {
         act(() => fireEvent.click(reduceBtn))
         expect(reduceOrderItemQuantity).toBeCalled()
     })
-    
     
 })

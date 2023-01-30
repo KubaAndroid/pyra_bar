@@ -6,7 +6,7 @@ import OrderItemModel from '../models/OrderItemModel';
 import OrderModel from '../models/OrderModel';
 import UserOrdersModel from '../models/UserOrdersModel';
 
-describe('testing UTIL functions', () => {
+describe('testing utils', () => {
 
     it('checks if menu items are fetching', async () => {
         const mockMenuItem: MenuItemModel = {

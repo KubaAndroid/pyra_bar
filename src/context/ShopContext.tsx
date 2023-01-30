@@ -3,7 +3,7 @@ import MenuItemModel from '../models/MenuItemModel'
 import OrderModel from "../models/OrderModel";
 import ClientModel from "../models/ClientModel";
 import OrderItemModel from '../models/OrderItemModel';
-import { fetchClients, fetchMenuItems, fetchOrders, getMenuItemById, getOrderQuantity } from '../utils';
+import { fetchClients, fetchOrders, getMenuItemById } from '../utils';
 
 export interface OrderedItemsContext {
     increaseOrderItemQuantity: (id: number) => void
@@ -22,7 +22,6 @@ export interface OrderedItemsContext {
     clientsList: ClientModel[]
     setClientsList: React.Dispatch<React.SetStateAction<ClientModel[]>>
     filterMenuItems: (filterBy: string) => void
-    // searchMenuItems: (searchQuery: string) => void
     ordersList: OrderModel[]
     currentFilter: string
     currentSorting: string
@@ -72,7 +71,6 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         const getClients = async () => {
             const fetchedClients = await fetchClients()
             setClientsList(fetchedClients)
-            
         }
         getOrders()
         getClients()
@@ -105,8 +103,6 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
             item.name.toLowerCase().includes(searchQuery))
         setFilteredMenuItems(filteredResults)
     }
-
-    
 
     function increaseOrderItemQuantity(id: number) {
         const newMenuItem = getMenuItemById(id, allMenuItems)!
@@ -162,8 +158,6 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 setOrderItems,
                 setOrdersList,
                 orderedMenuItems,
-                // clearOrder,
-                // getMenuItemById,
                 allMenuItems,
                 setMenuItems,
                 filteredMenuItems,
@@ -172,7 +166,6 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 clientsList,
                 setClientsList,
                 filterMenuItems,
-                // searchMenuItems,
                 ordersList,
                 currentFilter,
                 currentSorting,

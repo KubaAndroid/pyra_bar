@@ -16,12 +16,10 @@ export function createMockStore(): OrderedItemsContext {
     const setOrdersList = jest.fn()
     let orderedMenuItems: MenuItemModel[] = []
     let clientsList = db['users']
-    const getClientById = (id: number) => clientsList.find(user => user.id === id)!
     const setFilteredMenuItems = jest.fn()
     const sortMenuItemsByPrice = (ascending: boolean) => jest.fn()
     const setClientsList = jest.fn()
     const filterMenuItems = (filterBy: string) => jest.fn()
-    const searchMenuItems = (searchQuery: string) => jest.fn()
     let ordersList: OrderModel[] = []
     let currentFilter = ""
     let currentSorting = ""
@@ -52,7 +50,6 @@ export function createMockStore(): OrderedItemsContext {
         sortMenuItemsByPrice,
         setClientsList,
         filterMenuItems,
-        // searchMenuItems,
         ordersList,
         currentFilter,
         currentSorting,

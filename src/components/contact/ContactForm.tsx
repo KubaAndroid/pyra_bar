@@ -1,6 +1,5 @@
 import { FormEvent, MutableRefObject, useRef } from 'react'
-// import { useNavigate } from 'react-router-dom';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { H1 } from '../../pages/MenuPage';
 import { FormButton } from '../order/OrderForm';
@@ -87,7 +86,7 @@ const ContactForm = () => {
           <FormFieldTextArea id="message" required ref={messageInputRef} placeholder='message' />
         </FormFieldsDiv>
         <div>
-            <FormButton>Send message</FormButton>
+          <FormButton>Send message</FormButton>
         </div>
       </form>
     </ContactFormContainer>

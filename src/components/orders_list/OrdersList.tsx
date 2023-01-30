@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { useOrderContext } from '../../context/ShopContext'
 import { getAllMenuItems, getAllOrders } from '../../utils'
@@ -30,13 +30,12 @@ function OrdersList() {
     }, [])
 
   return (
-      <OrdersContainer>
-          {ordersList.map((order, index) => {
-            return <OrdersListItem key={index} order={order} />
-          })}
-      </OrdersContainer>
-    )
-  // )
+    <OrdersContainer>
+        {ordersList.map((order, index) => {
+          return <OrdersListItem key={index} order={order} />
+        })}
+    </OrdersContainer>
+  )
 }
 
-export default OrdersList
+export default OrdersList;

@@ -5,6 +5,7 @@ import { CreateOrderedItemsContext } from "../context/ShopContext";
 import { createMockStore } from "./TestWrapper";
 
 describe('render App component', () => {
+    
     it('checks if App renders corrrectly', () => {
         const store = createMockStore();
         render(
