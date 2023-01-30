@@ -4,7 +4,7 @@ import { useOrderContext } from '../../context/ShopContext'
 import ClientModel from '../../models/ClientModel'
 import MenuItemModel from '../../models/MenuItemModel'
 import UserOrdersModel from '../../models/UserOrdersModel'
-import { getClientById } from '../../utils'
+import { getClientById, getMenuItemById } from '../../utils'
 
 const OrderListItemContainer = styled.div`
   display: flex;
@@ -39,7 +39,6 @@ interface SingleListItem {
 function OrdersListItem({ order }: OrderType) {
     const [isExtended, setIsExtended] = useState<Boolean>(false)
     const {
-        getMenuItemById,
         clientsList,
         allMenuItems
     } = useOrderContext()

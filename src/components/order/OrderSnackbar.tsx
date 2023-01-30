@@ -52,7 +52,7 @@ const SnackbarLayout = styled.div`
   justify-content: center;
   align-items: center;
   animation-name: ${fadeIn};
-  animation-duration: 5s;
+  animation-duration: 3s;
 `
 
 const OrderSnackbar = () => {

@@ -14,8 +14,6 @@ export interface OrderedItemsContext {
     setOrderedMenuItems: (value: React.SetStateAction<MenuItemModel[]>) => void
     setOrdersList: React.Dispatch<React.SetStateAction<OrderModel[]>>
     orderedMenuItems: MenuItemModel[]
-    // clearOrder: () => void
-    // getMenuItemById: (id: number, items: MenuItemModel[]) => MenuItemModel | undefined
     allMenuItems: MenuItemModel[]
     setMenuItems: React.Dispatch<React.SetStateAction<MenuItemModel[]>>
     filteredMenuItems: MenuItemModel[]
@@ -24,7 +22,7 @@ export interface OrderedItemsContext {
     clientsList: ClientModel[]
     setClientsList: React.Dispatch<React.SetStateAction<ClientModel[]>>
     filterMenuItems: (filterBy: string) => void
-    searchMenuItems: (searchQuery: string) => void
+    // searchMenuItems: (searchQuery: string) => void
     ordersList: OrderModel[]
     currentFilter: string
     currentSorting: string
@@ -36,6 +34,7 @@ export interface OrderedItemsContext {
     setCurrentlySelectedMenuItem: React.Dispatch<React.SetStateAction<MenuItemModel>>
     isExtended: Boolean
     setIsExtended: React.Dispatch<React.SetStateAction<Boolean>>
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>,
 }
 
 export const CreateOrderedItemsContext = createContext({} as OrderedItemsContext)
@@ -107,14 +106,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
         setFilteredMenuItems(filteredResults)
     }
 
-    const searchMenuItems = (query: string) => {
-        setSearchQuery(query.toLowerCase())
-         setTimeout(() => {
-            let queriedItems = allMenuItems.filter(item => item.name.toLowerCase().includes(query.toLowerCase())
-            && item.category.includes(currentFilter))
-            setFilteredMenuItems(queriedItems)
-        }, 1000);
-    }
+    
 
     function increaseOrderItemQuantity(id: number) {
         const newMenuItem = getMenuItemById(id, allMenuItems)!
@@ -180,7 +172,7 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 clientsList,
                 setClientsList,
                 filterMenuItems,
-                searchMenuItems,
+                // searchMenuItems,
                 ordersList,
                 currentFilter,
                 currentSorting,
@@ -192,7 +184,8 @@ export function OrderedItemsProvider({ children }: ContextProviderProps) {
                 setCurrentlySelectedMenuItem,
                 isExtended,
                 setIsExtended,
-                setOrderedMenuItems
+                setOrderedMenuItems,
+                setSearchQuery
             }}>
             {children}
         </CreateOrderedItemsContext.Provider>

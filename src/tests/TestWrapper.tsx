@@ -8,18 +8,13 @@ export function createMockStore(): OrderedItemsContext {
     let allMenuItems: MenuItemModel[] = db['menuItems']
     const setMenuItems= jest.fn()
     let filteredMenuItems: MenuItemModel[] = allMenuItems
-    // const getOrderItemQuantity = jest.fn()
     const increaseOrderItemQuantity = jest.fn()
     const reduceOrderItemQuantity = jest.fn()
     const removeOrderItem = jest.fn()
-    // let orderQuantity = 0
     let orderedItems: OrderItemModel[] = []
     const setOrderItems = jest.fn()
     const setOrdersList = jest.fn()
     let orderedMenuItems: MenuItemModel[] = []
-    // const getAllMenuItems = async () => await allMenuItems
-    // const clearOrder = () => orderedItems = []
-    const getMenuItemById = (id: number) => allMenuItems.find(item => item.id === id)
     let clientsList = db['users']
     const getClientById = (id: number) => clientsList.find(user => user.id === id)!
     const setFilteredMenuItems = jest.fn()
@@ -28,60 +23,48 @@ export function createMockStore(): OrderedItemsContext {
     const filterMenuItems = (filterBy: string) => jest.fn()
     const searchMenuItems = (searchQuery: string) => jest.fn()
     let ordersList: OrderModel[] = []
-    // const getAllOrders = jest.fn()
     let currentFilter = ""
     let currentSorting = ""
     const setIsSnackbarVisible = jest.fn()
     const isSnackbarVisible = false
-    // const saveUser = jest.fn()
-    // const postOrder = jest.fn()
     const setIsModalOpen = jest.fn()
     let isModalOpen = false
-    // const setCurrentItem = jest.fn()
     let currentlySelectedMenuItem = allMenuItems[0]
     const setCurrentlySelectedMenuItem = jest.fn()
     let isExtended = false
     const setIsExtended = jest.fn()
     const setOrderedMenuItems = jest.fn()
+    const setSearchQuery = jest.fn()
 
     return {
-        // getOrderItemQuantity,
         allMenuItems,
         setMenuItems,
         filteredMenuItems,
-        getMenuItemById,
         orderedItems,
         increaseOrderItemQuantity,
         reduceOrderItemQuantity,
         removeOrderItem,
-        // orderQuantity,
         setOrderItems,
         setOrdersList,
         orderedMenuItems,
-        // getAllMenuItems,
-        // clearOrder,
         clientsList,
-        // getClientById,
         setFilteredMenuItems,
         sortMenuItemsByPrice,
         setClientsList,
         filterMenuItems,
-        searchMenuItems,
+        // searchMenuItems,
         ordersList,
-        // getAllOrders,
         currentFilter,
         currentSorting,
         setIsSnackbarVisible,
         isSnackbarVisible,
-        // saveUser,
-        // postOrder,
         setIsModalOpen,
-        // setCurrentItem,
         isModalOpen,
         currentlySelectedMenuItem,
         setCurrentlySelectedMenuItem,
         isExtended,
         setIsExtended,
-        setOrderedMenuItems
+        setOrderedMenuItems,
+        setSearchQuery
     }
 }

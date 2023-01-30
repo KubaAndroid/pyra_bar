@@ -22,7 +22,7 @@ export const fetchClients = async() => {
     return data
 }
 
-export function getMenuItemsById(id: number, menuItems: MenuItemModel[]) {
+export function getMenuItemById(id: number, menuItems: MenuItemModel[]) {
     return menuItems.find(item => item.id === id)
 }
 
@@ -89,4 +89,19 @@ export function clearOrder(
 ) {
     setOrderItems([]);
     setOrderedMenuItems([]);
+}
+
+export const searchMenuItems = (
+    query: string, 
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>,
+    allMenuItems: MenuItemModel[],
+    currentFilter: string,
+    setFilteredMenuItems: React.Dispatch<React.SetStateAction<MenuItemModel[]>>
+) => {
+    setSearchQuery(query.toLowerCase())
+     setTimeout(() => {
+        let queriedItems = allMenuItems.filter(item => item.name.toLowerCase().includes(query.toLowerCase())
+        && item.category.includes(currentFilter))
+        setFilteredMenuItems(queriedItems)
+    }, 1000);
 }

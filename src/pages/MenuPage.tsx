@@ -7,7 +7,7 @@ import allCategoriesIcon from '../assets/img/food.png';
 import { useEffect } from "react";
 import MenuModal from "../components/menu/MenuModal";
 import MenuList from "../components/menu/MenuList";
-import { getAllMenuItems } from "../utils/index"
+import { getAllMenuItems, searchMenuItems } from "../utils/index"
 
 interface IButtonProps {
   isActive?: boolean
@@ -79,12 +79,13 @@ const MenuPage = () => {
     setFilteredMenuItems,
     sortMenuItemsByPrice,
     filterMenuItems,
-    searchMenuItems,
     currentFilter,
     currentSorting,
     setIsModalOpen,
     isModalOpen,
     currentlySelectedMenuItem,
+    setSearchQuery,
+
   } = useOrderContext()
 
   useEffect(() => {
@@ -144,7 +145,13 @@ const MenuPage = () => {
                 type="text"
                 placeholder="search for a dish"
                 onChange={(e) => {
-                  searchMenuItems(e.target.value)
+                  searchMenuItems(
+                    e.target.value,
+                    setSearchQuery,
+                    allMenuItems,
+                    currentFilter,
+                    setFilteredMenuItems
+                    )
                 }} />
             </div>
           </CategoryButtons>
